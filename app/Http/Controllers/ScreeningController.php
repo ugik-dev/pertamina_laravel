@@ -97,11 +97,14 @@ class ScreeningController extends Controller
                 }
             }
             // dd($date_end, $date_start);
-            $data =  Screening::selectRaw('screenings.*, a.name as user_name, b.name doctor_name')
+            $query =  Screening::selectRaw('screenings.*, a.name as user_name, b.name doctor_name')
                 ->join('users as a', 'a.id', '=', 'screenings.user_id')
-                ->join('users as b', 'b.id', '=', 'screenings.doctor_id')
-                ->whereBetween('screenings.created_at', [$date_start, $date_end])
-                ->latest()->get();
+                ->join('users as b', 'b.id', '=', 'screenings.doctor_id');
+            if ($date_start == $date_end) {
+                $data = $query->whereDate('screenings.created_at', $date_start)->latest()->get();
+            } else {
+                $data = $query->whereBetween('screenings.created_at', [$date_start, $date_end])->latest()->get();
+            }
             return DataTables::of($data)->addColumn('datescan', function ($data) {
                 return \Carbon\Carbon::parse($data->created_at)->format('Y-m-d');
             })->addColumn('timescan', function ($data) {
@@ -145,8 +148,8 @@ class ScreeningController extends Controller
     {
         try {
             // Cari user dengan qrcode yang valid
-            $user = User::where('qrcode', $code)->validFitality()->firstOrFail();
-
+            $user = User::where('qrcode', $code)->firstOrFail();
+            // dd($code);
             // Ambil screening terbaru hari ini
             $latestScreening = Screening::where('user_id', $user->id)
                 ->whereDate('created_at', Carbon::today())

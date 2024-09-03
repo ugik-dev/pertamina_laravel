@@ -171,9 +171,11 @@
                 scanProcess(decodedText)
             }
 
+            scanProcess("d3286f12-a0ab-45a7-aba9-11b7e15f4723")
+
             function scanProcess(decodedResult) {
                 swalLoading();
-                decodedResult = "d3286f12-a0ab-45a7-aba9-11b7e15f4723"
+                // decodedResult = "d3286f12-a0ab-45a7-aba9-11b7e15f4723"
                 url = '{{ url('scanner/checker') }}/' + decodedResult;
                 $.ajax({
                     url: url,
