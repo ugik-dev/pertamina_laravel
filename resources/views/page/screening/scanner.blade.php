@@ -5,7 +5,14 @@
 @extends('layouts/layoutMaster')
 
 @section('title', 'Screening ')
+@section('vendor-script')
+    <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/@form-validation/umd/bundle/popular.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/@form-validation/umd/plugin-bootstrap5/index.min.js') }}"></script>
 
+@endsection
 @section('content')
     <div class="col-lg-12">
         <div class="row">
@@ -160,17 +167,7 @@
             Result.form.hide();
 
             function convDate(dateTimeString) {
-                // Buat objek Date dari string ISO
-                const dateObject = new Date(dateTimeString);
-
-                // Ambil tanggal, jam, dan menit
-                const date = dateObject.toISOString().split('T')[0];
-                const hours = dateObject.getUTCHours().toString().padStart(2, '0');
-                const minutes = dateObject.getUTCMinutes().toString().padStart(2, '0');
-
-                // Gabungkan menjadi format yang diinginkan
-                return `${date} ${hours}:${minutes}`;
-
+                return moment(dateTimeString).format('YYYY-MM-DD HH:mm');
             }
 
             function onScanSuccess(decodedText, decodedResult) {
@@ -179,7 +176,7 @@
                 scanProcess(decodedText)
             }
 
-            scanProcess("d3286f12-a0ab-45a7-aba9-11b7e15f4723")
+            // scanProcess("d3286f12-a0ab-45a7-aba9-11b7e15f4723")
 
             function scanProcess(decodedResult) {
                 swalLoading();

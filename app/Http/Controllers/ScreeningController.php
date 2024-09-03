@@ -149,12 +149,15 @@ class ScreeningController extends Controller
         try {
             // Cari user dengan qrcode yang valid
             $user = User::where('qrcode', $code)->firstOrFail();
-            // dd($code);
+            // dd(Carbon::today());
             // Ambil screening terbaru hari ini
             $latestScreening = Screening::where('user_id', $user->id)
                 ->whereDate('created_at', Carbon::today())
                 ->latest()
                 ->first();
+
+
+
 
             // Jika tidak ada screening hari ini, kembalikan respon error
             if (!$latestScreening) {
