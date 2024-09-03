@@ -1,0 +1,5 @@
+INSERT INTO `contents` (`id`, `ref_content_id`, `judul`, `slug`, `content`, `tanggal`, `created_at`, `updated_at`) VALUES
+(1, 1, 'APLIKASI KURSUS PENJAMAH MAKANAN SIAP SAJI DAN DEPOT AIR MINUM', 'aplikasi-kursus-penjamah-makanan-siap-saji-dan-depot-air-minum', '<p>asdasddas</p>', '2024-01-24', '2024-01-23 15:22:20', '2024-01-23 15:22:20'),
+(2, 1, 'APLIKASI KURSUS PENJAMAH MAKANAN SIAP SAJI DAN DEPOT AIR MINUM', 'aplikasi-kursus-penjamah-makanan-siap-saji-dan-depot-air-minum-1', '<p>asdasddas</p>', '2024-01-24', '2024-01-23 15:22:26', '2024-01-23 15:22:26'),
+(3, 1, 'APLIKASI KURSUS PENJAMAH MAKANAN SIAP SAJI DAN DEPOT AIR MINUM', 'aplikasi-kursus-penjamah-makanan-siap-saji-dan-depot-air-minum-2', '<p>asdasddas</p>', '2024-01-24', '2024-01-23 15:22:29', '2024-01-23 15:22:29'),
+(4, 1, 'APLIKASI KURSUS PENJAMAH MAKANAN SIAP SAJI DAN DEPOT AIR MINUM', 'aplikasi-kursus-penjamah-makanan-siap-saji-dan-depot-air-minum-3', '<p>asdasddas</p>', '2024-01-24', '2024-01-23 15:22:31', '2024-01-23 15:22:31');

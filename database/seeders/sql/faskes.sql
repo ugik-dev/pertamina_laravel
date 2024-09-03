@@ -1,0 +1,7 @@
+
+INSERT INTO `faskes` (`id`, `user_id`, `ref_jen_faskes_id`, `name`, `description`, `logo`, `alamat`, `website`, `phone`, `whatsapp`, `cover`, `long`, `lat`, `operasional_time`, `created_at`, `updated_at`) VALUES
+(1, NULL, 3, 'RSUD Depati Bahrin', 'asd', NULL, 'asd', '20', '081279748967', '081279748967', NULL, '106.1144211', '-1.8820662', NULL, '2024-01-23 15:17:50', '2024-01-25 10:29:36'),
+(2, NULL, 4, 'Puskesmas Sungailiat', 'asd', NULL, 'Jl. A Yani, Gg. Salam, RT 003 ,Kel. Bukit Betung, Kec. Sungailiat, Kab. Bangka, Prov. Kep. Bangka Belitung', 'asd', '081279748967', '081279748967', NULL, '106.1175184', '-1.8606973', NULL, '2024-01-23 15:18:48', '2024-01-25 10:25:18'),
+(3, NULL, 4, 'Puskesmas Belinyu', 'asd', NULL, 'Jl. A Yani, Gg. Salam, RT 003 ,Kel. Bukit Betung, Kec. Sungailiat, Kab. Bangka, Prov. Kep. Bangka Belitung', 'asd', '081279748967', '081279748967', NULL, '105.7749944', '-1.6406257', NULL, '2024-01-23 15:18:52', '2024-01-25 10:25:42'),
+(4, NULL, 4, 'Puskesmas Riau Silip', 'asd', NULL, 'Jl. A Yani, Gg. Salam, RT 003 ,Kel. Bukit Betung, Kec. Sungailiat, Kab. Bangka, Prov. Kep. Bangka Belitung', 'asd', '081279748967', '081279748967', NULL, '105.8830514', '-1.7314264', NULL, '2024-01-23 15:18:56', '2024-01-25 10:26:13'),
+(5, NULL, 2, 'Dinas Kesehatan Kabupaten Bangka', 'Dinas Kesehatan Kabupaten Bangka', NULL, 'JL. A yani Jalur Dua', 'dinkes.bangka.go.id', '081279748967', '081279748967', NULL, '106.1038883', '-1.8933118', NULL, '2024-01-26 08:51:16', '2024-01-26 08:51:16');
