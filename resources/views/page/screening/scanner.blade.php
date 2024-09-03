@@ -49,8 +49,12 @@
                                     <h6 class="mb-2">Status Kesehatan</h6>
                                 </div>
                                 <p class="mb-1">Sistole : <span id="sistole"></span> mmHg</p>
-                                <p class="mb-1">Hr : <span id="hr"> </span>bpm</p>
-                                <p class="mb-1">Temp : <span id="temp"></span> &deg;C</p>
+                                <p class="mb-1">Diastole : <span id="diastole"></span> mmHg</p>
+                                <p class="mb-1">HR : <span id="hr"> </span>bpm</p>
+                                <p class="mb-1">Suhu : <span id="temp"></span> &deg;C</p>
+                                <p class="mb-1">RR : <span id="rr"></span>-</p>
+                                <p class="mb-1">SPO2 : <span id="spo2"></span>-</p>
+                                <p class="mb-1">Fisik : <span id="fisik"></span>-</p>
                             </div>
                         </div>
                     </div>
@@ -146,7 +150,11 @@
                 'name': $('#result').find('#user_name'),
                 'time': $('#result').find('#check_time'),
                 'sistole': $('#result').find('#sistole'),
+                'diastole': $('#result').find('#diastole'),
                 'hr': $('#result').find('#hr'),
+                'rr': $('#result').find('#rr'),
+                'spo2': $('#result').find('#spo2'),
+                'fisik': $('#result').find('#fisik'),
                 'temp': $('#result').find('#temp'),
             }
             Result.form.hide();
@@ -195,9 +203,13 @@
                             Result.check.hide()
                         }
                         Result.name.html(user["name"])
-                        Result.time.html(convDate(user["created_at"]))
+                        Result.time.html(convDate(user['screening']["created_at"]))
                         Result.sistole.html(user['screening']["sistole"])
+                        Result.diastole.html(user['screening']["diastole"])
                         Result.hr.html(user['screening']["hr"])
+                        Result.rr.html(user['screening']["rr"])
+                        Result.spo2.html(user['screening']["spo2"])
+                        Result.fisik.html(user['screening']["fisik"])
                         Result.temp.html(user['screening']["temp"])
                         Result.form.show();
                         console.log(user)
