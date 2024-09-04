@@ -22,7 +22,7 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->string('judul');
             $table->string('slug')->unique();
-            $table->text('content')->nullable();
+            $table->LONGTEXT('content')->nullable();
             $table->string('sampul')->nullable();
             $table->date('tanggal')->nullable();
             $table->timestamps();

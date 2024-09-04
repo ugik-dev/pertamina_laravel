@@ -22,10 +22,10 @@ class UsersSeeder extends Seeder
     {
         $admin = User::updateOrCreate(
             [
-                'username' => 'ugikdev',
-                'name' => 'Ugik Dev',
+                'username' => 'fersi',
+                'name' => 'Muhammad Fersi Pratama',
                 'qrcode' => 'd3286f12-a0ab-45a7-aba9-11b7e15f4723',
-                'email' => 'ugik.dev@gmail.com',
+                'email' => 'fersi@example.com',
                 'password' => Hash::make('123'),
                 'role_id' => 1
             ],
@@ -42,11 +42,11 @@ class UsersSeeder extends Seeder
             $username = preg_replace('/[^a-z0-9]/', '', $username);
             $user = User::updateOrCreate(
                 [
-                    'username' => $username,
+                    // 'username' => $username,
                     'qrcode' => $username,
                     'name' => $faker->name,
                     'email' => $faker->unique()->safeEmail,
-                    'password' => Hash::make('123'),
+                    // 'password' => Hash::make('123'),
                     'role_id' => $role->id
                 ]
             );

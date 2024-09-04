@@ -16,18 +16,16 @@ class RoleSeeder extends Seeder
     {
         $super_admin = Role::updateOrCreate(['id' => 1, 'name' => 'super', 'title' => 'Super Admin']);
         $kepala = Role::updateOrCreate(['id' => 2, 'name' => 'head', 'title' => 'Manager']);
-        $kasubag = Role::updateOrCreate(['id' => 3, 'name' => 'doctor', 'title' => 'Doctor']);
+        $doctor = Role::updateOrCreate(['id' => 3, 'name' => 'doctor', 'title' => 'Doctor']);
         $admin = Role::updateOrCreate(['id' => 4, 'name' => 'admin', 'title' => 'Admin']);
-        $admin = Role::updateOrCreate(['id' => 5, 'name' => 'staf', 'title' => 'Staf']);
+        $staf = Role::updateOrCreate(['id' => 5, 'name' => 'staf', 'title' => 'Staf']);
 
         $respon_call = Permission::updateOrCreate(['name' => 'respon_call']);
         $crud_users = Permission::updateOrCreate(['name' => 'crud_users']);
         $crud_screening = Permission::updateOrCreate(['name' => 'crud_screening']);
         $crud_information = Permission::updateOrCreate(['name' => 'crud_information']);
         $super_admin->givePermissionTo([$respon_call, $crud_users, $crud_information, $crud_screening]);
-        // $super_admin->givePermissionTo($crud_users);
-        // $super_admin->givePermissionTo($crud_information);
-
-        // $super_admin->assignRole(1);
+        $admin->givePermissionTo([$crud_information, $crud_screening]);
+        $doctor->givePermissionTo([$crud_information, $crud_screening]);
     }
 }

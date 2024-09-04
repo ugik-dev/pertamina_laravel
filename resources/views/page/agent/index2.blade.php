@@ -72,95 +72,214 @@
         <div class="offcanvas-body flex-grow-1">
             <form class="needs-validation add-new-record pt-0 row g-3" id="form-user" novalidate>
                 @csrf
-                <input type="text" id="id" hidden name="id" />
-                <div class="col-sm-12">
-                    <label for="basicFullname">Nama :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="name" class="form-control dt-full-name" name="name" placeholder=""
-                            aria-label="" aria-describedby="basicFullname2" required />
-                    </div>
-                </div>
-
-                <div class="col-sm-12">
-                    <label for="basicFullname">Alamat :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="alamat" class="form-control dt-full-name" name="alamat" placeholder=""
-                            aria-label="" aria-describedby="basicFullname2" />
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicFullname">Telepon :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="phone" class="form-control dt-full-name" name="phone" placeholder=""
-                            aria-label="" aria-describedby="basicFullname2" required />
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicFullname">Email :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="email" class="form-control dt-full-name" name="email" placeholder=""
-                            aria-label="" aria-describedby="basicFullname2" required />
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicFullname">QRCode :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="qrcode" class="form-control dt-full-name" name="qrcode"
-                            placeholder="" aria-label="" aria-describedby="basicFullname2" required readonly />
-                    </div>
-                </div>
-                <div class="col-sm-12 row mt-2 mb-2">
-                    <div class="col-sm-4"> <button class="btn btn-info" id="create_qr">Scan QR</button></div>
-                    <div class="col-sm-7">
-                        <div id="reader" class="mr-3 ml-3 w-80" style="margin:0 auto;"></div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicSalary">Role :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicSalary2" class="input-group-text"><i class='mdi mdi-account-outline'></i></span>
-                        <div class="form-floating form-floating-outline">
-                            <select id="role_id" name="role_id" class="form-control" required>
-                                <option value="">--</option>
-                                @foreach ($dataContent['refRole'] as $rd)
-                                    <option value="{{ $rd->id }}">{{ $rd->title }}</option>
-                                @endforeach
-                            </select>
+                <div class="col-12 mb-4">
+                    <small class="text-light fw-medium mt-2">Basic</small>
+                    <div class="bs-stepper wizard-modern wizard-modern-example mt-2">
+                        <div class="bs-stepper-header">
+                            <div class="step" data-target="#account-details-modern">
+                                <button type="button" class="step-trigger">
+                                    <span class="bs-stepper-circle"><i class="mdi mdi-check"></i></span>
+                                    <span class="bs-stepper-label">
+                                        <span class="bs-stepper-number">01</span>
+                                        <span class="d-flex flex-column gap-1 ms-2">
+                                            <span class="bs-stepper-title">Account Details</span>
+                                            <span class="bs-stepper-subtitle">Setup Account Details</span>
+                                        </span>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="line"></div>
+                            <div class="step" data-target="#personal-info-modern">
+                                <button type="button" class="step-trigger">
+                                    <span class="bs-stepper-circle"><i class="mdi mdi-check"></i></span>
+                                    <span class="bs-stepper-label">
+                                        <span class="bs-stepper-number">02</span>
+                                        <span class="d-flex flex-column gap-1 ms-2">
+                                            <span class="bs-stepper-title">Personal Info</span>
+                                            <span class="bs-stepper-subtitle">Add personal info</span>
+                                        </span>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="line"></div>
+                            <div class="step" data-target="#social-links-modern">
+                                <button type="button" class="step-trigger">
+                                    <span class="bs-stepper-circle"><i class="mdi mdi-check"></i></span>
+                                    <span class="bs-stepper-label">
+                                        <span class="bs-stepper-number">03</span>
+                                        <span class="d-flex flex-column gap-1 ms-2">
+                                            <span class="bs-stepper-title">Social Links</span>
+                                            <span class="bs-stepper-subtitle">Add social links</span>
+                                        </span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bs-stepper-content">
+                            <form onSubmit="return false">
+                                <!-- Account Details -->
+                                <div id="account-details-modern" class="content">
+                                    <div class="content-header mb-3">
+                                        <h6 class="mb-0">Account Details</h6>
+                                        <small>Enter Your Account Details.</small>
+                                    </div>
+                                    <div class="row g-4">
+                                        <div class="col-sm-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="username-modern" class="form-control"
+                                                    placeholder="johndoe" />
+                                                <label for="username-modern">Username</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="email" id="email-modern" class="form-control"
+                                                    placeholder="john.doe@email.com" aria-label="john.doe" />
+                                                <label for="email-modern">Email</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 form-password-toggle">
+                                            <div class="input-group input-group-merge">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="password" id="password-modern" class="form-control"
+                                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                                        aria-describedby="password2-modern" />
+                                                    <label for="password-modern">Password</label>
+                                                </div>
+                                                <span class="input-group-text cursor-pointer" id="password2-modern"><i
+                                                        class="mdi mdi-eye-off-outline"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 form-password-toggle">
+                                            <div class="input-group input-group-merge">
+                                                <div class="form-floating form-floating-outline">
+                                                    <input type="password" id="confirm-password-modern"
+                                                        class="form-control"
+                                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                                        aria-describedby="confirm-password-modern2" />
+                                                    <label for="confirm-password-modern">Confirm Password</label>
+                                                </div>
+                                                <span class="input-group-text cursor-pointer"
+                                                    id="confirm-password-modern2"><i
+                                                        class="mdi mdi-eye-off-outline"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 d-flex justify-content-between">
+                                            <button class="btn btn-outline-secondary btn-prev" disabled> <i
+                                                    class="mdi mdi-arrow-left me-sm-1 me-0"></i>
+                                                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                                            </button>
+                                            <button class="btn btn-primary btn-next"> <span
+                                                    class="align-middle d-sm-inline-block d-none me-sm-1">Next</span> <i
+                                                    class="mdi mdi-arrow-right"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Personal Info -->
+                                <div id="personal-info-modern" class="content">
+                                    <div class="content-header mb-3">
+                                        <h6 class="mb-0">Personal Info</h6>
+                                        <small>Enter Your Personal Info.</small>
+                                    </div>
+                                    <div class="row g-4">
+                                        <div class="col-sm-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="first-name-modern" class="form-control"
+                                                    placeholder="John" />
+                                                <label for="first-name-modern">First Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="last-name-modern" class="form-control"
+                                                    placeholder="Doe" />
+                                                <label for="last-name-modern">Last Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <select class="select2" id="country-modern">
+                                                    <option label=" "></option>
+                                                    <option>UK</option>
+                                                    <option>USA</option>
+                                                    <option>Spain</option>
+                                                    <option>France</option>
+                                                    <option>Italy</option>
+                                                    <option>Australia</option>
+                                                </select>
+                                                <label for="country-modern">Country</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <select class="selectpicker w-auto" id="language-modern"
+                                                    data-style="btn-transparent" data-icon-base="mdi"
+                                                    data-tick-icon="mdi-check text-white" multiple>
+                                                    <option>English</option>
+                                                    <option>French</option>
+                                                    <option>Spanish</option>
+                                                </select>
+                                                <label for="language-modern">Language</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 d-flex justify-content-between">
+                                            <button class="btn btn-outline-secondary btn-prev"> <i
+                                                    class="mdi mdi-arrow-left me-sm-1 me-0"></i>
+                                                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                                            </button>
+                                            <button class="btn btn-primary btn-next"> <span
+                                                    class="align-middle d-sm-inline-block d-none me-sm-1">Next</span> <i
+                                                    class="mdi mdi-arrow-right"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Social Links -->
+                                <div id="social-links-modern" class="content">
+                                    <div class="content-header mb-3">
+                                        <h6 class="mb-0">Social Links</h6>
+                                        <small>Enter Your Social Links.</small>
+                                    </div>
+                                    <div class="row g-4">
+                                        <div class="col-sm-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="twitter-modern" class="form-control"
+                                                    placeholder="https://twitter.com/abc" />
+                                                <label for="twitter-modern">Twitter</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="facebook-modern" class="form-control"
+                                                    placeholder="https://facebook.com/abc" />
+                                                <label for="facebook-modern">Facebook</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="google-modern" class="form-control"
+                                                    placeholder="https://plus.google.com/abc" />
+                                                <label for="google-modern">Google+</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="linkedin-modern" class="form-control"
+                                                    placeholder="https://linkedin.com/abc" />
+                                                <label for="linkedin-modern">LinkedIn</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 d-flex justify-content-between">
+                                            <button class="btn btn-outline-secondary btn-prev"> <i
+                                                    class="mdi mdi-arrow-left me-sm-1 me-0"></i>
+                                                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                                            </button>
+                                            <button class="btn btn-primary btn-submit">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicFullname">Username :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="username" class="form-control dt-full-name" pattern="[a-z0-9]+"
-                            name="username" placeholder="" aria-label="" aria-describedby="basicFullname2" required />
-                        <div class="invalid-feedback">
-                            Masukkan username hanya menggunakan huruf kecil dan angka, tanpa spasi dan karakter spesial
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-12">
-                    <label for="basicFullname">Password <small id="span_cp">*kosongkan jika tidak
-                            diganti</small>:</label>
-                    <div class="input-group input-group-merge">
-                        <span class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="password" id="password" class="form-control" name="password" placeholder=""
-                            required />
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <button type="submit" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="insertBtn"
-                        data-metod="ins">Tambah</button>
-                    <button type="submit" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="updateBtn"
-                        data-act="upd">Simpan Perubahan</button>
-                    <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
                 </div>
             </form>
 
@@ -169,14 +288,12 @@
 
 @endsection
 
+
+
 @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"
-        integrity="sha512-r6rDA7W6ZeQhvl8S7yRVQUKVHdexq+GAlNkNNqVC7YyIV+NwqCTJe2hDWCiffTyRNOeGEzRRJ9ifvRm/HCzGYg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(document).ready(function() {
 
-            var html5QrcodeScanner = false;
             var toolbar = {
                 'form': $('#toolbar_form'),
                 'id_role': $('#toolbar_form').find('#id_role'),
@@ -370,67 +487,7 @@
                 'long': $('#form-user').find('#long'),
                 'lat': $('#form-user').find('#lat'),
                 'username': $('#form-user').find('#username'),
-                'create_qr': $('#form-user').find('#create_qr'),
-                'qrcode': $('#form-user').find('#qrcode'),
             }
-
-            UserForm.role_id.on("change", function() {
-                if (UserForm.role_id.val() == 5) {
-                    console.log("disable pass")
-                    UserForm.password.prop('required', false);
-                    UserForm.password.prop('disabled', true);
-                    UserForm.username.prop('required', false);
-                    UserForm.username.prop('disabled', true);
-                } else {
-                    UserForm.password.prop('required', true);
-                    UserForm.password.prop('disabled', false);
-                    UserForm.username.prop('required', true);
-                    UserForm.username.prop('disabled', false);
-                }
-            })
-
-            function onScanSuccess(decodedText, decodedResult) {
-                console.log(`Code matched = ${decodedText}`, decodedResult);
-                console.log(decodedText)
-                UserForm.qrcode.val(decodedText)
-                console.log("try destroy");
-                html5QrcodeScanner.clear().then(() => {
-                    console.error("Success to clear QR code scanner");
-                }).catch(error => {
-                    console.error("Failed to clear QR code scanner:", error);
-                });
-
-                // scanProcess(decodedText)
-            }
-            // scanProcess('d3286f12-a0ab-45a7-aba9-11b7e15f4723')
-
-            function scanProcess(decodedResult) {
-                // swalLoading();
-                // UserForm.qrcode.val(decodedResult)
-
-
-            }
-
-            function onScanFailure(error) {
-
-            }
-
-
-            UserForm.create_qr.on("click", function() {
-                html5QrcodeScanner = new Html5QrcodeScanner(
-                    "reader", {
-                        fps: 10,
-                        qrbox: {
-                            width: 250,
-                            height: 250
-                        }
-                    },
-                    /* verbose= */
-                    false);
-                html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-            })
-
-
 
             var dataUser = {}
 
@@ -487,7 +544,9 @@
                 FDataTable.clear().rows.add(renderData).draw('full-hold');
             }
 
+
             $('.create-new').on('click', function() {
+
                 UserForm.form.trigger('reset')
                 // var $newOption4 = $("<option selected='selected'></option>").val('').text("--");
                 // UserForm.user_id.append($newOption4).trigger('change');
@@ -495,13 +554,15 @@
                 UserForm.span_cp.hide();
                 UserForm.insertBtn.attr('style', 'display: ""');
                 UserForm.password.prop('required', true);
-                UserForm.role_id.trigger('change');
                 offCanvasEl.show();
             })
 
             FDataTable.on('click', '.edit', function() {
                 var currentData = dataUser[$(this).data('id')];
+
                 UserForm.form.trigger('reset')
+                // var $newOption4 = $("<option selected='selected'></option>").val('').text("--");
+                // UserForm.user_id.append($newOption4).trigger('change');
                 UserForm.insertBtn.attr('style', 'display: none !important');
                 UserForm.updateBtn.attr('style', 'display: ""');
                 UserForm.password.prop('required', false);
@@ -510,12 +571,10 @@
                 UserForm.id.val(currentData['id']);
                 UserForm.name.val(currentData['name']);
                 UserForm.alamat.val(currentData['alamat']);
-                UserForm.qrcode.val(currentData['qrcode']);
                 UserForm.role_id.val(currentData['role_id']);
                 UserForm.email.val(currentData['email']);
                 UserForm.username.val(currentData['username']);
                 UserForm.phone.val(currentData['phone']);
-                UserForm.role_id.trigger('change');
             });
 
             var userForm = document.getElementById('form-user');

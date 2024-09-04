@@ -8,6 +8,7 @@ use App\Http\Controllers\pages\Page2;
 use App\Http\Controllers\pages\MiscError;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\RegisterBasic;
+use App\Http\Controllers\BankController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\DashboardController;
@@ -137,5 +138,14 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/', [ContentController::class, 'delete'])->name('delete');
         Route::get('/getData/{id_wil}', [ContentController::class, 'getData'])->name('get-data');
         Route::get('/show/{slug}', [ContentController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('bank')->name('bank.')->group(function () {
+        Route::get('', [BankController::class, 'index'])->name('index');
+        Route::get('get', [BankController::class, 'get'])->name('get');
+        Route::post('', [BankController::class, 'create'])->name('create');
+        Route::post('/update', [BankController::class, 'update'])->name('update');
+        Route::delete('/', [BankController::class, 'delete'])->name('delete');
+        Route::get('/getData/{id_wil}', [BankController::class, 'getData'])->name('get-data');
     });
 });

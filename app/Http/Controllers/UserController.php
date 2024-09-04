@@ -12,7 +12,6 @@ use Spatie\Permission\Models\Role;
 class UserController extends Controller
 {
     public function index(Request $request)
-
     {
         $dataContent =  [
             'refRole' => Role::get(),
@@ -36,6 +35,7 @@ class UserController extends Controller
     public function create(Request $request)
     {
         try {
+
             $att = [
                 'name' => $request->name,
                 'username' => $request->username,

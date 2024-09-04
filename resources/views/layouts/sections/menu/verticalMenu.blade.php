@@ -50,6 +50,12 @@
                 <div>Scan</div>
             </a>
         </li>
+        <li class="menu-item">
+            <a href="{{ route('bank.index') }}" class="menu-link ">
+                <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
+                <div>Bank Data</div>
+            </a>
+        </li>
         {{-- <li class="menu-item">
             <a href="{{ route('emergency') }}" class="menu-link ">
                 <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
@@ -66,14 +72,14 @@
             </li>
         @endcan --}}
 
-        {{-- @can('crud_information')
+        @can('crud_information')
             <li class="menu-item">
                 <a href="{{ route('content.index') }}" class="menu-link ">
                     <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
                     <div>Halaman Informasi</div>
                 </a>
             </li>
-        @endcan --}}
+        @endcan
 
         {{-- <li class="menu-item">
             <a href="{{ route('faskes.index') }}" class="menu-link ">

@@ -18,19 +18,19 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique()->nullable();
             $table->string('phone')->unique()->nullable();
-            $table->string('qrcode')->unique()->nullable();
+            $table->string('qrcode')->unique();
             $table->string('alamat')->nullable();
             $table->string('long')->nullable();
             $table->string('lat')->nullable();
             $table->integer('status')->default('1');
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('username', 120)->unique();
-            $table->string('password');
+            $table->string('username', 120)->unique()->nullable()->default(null);
+            $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
 
-        DB::statement("ALTER TABLE users MODIFY COLUMN username VARCHAR(255) NOT NULL, ADD CONSTRAINT username_format CHECK (username REGEXP '^[a-z0-9]+$')");
+        // DB::statement("ALTER TABLE users MODIFY COLUMN username VARCHAR(255) NOT NULL, ADD CONSTRAINT username_format CHECK (username REGEXP '^[a-z0-9]+$')");
     }
 
     /**

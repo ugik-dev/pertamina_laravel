@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Manage Agent')
+@section('title', 'DataTables - Tables')
 
 @section('vendor-style')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}">
@@ -13,153 +13,110 @@
     <!-- Form Validation -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/@form-validation/umd/styles/index.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
-    <!-- <link href="vendor/select2/dist/css/select2.min.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/quill/typography.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/quill/katex.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/quill/editor.css') }}" />
 @endsection
 
 @section('vendor-script')
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{ asset('assets/vendor/libs/quill/katex.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/quill/quill.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
 
-    <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/@form-validation/umd/bundle/popular.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/@form-validation/umd/plugin-bootstrap5/index.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js') }}"></script>
+
 @endsection
 
 @section('page-script')
-    <script>
-        (function() {
-            'use strict'
-
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-
-        })()
-    </script>
-    {{-- <script src="{{ asset('assets/js/form-validation.js') }}"></script> --}}
 @endsection
 
 @section('content')
     <h4 class="py-3 mb-4">
-        <span class="text-muted fw-light">Manage /</span> Agent
+        <span class="text-muted fw-light">Manage /</span> Kontent Informasi
     </h4>
     @csrf
-    <!-- DataTable with Buttons -->
     <div class="card">
         <div class="card-datatable table-responsive pt-0">
             <table id="FDataTable" class="table table-bordered">
                 <thead>
                     <tr>
-                        <th class="padat">No</th>
-                        <th wlass="padat">Aksi</th>
-                        <th>Nama</th>
-                        <th>Role</th>
-                        <th>QRCode</th>
-                        <th>Deskripsi</th>
-                        <th>Telpon / Email</th>
-                        <th>Website</th>
+                        <th>No</th>
+                        <th>Aksi</th>
+                        <th>Owner</th>
+                        <th>Jenis</th>
+                        <th>Description</th>
+                        <th>Tanggal Dokumen</th>
+                        <th>File</th>
                     </tr>
                 </thead>
+
             </table>
         </div>
     </div>
     <!-- Modal to add new record -->
     <div class="offcanvas offcanvas-end" id="add-new-record" style="width : 700px !important">
         <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title" id="exampleModalLabel">Form Fasilitas Kesehatan</h5>
+            <h5 class="offcanvas-title" id="exampleModalLabel">Form</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body flex-grow-1">
-            <form class="needs-validation add-new-record pt-0 row g-3" id="form-user" novalidate>
+            <form class="add-new-record pt-0 row g-3" id="form-content" onsubmit="return false">
                 @csrf
-                <input type="text" id="id" hidden name="id" />
+                <input type="text" id="id" class="" name="id" />
                 <div class="col-sm-12">
-                    <label for="basicFullname">Nama :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="name" class="form-control dt-full-name" name="name" placeholder=""
-                            aria-label="" aria-describedby="basicFullname2" required />
+                    <label for="basicSalary">Nama Staf :</label>
+                    {{-- <div class="input-group input-group-merge"> --}}
+                    {{-- <span id="basicSalary2" class="input-group-text"><i class='mdi mdi-account-outline'></i></span> --}}
+                    <div class="form-floating form-floating-outline">
+                        <!-- <input type="number" id="user_id" name="user_id" class="form-control dt-salary" aria-label="" aria-describedby="basicSalary2" /> -->
+                        <select id="user_id" name="user_id" class="select2 form-select" data-allow-clear="true">
+                            <option value="">--</option>
+                            @foreach ($dataContent['refUser'] as $rd)
+                                <option value="{{ $rd->id }}">{{ $rd->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                </div>
-
-                <div class="col-sm-12">
-                    <label for="basicFullname">Alamat :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="alamat" class="form-control dt-full-name" name="alamat" placeholder=""
-                            aria-label="" aria-describedby="basicFullname2" />
-                    </div>
+                    {{-- </div> --}}
                 </div>
                 <div class="col-sm-12">
-                    <label for="basicFullname">Telepon :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="phone" class="form-control dt-full-name" name="phone" placeholder=""
-                            aria-label="" aria-describedby="basicFullname2" required />
-                    </div>
+                    <label for="basicFullname">Description:</label>
+                    <textarea type="text" id="description" class="form-control dt-full-name" name="description" placeholder=""
+                        aria-label="" aria-describedby="basicFullname2"> </textarea>
                 </div>
-                <div class="col-sm-12">
-                    <label for="basicFullname">Email :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="email" class="form-control dt-full-name" name="email" placeholder=""
-                            aria-label="" aria-describedby="basicFullname2" required />
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicFullname">QRCode :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="qrcode" class="form-control dt-full-name" name="qrcode"
-                            placeholder="" aria-label="" aria-describedby="basicFullname2" required readonly />
-                    </div>
-                </div>
-                <div class="col-sm-12 row mt-2 mb-2">
-                    <div class="col-sm-4"> <button class="btn btn-info" id="create_qr">Scan QR</button></div>
-                    <div class="col-sm-7">
-                        <div id="reader" class="mr-3 ml-3 w-80" style="margin:0 auto;"></div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicSalary">Role :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicSalary2" class="input-group-text"><i class='mdi mdi-account-outline'></i></span>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="basicSalary">Jenis :</label>
                         <div class="form-floating form-floating-outline">
-                            <select id="role_id" name="role_id" class="form-control" required>
+                            <!-- <input type="number" id="user_id" name="user_id" class="form-control dt-salary" aria-label="" aria-describedby="basicSalary2" /> -->
+                            <select id="ref_bank_id" name="ref_bank_id" class="form-control">
                                 <option value="">--</option>
-                                @foreach ($dataContent['refRole'] as $rd)
-                                    <option value="{{ $rd->id }}">{{ $rd->title }}</option>
+                                @foreach ($dataContent['refBank'] as $rd)
+                                    <option value="{{ $rd->id }}">{{ $rd->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
+                    <div class="col-sm-12">
+                        <label for="basicFullname">Tanggal Dokumen :</label>
+                        <input type="date" id="doc_date" class="form-control dt-full-name" name="doc_date"
+                            placeholder="" aria-label="" aria-describedby="basicFullname2" />
+                    </div>
                 </div>
-                <div class="col-sm-12">
-                    <label for="basicFullname">Username :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="username" class="form-control dt-full-name" pattern="[a-z0-9]+"
-                            name="username" placeholder="" aria-label="" aria-describedby="basicFullname2" required />
-                        <div class="invalid-feedback">
-                            Masukkan username hanya menggunakan huruf kecil dan angka, tanpa spasi dan karakter spesial
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="basicFullname">File :</label>
+                        <div class="input-group input-group-merge">
+                            <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
+                            <input type="file" id="file_attachment" class="form-control dt-full-name"
+                                name="file_attachment" aria-label="" aria-describedby="basicFullname2" />
                         </div>
                     </div>
-                </div>
-
-                <div class="col-sm-12">
-                    <label for="basicFullname">Password <small id="span_cp">*kosongkan jika tidak
-                            diganti</small>:</label>
-                    <div class="input-group input-group-merge">
-                        <span class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="password" id="password" class="form-control" name="password" placeholder=""
-                            required />
-                    </div>
+                    <div class="col-sm-6"></div>
                 </div>
                 <div class="col-sm-12">
-                    <button type="submit" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="insertBtn"
-                        data-metod="ins">Tambah</button>
-                    <button type="submit" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="updateBtn"
-                        data-act="upd">Simpan Perubahan</button>
+                    <a type="" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="insertBtn"
+                        data-metod="ins">Tambah</a>
+                    <a type="" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="updateBtn"
+                        data-act="upd">Simpan Perubahan</a>
                     <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
                 </div>
             </form>
@@ -167,16 +124,9 @@
         </div>
     </div>
 
-@endsection
-
-@push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"
-        integrity="sha512-r6rDA7W6ZeQhvl8S7yRVQUKVHdexq+GAlNkNNqVC7YyIV+NwqCTJe2hDWCiffTyRNOeGEzRRJ9ifvRm/HCzGYg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(document).ready(function() {
 
-            var html5QrcodeScanner = false;
             var toolbar = {
                 'form': $('#toolbar_form'),
                 'id_role': $('#toolbar_form').find('#id_role'),
@@ -347,104 +297,51 @@
                         ]
                     },
                     {
-                        text: '<i class="mdi mdi-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Tambah User</span>',
-                        className: 'create-new btn btn-primary me-2'
-                    },
+                        text: '<i class="mdi mdi-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Tambah Content</span>',
+                        className: 'create-new btn btn-primary'
+                    }
                 ],
-
             });
-            $('div.head-label').html('<h5 class="card-title mb-0">Data Agent</h5>')
+            $('div.head-label').html('<h5 class="card-title mb-0">Data Content</h5>')
 
-            var UserForm = {
-                'form': $('#form-user'),
-                'insertBtn': $('#form-user').find('#insertBtn'),
-                'updateBtn': $('#form-user').find('#updateBtn'),
-                'id': $('#form-user').find('#id'),
-                'name': $('#form-user').find('#name'),
-                'role_id': $('#form-user').find('#role_id'),
-                'alamat': $('#form-user').find('#alamat'),
-                'password': $('#form-user').find('#password'),
-                'span_cp': $('#form-user').find('#span_cp'),
-                'phone': $('#form-user').find('#phone'),
-                'email': $('#form-user').find('#email'),
-                'long': $('#form-user').find('#long'),
-                'lat': $('#form-user').find('#lat'),
-                'username': $('#form-user').find('#username'),
-                'create_qr': $('#form-user').find('#create_qr'),
-                'qrcode': $('#form-user').find('#qrcode'),
+            var ContentForm = {
+                'form': $('#form-content'),
+                'insertBtn': $('#form-content').find('#insertBtn'),
+                'updateBtn': $('#form-content').find('#updateBtn'),
+                'id': $('#form-content').find('#id'),
+                'description': $('#form-content').find('#description'),
+                'user_id': $('#form-content').find('#user_id'),
+                'content': $('#form-content').find('#content'),
+                'ref_bank_id': $('#form-content').find('#ref_bank_id'),
+                'doc_date': $('#form-content').find('#doc_date'),
+                'file_attachment': $('#form-content').find('#file_attachment'),
             }
 
-            UserForm.role_id.on("change", function() {
-                if (UserForm.role_id.val() == 5) {
-                    console.log("disable pass")
-                    UserForm.password.prop('required', false);
-                    UserForm.password.prop('disabled', true);
-                    UserForm.username.prop('required', false);
-                    UserForm.username.prop('disabled', true);
-                } else {
-                    UserForm.password.prop('required', true);
-                    UserForm.password.prop('disabled', false);
-                    UserForm.username.prop('required', true);
-                    UserForm.username.prop('disabled', false);
-                }
-            })
-
-            function onScanSuccess(decodedText, decodedResult) {
-                console.log(`Code matched = ${decodedText}`, decodedResult);
-                console.log(decodedText)
-                UserForm.qrcode.val(decodedText)
-                console.log("try destroy");
-                html5QrcodeScanner.clear().then(() => {
-                    console.error("Success to clear QR code scanner");
-                }).catch(error => {
-                    console.error("Failed to clear QR code scanner:", error);
+            var select2 = $('.select2');
+            if (select2.length) {
+                select2.each(function() {
+                    var $this = $(this);
+                    select2Focus($this);
+                    $this.wrap('<div class="position-relative"></div>').select2({
+                        placeholder: 'Select value',
+                        dropdownParent: $this.parent()
+                    });
                 });
-
-                // scanProcess(decodedText)
             }
-            // scanProcess('d3286f12-a0ab-45a7-aba9-11b7e15f4723')
-
-            function scanProcess(decodedResult) {
-                // swalLoading();
-                // UserForm.qrcode.val(decodedResult)
-
-
-            }
-
-            function onScanFailure(error) {
-
-            }
-
-
-            UserForm.create_qr.on("click", function() {
-                html5QrcodeScanner = new Html5QrcodeScanner(
-                    "reader", {
-                        fps: 10,
-                        qrbox: {
-                            width: 250,
-                            height: 250
-                        }
-                    },
-                    /* verbose= */
-                    false);
-                html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-            })
-
-
-
-            var dataUser = {}
+            var dataContent = {}
 
             swalLoading();
             $.when(
-                getAllUser(), ).then((e) => {
+                getAllContent()).then((e) => {
                 Swal.close();
             }).fail((e) => {
                 console.log(e)
             });
 
-            function getAllUser() {
+
+            function getAllContent() {
                 return $.ajax({
-                    url: `{{ route('agent.get') }}`,
+                    url: `{{ route('bank.get') }}`,
                     'type': 'get',
                     data: toolbar.form.serialize(),
                     success: function(data) {
@@ -453,14 +350,14 @@
                         if (data['error']) {
                             return;
                         }
-                        dataUser = data['data'];
-                        renderUser(dataUser);
+                        dataContent = data['data'];
+                        renderContent(dataContent);
                     },
                     error: function(e) {}
                 });
             }
 
-            function renderUser(data) {
+            function renderContent(data) {
                 console.log(data)
                 if (data == null || typeof data != "object") {
                     console.log("User::UNKNOWN DATA");
@@ -478,74 +375,57 @@
                         `<li><a class="delete dropdown-item text-danger" data-id="${user['id']}" ><i class="mdi mdi-trash-can-outline"></i> Hapus </a></li>` +
                         '</ul>' +
                         '</div>' +
-                        `<a href="<?= url('info-desa/sub-wilayah') ?>/${user['id']}" title="Lihat Detail" class="btn btn-sm btn-text-secondary rounded-pill btn-icon item-edit"><i class="mdi mdi-eye-outline" ></i></a>`;
-                    renderData.push([user['id'], button, user['name'], user['role_title'], user['qrcode'],
-                        user['phone'], user['email'],
-                        (user['long'] ? user['long'] + ', ' + user['lat'] : ''),
+                        `<a target="_blank" href="<?= url('storage/upload/bank/') ?>/${user['filename']}" title="Lihat Detail" class="btn btn-sm btn-text-secondary rounded-pill btn-icon item-edit"><i class="mdi mdi-eye-outline" ></i></a>`;
+                    var btnFile =
+                        `<a target="_blank" href="<?= url('storage/upload/bank/') ?>/${user['filename']}" title="Lihat Detail" class="btn btn-sm btn-text-secondary rounded-pill btn-icon ">${user['filename']}</a>`;
+
+                    renderData.push([user['id'], button, user['owner'] == null ?
+                        '' :
+                        user['owner']['name'], user['description'], user['ref_bank'] == null ?
+                        '' :
+                        user['ref_bank']['name'], user['doc_date'], btnFile,
                     ]);
                 });
                 FDataTable.clear().rows.add(renderData).draw('full-hold');
             }
 
+
             $('.create-new').on('click', function() {
-                UserForm.form.trigger('reset')
-                // var $newOption4 = $("<option selected='selected'></option>").val('').text("--");
-                // UserForm.user_id.append($newOption4).trigger('change');
-                UserForm.updateBtn.attr('style', 'display: none !important');
-                UserForm.span_cp.hide();
-                UserForm.insertBtn.attr('style', 'display: ""');
-                UserForm.password.prop('required', true);
-                UserForm.role_id.trigger('change');
+                ContentForm.form.trigger('reset')
+                var $newOption4 = $("<option selected='selected'></option>").val('').text("--");
+                ContentForm.updateBtn.attr('style', 'display: none !important');
+                ContentForm.insertBtn.attr('style', 'display: ""');
                 offCanvasEl.show();
             })
 
             FDataTable.on('click', '.edit', function() {
-                var currentData = dataUser[$(this).data('id')];
-                UserForm.form.trigger('reset')
-                UserForm.insertBtn.attr('style', 'display: none !important');
-                UserForm.updateBtn.attr('style', 'display: ""');
-                UserForm.password.prop('required', false);
+                ContentForm.form.trigger('reset')
+                var $newOption4 = $("<option selected='selected'></option>").val('').text("--");
+                ContentForm.insertBtn.attr('style', 'display: none !important');
+                ContentForm.updateBtn.attr('style', 'display: ""');
                 offCanvasEl.show();
-                UserForm.span_cp.show();
-                UserForm.id.val(currentData['id']);
-                UserForm.name.val(currentData['name']);
-                UserForm.alamat.val(currentData['alamat']);
-                UserForm.qrcode.val(currentData['qrcode']);
-                UserForm.role_id.val(currentData['role_id']);
-                UserForm.email.val(currentData['email']);
-                UserForm.username.val(currentData['username']);
-                UserForm.phone.val(currentData['phone']);
-                UserForm.role_id.trigger('change');
+
+                var currentData = dataContent[$(this).data('id')];
+                ContentForm.id.val(currentData['id']);
+                ContentForm.user_id.val(currentData['user_id']).trigger("change");
+                ContentForm.description.val(currentData['description']);
+                ContentForm.doc_date.val(currentData['doc_date']);
+                ContentForm.ref_bank_id.val(currentData['ref_bank_id']);
             });
 
-            var userForm = document.getElementById('form-user');
-
-
-            function validasi_form(event) {
-                if (!userForm.checkValidity()) {
-                    console.log(' not acc')
-                    validation_form = false;
-                    event.preventDefault();
-                    event.stopPropagation();
-                    userForm.classList.add('was-validated');
-                    return false;
-                } else {
-                    userForm.classList.add('was-validated');
-                    return true;
-                }
-            }
-            UserForm.form.on('submit', function(event) {
+            ContentForm.insertBtn.on('click', () => {
                 event.preventDefault();
-                if (!validasi_form(event)) {
-                    return
-                };
-                if (UserForm.insertBtn.is(":visible")) {
-                    url = '{{ route('agent.create') }}';
-                    metode = 'POST';
-                } else {
-                    url = '{{ route('agent.update') }}';
-                    metode = 'PUT';
-                }
+                submit_form('{{ route('bank.create') }}', 'POST');
+            });
+            ContentForm.updateBtn.on('click', () => {
+                event.preventDefault();
+                submit_form('{{ route('bank.update') }}', 'POST');
+            });
+
+            function submit_form(url, metode) {
+                // conten = fullEditor.root.innerHTML;
+                // console.log(conten);
+                // ContentForm.content.val(conten);
                 Swal.fire(SwalOpt()).then((result) => {
                     if (!result.isConfirmed) {
                         return;
@@ -554,23 +434,25 @@
                     $.ajax({
                         url: url,
                         'type': metode,
-                        data: UserForm.form.serialize(),
+                        processData: false,
+                        contentType: false,
+                        data: new FormData(ContentForm.form[0]),
                         success: function(data) {
                             if (data['error']) {
                                 swalError(data['message'], "Simpan Gagal !!");
                                 return;
                             }
                             var user = data['data']
-                            dataUser[user['id']] = user;
+                            dataContent[user['id']] = user;
                             swalBerhasil();
                             offCanvasEl.hide();
-                            renderUser(dataUser);
-                            // UserForm.self.modal('hide');
+                            renderContent(dataContent);
+                            // ContentForm.self.modal('hide');
                         },
                         error: function(e) {}
                     });
                 });
-            });
+            };
 
             FDataTable.on('click', '.delete', function() {
                 event.preventDefault();
@@ -581,7 +463,7 @@
                         return;
                     }
                     $.ajax({
-                        url: "<?= route('agent.delete') ?>/",
+                        url: "<?= route('bank.delete') ?>/",
                         'type': 'DELETE',
                         data: {
                             '_token': token,
@@ -592,15 +474,14 @@
                                 swalError(data['message'], "Simpan Gagal !!");
                                 return;
                             }
-                            delete dataUser[id];
+                            delete dataContent[id];
                             swalBerhasil('Data berhasil di Hapus');
-                            renderUser(dataUser);
+                            renderContent(dataContent);
                         },
                         error: function(e) {}
                     });
                 });
             });
-
         });
     </script>
-@endpush
+@endsection
