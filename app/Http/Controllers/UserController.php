@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DataStructure;
+use App\Models\Field;
+use App\Models\Unit;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -15,6 +17,8 @@ class UserController extends Controller
     {
         $dataContent =  [
             'refRole' => Role::get(),
+            'refUnit' => Unit::get(),
+            'refField' => Field::get(),
         ];
         return view('page.agent.index', compact('request', 'dataContent'));
     }
@@ -22,7 +26,7 @@ class UserController extends Controller
     public function get(Request $request)
     {
         try {
-            $query =  User::withRole();
+            $query =  User::withRole()->with(['unit', 'field_work']);
             if (!empty($request->id)) $query->where('id', '=', $request->id);
             $res = $query->get()->toArray();
             $data =   DataStructure::keyValueObj($res, 'id');
@@ -40,6 +44,8 @@ class UserController extends Controller
                 'name' => $request->name,
                 'username' => $request->username,
                 'role_id' => $request->role_id,
+                'unit_id' => $request->unit_id,
+                'field_work_id' => $request->field_work_id,
                 'alamat' => $request->alamat,
                 'phone' => $request->phone,
                 'qrcode' => $request->qrcode,
@@ -47,7 +53,7 @@ class UserController extends Controller
                 'password' => Hash::make($request->password),
             ];
             $data = User::create($att);
-            $data = User::withRole()->find($data->id);
+            $data = User::withRole()->with(['unit', 'field_work'])->find($data->id);
 
             return  $this->responseSuccess($data);
         } catch (Exception $ex) {
@@ -58,12 +64,14 @@ class UserController extends Controller
     public function update(Request $request)
     {
         try {
-            $data = User::withRole()->findOrFail($request->id);
+            $data = User::findOrFail($request->id);
 
             $data->update([
                 'name' => $request->name,
                 'username' => $request->username,
                 'role_id' => $request->role_id,
+                'unit_id' => $request->unit_id,
+                'field_work_id' => $request->field_work_id,
                 'alamat' => $request->alamat,
                 'qrcode' => $request->qrcode,
                 'phone' => $request->phone,
@@ -73,6 +81,8 @@ class UserController extends Controller
                 $data->update([
                     'password' => Hash::make($request->password),
                 ]);
+            $data = User::withRole()->with(['unit', 'field_work'])->findOrFail($request->id);
+
             return  $this->responseSuccess($data);
         } catch (Exception $ex) {
             return  $this->ResponseError($ex->getMessage());

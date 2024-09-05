@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 
 class Helpers
 {
+
   public static function spanSistole($val, $cek = false)
   {
     if ($val < 100 || $val > 120) {

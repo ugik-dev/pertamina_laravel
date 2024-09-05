@@ -99,10 +99,10 @@
                                     @if (Auth::check())
                                         {{ Auth::user()->name }}
                                     @else
-                                        John Doe
+                                        As Guest !!
                                     @endif
                                 </span>
-                                <small class="text-muted">Admin</small>
+                                {{-- <small class="text-muted">Admin</small> --}}
                             </div>
                         </div>
                     </a>
@@ -110,20 +110,21 @@
                 <li>
                     <div class="dropdown-divider"></div>
                 </li>
-                <li>
-                    <a class="dropdown-item"
-                        href="{{ Route::has('profile.show') ? route('profile.show') : 'javascript:void(0);' }}">
-                        <i class="mdi mdi-account-outline me-2"></i>
-                        <span class="align-middle">My Profile</span>
-                    </a>
-                </li>
-
-                <li>
+                @if (Auth::check())
+                    <li>
+                        <a class="dropdown-item"
+                            href="{{ Route::has('profile.show') ? route('profile.show') : 'javascript:void(0);' }}">
+                            <i class="mdi mdi-account-outline me-2"></i>
+                            <span class="align-middle">My Profile</span>
+                        </a>
+                    </li>
+                @endif
+                {{-- <li>
                     <a class="dropdown-item" href="javascript:void(0);">
                         <i class="mdi mdi-credit-card-outline me-2"></i>
                         <span class="align-middle">Billing</span>
                     </a>
-                </li>
+                </li> --}}
 
                 <li>
                     <div class="dropdown-divider"></div>

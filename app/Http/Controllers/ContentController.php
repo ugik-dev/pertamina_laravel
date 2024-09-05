@@ -74,10 +74,12 @@ class ContentController extends Controller
     public function show(string $slug)
     {
         try {
+            $pageConfigs = ['myLayout' => 'horizontal'];
+
             $query =  Content::with('ref_content');
             $query->where('slug', '=', $slug);
-            $res = $query->get()->first();
-            return view('page.content.show', ['dataContent' => $res]);
+            $dataContent = $query->get()->first();
+            return view('page.content.show', compact('dataContent', 'pageConfigs'));
         } catch (Exception $ex) {
             return  $this->ResponseError($ex->getMessage());
         }

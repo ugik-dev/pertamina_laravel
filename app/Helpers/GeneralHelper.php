@@ -1,5 +1,18 @@
 <?php
 
+if (!function_exists('spanFitality')) {
+    function spanFitality($val)
+    {
+        if ($val == 'Y') {
+            return "<span class='text-success'>FIT</span>";
+        } else if ($val == 'N') {
+            return "<span class='text-danger'>UNFIT</span>";
+        } else {
+            return "<span class='text-warning'> - </span>";
+        }
+    }
+}
+
 if (!function_exists('tanggalSort')) {
     function tanggalSort($date)
     {
@@ -9,6 +22,7 @@ if (!function_exists('tanggalSort')) {
         return \Carbon\Carbon::parse($date)->isoFormat('ddd, D MMM YY');
     }
 }
+
 
 function styleStatusCall($text, $s)
 {

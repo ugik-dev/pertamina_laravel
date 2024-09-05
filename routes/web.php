@@ -13,12 +13,14 @@ use App\Http\Controllers\ContentController;
 use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FaskesController;
+use App\Http\Controllers\FieldController;
 use App\Http\Controllers\LiveLocationController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\RekapController;
 use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\TindakanController;
+use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use GuzzleHttp\Psr7\Request;
 
@@ -36,7 +38,12 @@ use GuzzleHttp\Psr7\Request;
 
 
 Route::get('/', [PortalController::class, 'index'])->name('portal');
+Route::get('/home', [PortalController::class, 'home'])->name('home');
 Route::get('/scan-fitality', [PortalController::class, 'scan_fit'])->name('portal.scan-fit');
+Route::get('/info/content', [PortalController::class, 'content']);
+Route::get('bank-data', [PortalController::class, 'bank_data'])->name('bank_data');
+Route::get('content/show/{slug}', [ContentController::class, 'show'])->name('content.show');
+
 Route::get('/login', [LoginBasic::class, 'index'])->name('login');
 Route::get('/page-2', [Page2::class, 'index'])->name('pages-page-2');
 Route::get('scanner/checker/{code}', [ScreeningController::class, 'scanner_process'])->name('scanner.check');
@@ -123,6 +130,20 @@ Route::middleware(['auth'])->group(function () {
         Route::put('', [UserController::class, 'update'])->name('update');
         Route::delete('/', [UserController::class, 'delete'])->name('delete');
     });
+    Route::prefix('manage-unit')->name('unit.')->group(function () {
+        Route::get('', [UnitController::class, 'index'])->name('index');
+        Route::get('get', [UnitController::class, 'get'])->name('get');
+        Route::post('', [UnitController::class, 'create'])->name('create');
+        Route::put('', [UnitController::class, 'update'])->name('update');
+        Route::delete('/', [UnitController::class, 'delete'])->name('delete');
+    });
+    Route::prefix('manage-field')->name('field.')->group(function () {
+        Route::get('', [FieldController::class, 'index'])->name('index');
+        Route::get('get', [FieldController::class, 'get'])->name('get');
+        Route::post('', [FieldController::class, 'create'])->name('create');
+        Route::put('', [FieldController::class, 'update'])->name('update');
+        Route::delete('/', [FieldController::class, 'delete'])->name('delete');
+    });
     Route::prefix('manage-live-location')->name('live-location.')->group(function () {
         Route::get('', [LiveLocationController::class, 'index'])->name('index');
         Route::get('get', [LiveLocationController::class, 'get'])->name('get');
@@ -140,7 +161,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/update', [ContentController::class, 'update'])->name('update');
         Route::delete('/', [ContentController::class, 'delete'])->name('delete');
         Route::get('/getData/{id_wil}', [ContentController::class, 'getData'])->name('get-data');
-        Route::get('/show/{slug}', [ContentController::class, 'show'])->name('show');
     });
 
     Route::prefix('bank')->name('bank.')->group(function () {

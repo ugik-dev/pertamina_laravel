@@ -93,12 +93,32 @@
                 <div>Rekap</div>
             </a>
         </li>
-        <li class="menu-item">
-            <a href="{{ route('agent.index') }}" class="menu-link ">
-                <i class="menu-icon tf-icons mdi mdi-account-details-outline"></i>
-                <div>Manage Agent</div>
+        <li class="menu-item" style="">
+            <a href="javascript:void(0);" class="menu-link menu-toggle waves-effect">
+                <i class="menu-icon tf-icons mdi mdi-form-select"></i>
+                <div>Management</div>
             </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ route('agent.index') }}" class="menu-link ">
+                        {{-- <i class="menu-icon tf-icons mdi mdi-account-details-outline"></i> --}}
+                        <div>User / Pasien</div>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a href="{{ route('unit.index') }}" class="menu-link">
+                        <div>Unit</div>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a href="{{ route('field.index') }}" class="menu-link">
+                        <div>Bidang Kerja</div>
+                    </a>
+                </li>
+            </ul>
         </li>
+
+
         {{-- <li class="menu-item">
             <a href="{{ route('live-location.index') }}" class="menu-link ">
                 <i class="menu-icon tf-icons mdi mdi-home-outline"></i>

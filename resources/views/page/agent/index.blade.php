@@ -54,10 +54,10 @@
                         <th wlass="padat">Aksi</th>
                         <th>Nama</th>
                         <th>Role</th>
-                        <th>QRCode</th>
-                        <th>Deskripsi</th>
-                        <th>Telpon / Email</th>
-                        <th>Website</th>
+                        <th>Unit</th>
+                        <th>Bidang Kerja</th>
+                        <th>Telpon</th>
+                        <th>Email</th>
                     </tr>
                 </thead>
             </table>
@@ -81,7 +81,34 @@
                             aria-label="" aria-describedby="basicFullname2" required />
                     </div>
                 </div>
-
+                <div class="col-sm-12">
+                    <label for="basicSalary">Unit :</label>
+                    <div class="input-group input-group-merge">
+                        <span id="basicSalary2" class="input-group-text"><i class='mdi mdi-account-outline'></i></span>
+                        <div class="form-floating form-floating-outline">
+                            <select id="unit_id" name="unit_id" class="form-control" required>
+                                <option value="">--</option>
+                                @foreach ($dataContent['refUnit'] as $unit)
+                                    <option value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <label for="basicSalary">Bidang Kerja :</label>
+                    <div class="input-group input-group-merge">
+                        <span id="basicSalary2" class="input-group-text"><i class='mdi mdi-account-outline'></i></span>
+                        <div class="form-floating form-floating-outline">
+                            <select id="field_work_id" name="field_work_id" class="form-control" required>
+                                <option value="">--</option>
+                                @foreach ($dataContent['refField'] as $field)
+                                    <option value="{{ $field->id }}">{{ $field->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-sm-12">
                     <label for="basicFullname">Alamat :</label>
                     <div class="input-group input-group-merge">
@@ -94,16 +121,16 @@
                     <label for="basicFullname">Telepon :</label>
                     <div class="input-group input-group-merge">
                         <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="phone" class="form-control dt-full-name" name="phone" placeholder=""
-                            aria-label="" aria-describedby="basicFullname2" required />
+                        <input type="text" id="phone" class="form-control dt-full-name" name="phone"
+                            placeholder="" aria-label="" aria-describedby="basicFullname2" required />
                     </div>
                 </div>
                 <div class="col-sm-12">
                     <label for="basicFullname">Email :</label>
                     <div class="input-group input-group-merge">
                         <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="email" class="form-control dt-full-name" name="email" placeholder=""
-                            aria-label="" aria-describedby="basicFullname2" required />
+                        <input type="text" id="email" class="form-control dt-full-name" name="email"
+                            placeholder="" aria-label="" aria-describedby="basicFullname2" required />
                     </div>
                 </div>
                 <div class="col-sm-12">
@@ -115,7 +142,7 @@
                     </div>
                 </div>
                 <div class="col-sm-12 row mt-2 mb-2">
-                    <div class="col-sm-4"> <button class="btn btn-info" id="create_qr">Scan QR</button></div>
+                    <div class="col-sm-4"> <a class="btn btn-info text-white" id="create_qr">Scan QR</a></div>
                     <div class="col-sm-7">
                         <div id="reader" class="mr-3 ml-3 w-80" style="margin:0 auto;"></div>
                     </div>
@@ -362,6 +389,8 @@
                 'id': $('#form-user').find('#id'),
                 'name': $('#form-user').find('#name'),
                 'role_id': $('#form-user').find('#role_id'),
+                'unit_id': $('#form-user').find('#unit_id'),
+                'field_work_id': $('#form-user').find('#field_work_id'),
                 'alamat': $('#form-user').find('#alamat'),
                 'password': $('#form-user').find('#password'),
                 'span_cp': $('#form-user').find('#span_cp'),
@@ -479,9 +508,12 @@
                         '</ul>' +
                         '</div>' +
                         `<a href="<?= url('info-desa/sub-wilayah') ?>/${user['id']}" title="Lihat Detail" class="btn btn-sm btn-text-secondary rounded-pill btn-icon item-edit"><i class="mdi mdi-eye-outline" ></i></a>`;
-                    renderData.push([user['id'], button, user['name'], user['role_title'], user['qrcode'],
+                    renderData.push([user['id'], button, user['name'], user['role_title'],
+                        user['unit']['name'], user['field_work'] != null ? user['field_work'][
+                            'name'
+                        ] : "",
                         user['phone'], user['email'],
-                        (user['long'] ? user['long'] + ', ' + user['lat'] : ''),
+
                     ]);
                 });
                 FDataTable.clear().rows.add(renderData).draw('full-hold');
@@ -510,6 +542,8 @@
                 UserForm.id.val(currentData['id']);
                 UserForm.name.val(currentData['name']);
                 UserForm.alamat.val(currentData['alamat']);
+                UserForm.unit_id.val(currentData['unit_id']).trigger("change");
+                UserForm.field_work_id.val(currentData['field_work_id']).trigger("change");
                 UserForm.qrcode.val(currentData['qrcode']);
                 UserForm.role_id.val(currentData['role_id']);
                 UserForm.email.val(currentData['email']);

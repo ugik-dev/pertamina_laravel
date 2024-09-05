@@ -1,6 +1,9 @@
+@php
+    $configData = Helper::appClasses();
+@endphp
 @extends('layouts/layoutMaster')
 
-@section('title', 'Pricing - Pages')
+@section('title', 'Berita')
 
 <!-- Page -->
 @section('page-style')
@@ -12,6 +15,24 @@
 @endsection
 
 @section('content')
+    <style>
+        .mycontent-wrapper {
+            /* Menetapkan batas lebar wrapper */
+            /* width: 100%; */
+            /* Atau ukuran tetap seperti 800px, tergantung kebutuhan */
+            /* overflow: hidden; */
+            /* Menghindari overflow */
+        }
+
+        .mycontent-wrapper img {
+            /* Mengatur gambar agar tidak melebihi lebar wrapper */
+            max-width: 100%;
+            height: auto;
+            /* Mempertahankan rasio aspek gambar */
+            display: block;
+            /* Menghilangkan margin otomatis di bawah gambar */
+        }
+    </style>
     <div class="card">
         <!-- Pricing Plans -->
         <div class="pb-sm-5 pb-2 rounded-top">
@@ -19,12 +40,11 @@
                 <h2 class="text-center mb-2 mt-0 mt-md-4">{{ $dataContent->judul }}</h2>
                 <p class="text-center">{{ $dataContent->tanggal }}</p>
 
-
                 <div class="pricing-plans row mx-0 gy-3 px-lg-5">
                     <!-- Basic -->
                     <div class="col-lg mb-md-0 mb-4">
                         <div class="card border rounded shadow-none">
-                            <div class="card-body">
+                            <div class="card-body mycontent-wrapper">
                                 {!! $dataContent->content !!}
                                 {{-- <div class="my-3 pt-2 text-center">
                                     <img src="{{ asset('assets/img/illustrations/pricing-basic.png') }}" alt="Basic Image"

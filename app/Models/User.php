@@ -30,6 +30,8 @@ class User extends Authenticatable
         'phone',
         'alamat',
         'role_id',
+        'unit_id',
+        'field_work_id',
         'qrcode',
     ];
     protected $keyLength = 191;
@@ -69,7 +71,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Screening::class);
     }
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'unit_id');
+    }
 
+    public function field_work()
+    {
+        return $this->belongsTo(Field::class, 'field_work_id');
+    }
     // Scope untuk mendapatkan screening terbaru hari ini
     public function scopeValidFitality($query)
     {
