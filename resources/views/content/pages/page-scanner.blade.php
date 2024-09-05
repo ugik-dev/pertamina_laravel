@@ -85,9 +85,8 @@
                                         <div class="d-flex align-items-end">
                                             <h5 class="mb-0 me-2 text-bold"><span id="check_time"></h5>
                                         </div>
-                                        <span class='badge rounded-pill bg-label-warning'>UNFIT</span>
                                         <div class="" id="fit_result">
-                                            <span class='badge rounded-pill bg-label-warning'>s</span>
+                                            <span class='badge rounded-pill bg-label-warning'></span>
                                         </div>
                                     </div>
                                 </div>
