@@ -271,8 +271,12 @@
 
             function onScanSuccess(decodedText, decodedResult) {
                 // handle the scanned code as you like, for example:
-                console.log(`Code matched = ${decodedText}`, decodedResult);
-                scanProcess(decodedText)
+                html5QrcodeScanner.clear(); // Hentikan sementara pemindaian
+                scanProcess(decodedText);
+                setTimeout(() => {
+                    // Lanjutkan pemindaian setelah 5 detik
+                    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+                }, 5000);
             }
             // scanProcess('d3286f12-a0ab-45a7-aba9-11b7e15f4723')
 

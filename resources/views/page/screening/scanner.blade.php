@@ -173,7 +173,13 @@
             }
 
             function onScanSuccess(decodedText, decodedResult) {
-                scanProcess(decodedText)
+
+                html5QrcodeScanner.clear(); // Hentikan sementara pemindaian
+                scanProcess(decodedText);
+                setTimeout(() => {
+                    // Lanjutkan pemindaian setelah 5 detik
+                    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+                }, 5000); // 5000 milidetik = 5 detik
             }
 
             function scanProcess(decodedResult) {
