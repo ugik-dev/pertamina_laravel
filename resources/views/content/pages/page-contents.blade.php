@@ -40,8 +40,9 @@
                         <div class="card mb-3 h-100">
                             <div class="row g-0 h-100">
                                 <div class="col-md-4">
-                                    <img class="card-img card-img-left"
-                                        src="{{ url('storage/upload/content/' . $content->sampul) }}" alt="Card image">
+                                    <img class="card-img card-img-left h-100"
+                                        src="{{ $content->sampul ? url('storage/upload/content/' . $content->sampul) : url('assets/img/reading.jpg') }}"
+                                        alt="Card image">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body d-flex flex-column">

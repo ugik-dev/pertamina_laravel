@@ -183,6 +183,7 @@
                                         <th>Nama</th>
                                         <th>Bidang</th>
                                         <th>Status</th>
+                                        <th>Waktu</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -190,7 +191,11 @@
                                         <tr>
                                             <td>{{ $internal->name }}</td>
                                             <td>{{ $internal->field_work->name ?? '' }}</td>
-                                            <td>{!! spanFitality($internal->screenings?->first() ? $internal->screenings?->first()->fitality : 'xx') !!}
+                                            <td>{!! spanFitality($internal->screenings?->first() ? $internal->screenings?->first()->fitality : '') !!}
+                                            </td>
+                                            <td>{!! $internal->screenings?->first()
+                                                ? \Carbon\Carbon::parse($internal->screenings?->first()->created_at)->format('H:i')
+                                                : '-' !!}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -213,8 +218,9 @@
                         <div class="card mb-3 h-100">
                             <div class="row g-0 h-100">
                                 <div class="col-md-4">
-                                    <img class="card-img card-img-left"
-                                        src="{{ url('storage/upload/content/' . $content->sampul) }}" alt="Card image">
+                                    <img class="card-img card-img-left h-100"
+                                        src="{{ $content->sampul ? url('storage/upload/content/' . $content->sampul) : url('assets/img/reading.jpg') }}"
+                                        alt="Card image">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body d-flex flex-column">
