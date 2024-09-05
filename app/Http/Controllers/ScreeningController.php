@@ -59,7 +59,7 @@ class ScreeningController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data =  Screening::selectRaw('screenings.*, a.name as user_name, b.name doctor_name')
+            $data =  Screening::selectRaw('screenings.*, a.name as user_name,a.qrcode as user_qrcode, b.name doctor_name')
                 ->join('users as a', 'a.id', '=', 'screenings.user_id')
                 ->join('users as b', 'b.id', '=', 'screenings.doctor_id')
                 ->whereDate('screenings.created_at', Carbon::today())
@@ -76,7 +76,7 @@ class ScreeningController extends Controller
                 return $data->fitality == 'Y' ? "<span class='text-success'>FIT</span>" : "<span class='text-danger'>UNFIT</span>";
             })->addColumn('aksi', function ($data) {
                 // return '<a href="' . route('detail-screening', $data->id) . '" class="btn btn-primary">Open</a>';
-                return '<a href="" class="btn btn-primary">Open</a>';
+                return '<button data-id="' . $data->id . '" class="editBtn btn btn-primary"><i class="mdi mdi-pencil"></i></button>';
             })->rawColumns(['aksi', 'sistole_span', 'hr_span', 'temp_span', 'result_span'])->make(true);
         }
         return view('page.screening.index', compact('request'));
@@ -97,7 +97,7 @@ class ScreeningController extends Controller
                 }
             }
             // dd($date_end, $date_start);
-            $query =  Screening::selectRaw('screenings.*, a.name as user_name, b.name doctor_name')
+            $query =  Screening::selectRaw('screenings.*, a.name as user_name,a.qrcode as user_qrcode, b.name doctor_name')
                 ->join('users as a', 'a.id', '=', 'screenings.user_id')
                 ->join('users as b', 'b.id', '=', 'screenings.doctor_id');
             if ($date_start == $date_end) {
@@ -119,7 +119,7 @@ class ScreeningController extends Controller
                 return $data->fitality == 'Y' ? "<span class='text-success'>FIT</span>" : "<span class='text-danger'>UNFIT</span>";
             })->addColumn('aksi', function ($data) {
                 // return '<a href="' . route('detail-screening', $data->id) . '" class="btn btn-primary">Open</a>';
-                return '<a href="" class="btn btn-primary">Open</a>';
+                return '<a href="" class="btn btn-primary"><i class="fa fa-pencil"></i></a>';
             })->rawColumns(['aksi', 'sistole_span', 'hr_span', 'temp_span', 'result_span'])->make(true);
         }
         return view('page.screening.rekap', compact('request'));
@@ -177,6 +177,7 @@ class ScreeningController extends Controller
     {
         try {
             $req = $request->validate([
+                'id' => 'nullable|integer',
                 'qrcode' => 'required|string',
                 'name' => 'required|string|max:255',
                 'sistole' => 'required',
@@ -202,7 +203,20 @@ class ScreeningController extends Controller
             $req['fitality'] = $result;
             $req['doctor_id'] =  Auth::user()->id;
             $req['user_id'] =  $user->id;
-            Screening::create($req);
+            if (!empty($req["id"])) {
+                // $req['description'] =  $req['description'] . " | Pemeriksaan lanjutan";
+                unset($req['qrcode']);
+                unset($req['name']);
+                Screening::where("id", $req["id"])->update($req);
+            } else {
+                $cek = Screening::where("user_id", '=', $user->id)
+                    ->whereDate("created_at", Carbon::today())->count();
+                if ($cek > 0)
+                    $req['description'] =  ($req['description'] ? $req['description'] . ", " : "") . "Pemeriksaan ke-" . ($cek + 1);
+
+                Screening::create($req);
+            }
+
 
             // Screening::create([
             //     'user_id' => $user->id,

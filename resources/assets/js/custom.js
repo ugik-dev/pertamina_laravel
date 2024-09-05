@@ -410,7 +410,9 @@ function swalLoading() {
   });
   Swal.showLoading();
 }
-
+function capitalizeFirstLetter(string) {
+  return string[0].toUpperCase() + string.slice(1);
+}
 function swalBerhasil(label = 'Berhasil !!', btn = true) {
   btnclass = btn ? '' : 'd-none';
   Swal.fire({

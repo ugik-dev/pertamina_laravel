@@ -5,6 +5,7 @@
 @endphp
 <span>
     <img src="{{ url('/assets/img/logo.png') }}" width="{{ $width }}" fill="none">
+    {{-- <span class="app-brand-text demo menu-text fw-bold ms-2">Materialize</span> --}}
     {{--
         <svg width="{{ $width }}" viewBox="0 0 38 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M30.0944 2.22569C29.0511 0.444187 26.7508 -0.172113 24.9566 0.849138C23.1623 1.87039 22.5536 4.14247 23.5969 5.92397L30.5368 17.7743C31.5801 19.5558 33.8804 20.1721 35.6746 19.1509C37.4689 18.1296 38.0776 15.8575 37.0343 14.076L30.0944 2.22569Z" fill="{{ $withbg }}" />

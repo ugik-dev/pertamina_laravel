@@ -26,7 +26,7 @@
                         <span class="app-brand-logo demo">
                             @include('_partials.macros', ['width' => 155, 'withbg' => 'var(--bs-primary)'])
                         </span>
-                        {{-- <span class="app-brand-text demo text-heading fw-bold">PSC APP</span> --}}
+                        {{-- <span class="app-brand-text demo text-heading fw-bold">PERTAFIT</span> --}}
                     </a>
                 </div>
                 <!-- /Logo -->
@@ -60,7 +60,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-3 d-flex justify-content-between">
+                        {{-- <div class="mb-3 d-flex justify-content-between">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="remember-me" />
                                 <label class="form-check-label" for="remember-me"> Remember Me </label>
@@ -68,13 +68,17 @@
                             <a href="javascript:void(0);" class="float-end mb-1">
                                 <span>Forgot Password?</span>
                             </a>
-                        </div>
+                        </div> --}}
                         <div class="mb-3">
                             <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
                         </div>
+                        <div class="mb-3">
+                            <a href="{{ route('portal') }}" class="btn btn-white d-grid w-100">Back to
+                                Portal</a>
+                        </div>
                     </form>
 
-                    <p class="text-center">
+                    {{-- <p class="text-center">
                         <span>New on our platform?</span>
                         <a href="{{ url('auth/register-basic') }}">
                             <span>Create an account</span>
@@ -100,7 +104,7 @@
                         <a href="javascript:;" class="btn btn-icon btn-lg rounded-pill btn-text-google-plus">
                             <i class="tf-icons mdi mdi-24px mdi-google"></i>
                         </a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <!-- /Login -->

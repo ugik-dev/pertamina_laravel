@@ -15,6 +15,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FaskesController;
 use App\Http\Controllers\LiveLocationController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\PortalController;
 use App\Http\Controllers\RekapController;
 use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\TindakanController;
@@ -34,8 +35,11 @@ use GuzzleHttp\Psr7\Request;
 
 
 
-Route::get('/', [LoginBasic::class, 'index'])->name('login');
+Route::get('/', [PortalController::class, 'index'])->name('portal');
+Route::get('/scan-fitality', [PortalController::class, 'scan_fit'])->name('portal.scan-fit');
+Route::get('/login', [LoginBasic::class, 'index'])->name('login');
 Route::get('/page-2', [Page2::class, 'index'])->name('pages-page-2');
+Route::get('scanner/checker/{code}', [ScreeningController::class, 'scanner_process'])->name('scanner.check');
 
 // pages
 Route::get('/pages/misc-error', [MiscError::class, 'index'])->name('pages-misc-error');
@@ -60,7 +64,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('screening/scan/{code}', [ScreeningController::class, 'scan_process'])->name('scan_get');
 
     Route::get('scanner', [ScreeningController::class, 'scanner'])->name('scanner');
-    Route::get('scanner/checker/{code}', [ScreeningController::class, 'scanner_process'])->name('scanner.check');
 
     Route::prefix('screening')->name('screening.')->group(function () {
         Route::get('', [ScreeningController::class, 'index'])->name('index');

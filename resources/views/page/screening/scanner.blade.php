@@ -50,6 +50,7 @@
                                             <h6 class="mb-1" id="user_name"></h6>
                                         </a>
                                         <small>Screening : <span id="check_time"> </span></small>
+                                        <span id="fit_result"></span>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between">
@@ -163,6 +164,7 @@
                 'spo2': $('#result').find('#spo2'),
                 'fisik': $('#result').find('#fisik'),
                 'temp': $('#result').find('#temp'),
+                'result': $('#result').find('#fit_result'),
             }
             Result.form.hide();
 
@@ -171,12 +173,8 @@
             }
 
             function onScanSuccess(decodedText, decodedResult) {
-                // handle the scanned code as you like, for example:
-                // console.log(`Code matched = ${decodedText}`, decodedResult);
                 scanProcess(decodedText)
             }
-
-            // scanProcess("d3286f12-a0ab-45a7-aba9-11b7e15f4723")
 
             function scanProcess(decodedResult) {
                 swalLoading();
@@ -208,6 +206,9 @@
                         Result.spo2.html(user['screening']["spo2"])
                         Result.fisik.html(user['screening']["fisik"])
                         Result.temp.html(user['screening']["temp"])
+                        Result.result.html(user['screening']["fitality"] == 'Y' ?
+                            "<span class='badge badge-success'>FIT</span>" :
+                            "<span class='badge badge-danger'>UNFIT</span>")
                         Result.form.show();
                         console.log(user)
                     },
@@ -215,11 +216,7 @@
                 });
             }
 
-            function onScanFailure(error) {
-                // handle scan failure, usually better to ignore and keep scanning.
-                // for example:
-                // console.warn(`Code scan error = ${error}`);
-            }
+            function onScanFailure(error) {}
 
             let html5QrcodeScanner = new Html5QrcodeScanner(
                 "reader", {

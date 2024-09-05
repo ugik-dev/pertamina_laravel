@@ -171,7 +171,8 @@ return [
         // App\Helpers\DataStructure::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
-        Barryvdh\DomPDF\ServiceProvider::class
+        Barryvdh\DomPDF\ServiceProvider::class,
+        // Intervention\Image\ImageServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -189,6 +190,7 @@ return [
         'DataStructur' =>         App\Helpers\DataStructure::class,
         // 'Example' => App\Facades\Example::class,
         'Helper' => App\Helpers\Helpers::class,
+        // 'Image' => Intervention\Image\Facades\Image::class,
     ])->toArray(),
 
 ];

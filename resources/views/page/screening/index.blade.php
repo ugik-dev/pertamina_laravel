@@ -49,6 +49,7 @@
                     <tr>
                         <th>No</th>
                         <th>Time</th>
+                        <th>Action</th>
                         <th>Nama</th>
                         <th>Result</th>
                         <th>Fisik</th>
@@ -63,7 +64,6 @@
                         <th>Alcohol Level</th>
                         <th>Anamnesis</th>
                         <th>Ket</th>
-                        <th>Action</th>
                     </tr>
                 </thead>
             </table>
@@ -82,7 +82,8 @@
                     </div>
                     <div class="modal-body">
                         @csrf
-                        <input type="text" id="qrcode" class="" name="qrcode" hidden />
+                        <input type="text" id="id" class="" name="id" />
+                        <input type="text" id="qrcode" class="" name="qrcode" />
                         <div class="row">
                             <div class="col-lg-6 mb-2">
                                 <div class="form-group row">
@@ -208,7 +209,7 @@
                             </div>
                             <div class="form-group row">
                                 <label for="anemnesis" class="col-sm-2 col-form-label">Anamnesis</label>
-                                <div class="col-anamnesis-10">
+                                <div class="col-sm-10">
                                     <div class="input-group">
                                         <textarea id="anamnesis" name="anamnesis" class="form-control"></textarea>
                                     </div>
@@ -255,7 +256,15 @@
                 'user_id': $('#form-screening').find('#user_id'),
                 'name': $('#form-screening').find('#name'),
                 'sistole': $('#form-screening').find('#sistole'),
+                'diastole': $('#form-screening').find('#diastole'),
                 'hr': $('#form-screening').find('#hr'),
+                'rr': $('#form-screening').find('#rr'),
+                'spo2': $('#form-screening').find('#spo2'),
+                'romberg': $('#form-screening').find('#romberg'),
+                'alcohol': $('#form-screening').find('#alcohol'),
+                'alcohol_level': $('#form-screening').find('#alcohol_level'),
+                'description': $('#form-screening').find('#description'),
+                'anamnesis': $('#form-screening').find('#anamnesis'),
                 'temp': $('#form-screening').find('#temp'),
                 'qrcode': $('#form-screening').find('#qrcode'),
             }
@@ -268,8 +277,6 @@
             // scanProcess('d3286f12-a0ab-45a7-aba9-11b7e15f4723')
 
             function scanProcess(decodedResult) {
-                // swalLoading();
-                // decodedResult = "d3286f12-a0ab-45a7-aba9-11b7e15f4723"
                 url = '{{ url('screening/scan') }}/' + decodedResult;
                 $.ajax({
                     url: url,
@@ -437,6 +444,9 @@
                         data: "timescan",
                         name: "timescan"
                     }, {
+                        data: "aksi",
+                        name: "aksi"
+                    }, {
                         data: "user_name",
                         name: "user_name"
                     },
@@ -486,12 +496,10 @@
                         data: "description",
                         name: "description"
                     },
-                    {
-                        data: "aksi",
-                        name: "aksi"
-                    },
+
                 ]
             });
+
 
             var currenPickOff = null;
             Pusher.logToConsole = true;
@@ -523,6 +531,35 @@
                 audio.pause();
                 audio.currentTime = 0; // Reset the audio to the beginning
             }
+
+            DataTable.on("click", ".editBtn", function() {
+                var currentId = $(this).data('id');
+                console.log(currentId)
+                var rowData = DataTable.row($(this).closest('tr')).data();
+
+                // Cek data yang didapatkan
+                console.log("ID:", currentId);
+                ScreeningForm.qrcode.val(rowData["user_qrcode"])
+                ScreeningForm.sistole.val(rowData["sistole"])
+                ScreeningForm.diastole.val(rowData["diastole"])
+                ScreeningForm.hr.val(rowData["hr"])
+                ScreeningForm.rr.val(rowData["rr"])
+                ScreeningForm.spo2.val(rowData["spo2"])
+                ScreeningForm.romberg.val(rowData["romberg"])
+                ScreeningForm.alcohol.val(rowData["alcohol"])
+                ScreeningForm.alcohol_level.val(rowData["alcohol_level"])
+                ScreeningForm.anamnesis.val(rowData["anamnesis"])
+                ScreeningForm.description.val(rowData["description"])
+                ScreeningForm.temp.val(rowData["temp"])
+                ScreeningForm.id.val(rowData["id"])
+                ScreeningForm.name.val(rowData["user_name"])
+                $('#emergencyModal').modal('show');
+                // console.log("Row Data:", rowData);
+
+                // Misalnya, kamu bisa ambil kolom tertentu dari row tersebut
+                // var userName = rowData.user_name;
+                // console.log("User Name:", userName);
+            })
 
             function newData(d) {
                 console.log(d)
