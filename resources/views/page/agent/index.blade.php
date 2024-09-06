@@ -53,8 +53,8 @@
                         <th class="padat">No</th>
                         <th wlass="padat">Aksi</th>
                         <th>Nama</th>
-                        <th>Unit</th>
-                        <th>Bidang Kerja</th>
+                        <th>Lokasi</th>
+                        <th>Kategori</th>
                         <th>Role</th>
                         <th>Telpon</th>
                         <th>Email</th>

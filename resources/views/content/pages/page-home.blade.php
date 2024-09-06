@@ -99,9 +99,9 @@
                                         </div> --}}
                                     </div>
                                     <div class="card-info mt-4 pt-1 mt-lg-1 mt-xl-4">
-                                        <h5 class="mb-2">Guest</h5>
-                                        <p class="mb-lg-2 mb-xl-3">Total {{ $dataContent['counterInternal']['total'] }}
-                                            tamu </p>
+                                        <h5 class="mb-2">External Workers</h5>
+                                        <p class="mb-lg-2 mb-xl-3">Total {{ $dataContent['external']->count() }}
+                                            wokers </p>
                                     </div>
                                 </div>
                             </div>

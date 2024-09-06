@@ -17,24 +17,28 @@
 @endsection @section('content')
 
 <div class="position-relative">
-    <div class="authentication-wrapper authentication-basic container-p-y">
+    <div class="authentication-wrapper authentication-basic container-p-y" {{-- style="background-image: url({{ asset('assets/img/background-2.jpeg') }}) !important;
+                background-position: bottom right;
+                background-repeat: no-repeat;
+                background-size: contain;" --}}>
+
         <div class="authentication-inner py-4">
             <!-- Login -->
 
             <div class="card p-2">
                 <!-- Logo -->
-                <div class="app-brand justify-content-center mt-5">
-                    <a href="{{ url('/assets/img/logo.png') }}" width=300 class="app-brand-link gap-2">
-                        <span class="app-brand-logo demo">
-                            @include('_partials.macros', ['width' => 155, 'withbg' => 'var(--bs-primary)'])
+                <div class="app-brand justify-content-center mt-5  ms-2 me-2">
+                    <a href="#" class="app-brand-link gap-2">
+                        <span class="app-brand-logo demo w-100">
+                            <img class="w-100" src="{{ url('/assets/img/logo2.png') }}">
+                            {{-- @include('_partials.macros', ['width' => 155, 'withbg' => 'var(--bs-primary)']) --}}
                         </span>
-                        <span class="app-brand-text demo text-heading fw-bold">PORTAL PERTAFIT</span>
                     </a>
                 </div>
-                <!-- /Logo -->
-
-                <div class="card-body mt-2">
+                <div class="app-brand justify-content-center mt-3">
+                    <h4 class="app-brand-text demo text-heading fw-bold">PORTAL PERTAFIT</h4>
                 </div>
+                <!-- /Logo -->
                 <div class="col-lg-12 col-sm-12">
                     <a href="{{ route('home') }}">
                         <div class="card bg-primary mb-2">
@@ -63,11 +67,11 @@
                 </div>
                 <div class="col-lg-12 col-sm-12">
                     <a href="{{ route('portal.scan-fit') }}">
-                        <div class="card bg-info mb-2 ">
+                        <div class="card bg-success mb-2 ">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="card-body">
-                                        <div class="card-info mb-2">
+                                        <div class="card-success mb-2">
                                             <strong>
                                                 <h4 class="mb-3 text-nowrap text-bold text-white">Scan DCU</h4>
                                             </strong>

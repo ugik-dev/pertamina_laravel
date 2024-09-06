@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bank;
 use App\Models\Content;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Exception;
 
@@ -64,13 +65,21 @@ class PortalController extends Controller
             })
             ->get();
 
-        $results = User::with(['field_work', 'unit' => function ($query) {
+        $results = User::whereHas('unit', function ($query) {
             $query->where('category', 'internal');
-        }, 'screenings' => function ($query) {
-            $query->whereDate('created_at', '2024-09-06')
+        })->with(['field_work', 'unit', 'screenings' => function ($query) {
+            // $query->whereDate('created_at', '2024-09-06')
+            $query->whereDate('created_at', Carbon::today())
                 ->orderBy('created_at', 'desc');
-        }])
-            ->get();
+        }])->get();
+        $external  = User::whereHas('unit', function ($query) {
+            $query->where('category', 'external');
+        })->whereHas('screenings', function ($query) {
+            $query->whereDate('created_at', Carbon::today());
+        })->with(['field_work', 'unit', 'screenings' => function ($query) {
+            $query->whereDate('created_at', Carbon::today())
+                ->orderBy('created_at', 'desc');
+        }])->get();
         $countFitalityY = 0;
         $countFitalityN = 0;
         $countNoScreening = 0;
@@ -100,11 +109,9 @@ class PortalController extends Controller
         $dataContent = [
             'content' => Content::orderBy('created_at', 'desc')->limit(2)->get(),
             'internalUser' => $results,
-            'counterInternal' => $countScreening
+            'counterInternal' => $countScreening,
+            'external' => $external
         ];
-
-
-        return view('content.pages.page-home', compact('pageConfigs', 'dataContent'));
         return view('content.pages.page-home', compact('pageConfigs', 'dataContent'));
     }
     public function scan_fit()

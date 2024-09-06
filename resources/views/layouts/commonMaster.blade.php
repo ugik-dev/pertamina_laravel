@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 @php
-    $menuFixed = $configData['layout'] === 'vertical' ? $menuFixed ?? '' : ($configData['layout'] === 'front' ? '' : $configData['headerType']);
-    $navbarType = $configData['layout'] === 'vertical' ? $configData['navbarType'] : ($configData['layout'] === 'front' ? 'layout-navbar-fixed' : '');
+    $menuFixed =
+        $configData['layout'] === 'vertical'
+            ? $menuFixed ?? ''
+            : ($configData['layout'] === 'front'
+                ? ''
+                : $configData['headerType']);
+    $navbarType =
+        $configData['layout'] === 'vertical'
+            ? $configData['navbarType']
+            : ($configData['layout'] === 'front'
+                ? 'layout-navbar-fixed'
+                : '');
     $isFront = ($isFront ?? '') == true ? 'Front' : '';
     $contentLayout = isset($container) ? ($container === 'container-xxl' ? 'layout-compact' : 'layout-wide') : '';
 @endphp
@@ -10,7 +20,7 @@
     class="{{ $configData['style'] }}-style {{ $contentLayout ?? '' }} {{ $navbarType ?? '' }} {{ $menuFixed ?? '' }} {{ $menuCollapsed ?? '' }} {{ $menuFlipped ?? '' }} {{ $menuOffcanvas ?? '' }} {{ $footerFixed ?? '' }} {{ $customizerHidden ?? '' }}"
     dir="{{ $configData['textDirection'] }}" data-theme="{{ $configData['theme'] }}"
     data-assets-path="{{ asset('/assets') . '/' }}" data-base-url="{{ url('/') }}" data-framework="laravel"
-    data-template="{{ $configData['layout'] . '-menu-' . $configData['theme'] . '-' . $configData['style'] }}">
+    data-template="PERTAFIT">
 
     <head>
         <meta charset="utf-8" />
