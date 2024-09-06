@@ -426,7 +426,12 @@
                     UserForm.username.prop('required', false);
                     UserForm.username.prop('disabled', true);
                 } else {
-                    UserForm.password.prop('required', true);
+                    if (UserForm.updateBtn.is(':visible')) {
+                        UserForm.password.prop('required', false);
+                        console.log('Update button is visible');
+                    } else if (UserForm.insertBtn.is(':visible')) {
+                        UserForm.password.prop('required', true);
+                    }
                     UserForm.password.prop('disabled', false);
                     UserForm.username.prop('required', true);
                     UserForm.username.prop('disabled', false);
