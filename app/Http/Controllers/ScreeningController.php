@@ -63,21 +63,34 @@ class ScreeningController extends Controller
                 ->join('users as a', 'a.id', '=', 'screenings.user_id')
                 ->join('users as b', 'b.id', '=', 'screenings.doctor_id')
                 ->whereDate('screenings.created_at', Carbon::today())
-                ->latest()->get();
+                // ->whereDate('screenings.created_at', "2024-09-06")
+                // ->latest()->get();
+                ->limit(100)->get();
+            // dd($data);
             return DataTables::of($data)->addColumn('timescan', function ($data) {
                 return \Carbon\Carbon::parse($data->created_at)->format('H:i');
             })->addColumn('sistole_span', function ($data) {
                 return Helpers::spanSistole($data->sistole);
+            })->addColumn('diastole_span', function ($data) {
+                return Helpers::spanDiastole($data->diastole);
             })->addColumn('hr_span', function ($data) {
                 return Helpers::spanHr($data->hr);
+            })->addColumn('rr_span', function ($data) {
+                return Helpers::spanRr($data->rr);
             })->addColumn('temp_span', function ($data) {
                 return Helpers::spanTemp($data->temp);
+            })->addColumn('spo2_span', function ($data) {
+                return Helpers::spanSpo2($data->spo2);
+            })->addColumn('romberg_span', function ($data) {
+                return Helpers::spanRomberg($data->romberg);
+            })->addColumn('alcohol_span', function ($data) {
+                return Helpers::spanAlcoholTest($data->alcohol);
             })->addColumn('result_span', function ($data) {
                 return $data->fitality == 'Y' ? "<span class='text-success'>FIT</span>" : "<span class='text-danger'>UNFIT</span>";
             })->addColumn('aksi', function ($data) {
                 // return '<a href="' . route('detail-screening', $data->id) . '" class="btn btn-primary">Open</a>';
                 return '<button data-id="' . $data->id . '" class="editBtn btn btn-primary"><i class="mdi mdi-pencil"></i></button>';
-            })->rawColumns(['aksi', 'sistole_span', 'hr_span', 'temp_span', 'result_span'])->make(true);
+            })->rawColumns(['aksi', 'sistole_span', 'diastole_span', 'hr_span', 'rr_span', 'spo2_span', 'temp_span', 'result_span', 'romberg_span', 'alcohol_span'])->make(true);
         }
         return view('page.screening.index', compact('request'));
     }
@@ -172,6 +185,24 @@ class ScreeningController extends Controller
         }
     }
 
+    function getResult($req)
+    {
+        // dd((!isset($req['alcohol']) || Helpers::spanAlcoholTest($req['alcohol'], true)));
+        if (
+            Helpers::spanSistole($req['sistole'], true) &&
+            Helpers::spanDiastole($req['diastole'], true) &&
+            Helpers::spanHr($req['hr'], true) &&
+            Helpers::spanTemp($req['temp'], true) &&
+            Helpers::spanRr($req['rr'], true)
+            && (!isset($req['spo2']) || Helpers::spanSpo2($req['spo2'], true))
+            && (!isset($req['romberg']) || Helpers::spanRomberg($req['romberg'], true))
+            && (!isset($req['alcohol']) || Helpers::spanAlcoholTest($req['alcohol'], true))
+        ) {
+            return 'Y';
+        } else {
+            return 'N';
+        }
+    }
 
     public function create(Request $request)
     {
@@ -186,20 +217,22 @@ class ScreeningController extends Controller
                 'hr' => 'required',
                 'temp' => 'required',
                 'rr' => 'required',
-                'spo2' => 'nullable',
-                'romberg' => 'nullable',
-                'alcohol' => 'nullable',
+                'spo2' => 'required',
+                'romberg' => 'required',
+                'alcohol' => 'required',
                 'alcohol_level' => 'nullable',
                 'anamnesis' => 'nullable',
                 'description' => 'nullable',
             ]);
 
             $user = User::where('qrcode', $req['qrcode'])->firstOrFail();
-            if (Helpers::spanSistole($req['sistole'], true) && Helpers::spanHr($req['hr'], true) && Helpers::spanTemp($req['temp'], true)) {
-                $result = 'Y';
-            } else {
-                $result = 'N';
-            }
+            // if (Helpers::spanSistole($req['sistole'], true) && Helpers::spanHr($req['hr'], true) && Helpers::spanTemp($req['temp'], true)) {
+            //     $result = 'Y';
+            // } else {
+            //     $result = 'N';
+            // }
+            $result = $this->getResult($req);
+            // dd($result);
             $req['fitality'] = $result;
             $req['doctor_id'] =  Auth::user()->id;
             $req['user_id'] =  $user->id;

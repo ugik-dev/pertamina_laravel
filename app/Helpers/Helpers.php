@@ -78,21 +78,52 @@ class Helpers
     }
   }
 
-  public static function spanAlcoholTest($val, $cek = false)
+  public static function spanSpo2($val, $cek = false)
   {
-    // Alkohol test -/+: N untuk negatif, Y untuk positif
-    if ($val === '-') {
+    // Spo2 di bawah 95% dianggap berbahaya
+    if ($val < 95) {
       if ($cek)
-        return 'N';  // Negatif
+        return false;
+      return "<span class='text-danger'>" . $val . "%</span>";
+    } else {
+      if ($cek)
+        return true;
+      return "<span class='text-success'>" . $val . "%</span>";
+    }
+  }
+
+  public static function spanRomberg($val, $cek = false)
+  {
+    if ($val == 'N') {
+      // dd("s", $val);
+      if ($cek)
+        return true;  // Negatif
       return "<span class='text-success'>Negatif</span>";
-    } elseif ($val === '+') {
+    } elseif ($val == 'Y') {
       if ($cek)
-        return 'Y';  // Positif
+        return false;  // Positif
       return "<span class='text-danger'>Positif</span>";
     } else {
       return "<span class='text-warning'>Tidak valid</span>";
     }
   }
+
+  public static function spanAlcoholTest($val, $cek = false)
+  {
+    // Alkohol test -/+: N untuk negatif, Y untuk positif
+    if ($val == 'N') {
+      if ($cek)
+        return true;  // Negatif
+      return "<span class='text-success'>Negatif</span>";
+    } elseif ($val == 'Y') {
+      if ($cek)
+        return false;  // Positif
+      return "<span class='text-danger'>Positif</span>";
+    } else {
+      return "<span class='text-warning'>Tidak valid</span>";
+    }
+  }
+
 
 
   public static function appClasses()

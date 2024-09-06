@@ -9,6 +9,7 @@ use App\Http\Controllers\pages\MiscError;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\RegisterBasic;
 use App\Http\Controllers\BankController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\DashboardController;
@@ -139,6 +140,15 @@ Route::middleware(['auth'])->group(function () {
         Route::put('', [UnitController::class, 'update'])->name('update');
         Route::delete('/', [UnitController::class, 'delete'])->name('delete');
     });
+
+    Route::prefix('manage-company')->name('company.')->group(function () {
+        Route::get('', [CompanyController::class, 'index'])->name('index');
+        Route::get('get', [CompanyController::class, 'get'])->name('get');
+        Route::post('', [CompanyController::class, 'create'])->name('create');
+        Route::put('', [CompanyController::class, 'update'])->name('update');
+        Route::delete('/', [CompanyController::class, 'delete'])->name('delete');
+    });
+
     Route::prefix('manage-field')->name('field.')->group(function () {
         Route::get('', [FieldController::class, 'index'])->name('index');
         Route::get('get', [FieldController::class, 'get'])->name('get');

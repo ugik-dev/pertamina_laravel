@@ -174,10 +174,6 @@
                                 </div>
                             </div>
                             <hr>
-                            {{-- <div class="col-lg-4 p-4">
-                                <label for="romberg" class="col-sm-6 col-form-label">Romberg Test</label>
-                            </div> --}}
-
                             <div class="col-lg-4">
                                 <div class="form-group row">
                                     <label for="romberg" class="col-sm-4 col-form-label">Romberg Test</label>
@@ -206,38 +202,34 @@
 
                                         </div>
                                     </div>
-                                    {{--
-
-                                    <div class="col-sm-6">
-                                        <div class="input-group">
-                                            <input id="romberg" name="romberg" class="form-control">
-                                            <span class="input-group-text">-</span>
-                                        </div>
-                                    </div>
-
-                                     --}}
-                                    {{-- <div class="col-sm-12">
-                                        <div class="input-group">
-                                            <label class="switch switch-success">
-                                                <input type="checkbox" class="switch-input" checked="">
-                                                <span class="switch-label">Negatif</span>
-                                                <span class="switch-toggle-slider">
-                                                    <span class="switch-on"></span>
-                                                    <span class="switch-off"></span>
-                                                </span>
-                                                <span class="switch-label">Positif</span>
-                                            </label>
-                                        </div>
-                                    </div> --}}
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group row">
-                                    <label for="alcohol" class="col-sm-6 col-form-label">Alcohol Test</label>
+                                    <label for="alcohol" class="col-sm-4 col-form-label">Alcohol Test</label>
                                     <div class="col-sm-6">
-                                        <div class="input-group">
-                                            <input id="alcohol" name="alcohol" class="form-control">
-                                            <span class="input-group-text">-</span>
+                                        <div class="input-group switches-stacked">
+                                            <div class=" ">
+                                                <label class="switch switch-success me-1">
+                                                    <input type="radio" class="switch-input" id="alcoholN"
+                                                        name="alcohol" value="N">
+                                                    <span class="switch-toggle-slider">
+                                                        <span class="switch-on"></span>
+                                                        <span class="switch-off"></span>
+                                                    </span>
+                                                    <span class="switch-label">Negatif</span>
+                                                </label>
+                                                <label class="switch switch-danger">
+                                                    <input type="radio" id="alcoholY" class="switch-input"
+                                                        name="alcohol" value="Y">
+                                                    <span class="switch-toggle-slider">
+                                                        <span class="switch-on"></span>
+                                                        <span class="switch-off"></span>
+                                                    </span>
+                                                    <span class="switch-label">Positif</span>
+                                                </label>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -291,7 +283,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"
         integrity="sha512-r6rDA7W6ZeQhvl8S7yRVQUKVHdexq+GAlNkNNqVC7YyIV+NwqCTJe2hDWCiffTyRNOeGEzRRJ9ifvRm/HCzGYg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    {{-- <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script> --}}
     <script>
         $(document).ready(function() {
             var ScreeningForm = {
@@ -306,8 +298,10 @@
                 'hr': $('#form-screening').find('#hr'),
                 'rr': $('#form-screening').find('#rr'),
                 'spo2': $('#form-screening').find('#spo2'),
-                'romberg': $('#form-screening').find('#romberg'),
-                'alcohol': $('#form-screening').find('#alcohol'),
+                'rombergY': $('#form-screening').find('#rombergY'),
+                'rombergN': $('#form-screening').find('#rombergN'),
+                'alcoholY': $('#form-screening').find('#alcoholY'),
+                'alcoholN': $('#form-screening').find('#alcoholN'),
                 'alcohol_level': $('#form-screening').find('#alcohol_level'),
                 'description': $('#form-screening').find('#description'),
                 'anamnesis': $('#form-screening').find('#anamnesis'),
@@ -324,7 +318,7 @@
                     html5QrcodeScanner.render(onScanSuccess, onScanFailure);
                 }, 5000);
             }
-            scanProcess('d3286f12-a0ab-45a7-aba9-11b7e15f4723')
+            // scanProcess('d3286f12-a0ab-45a7-aba9-11b7e15f4723')
 
             function scanProcess(decodedResult) {
                 url = '{{ url('screening/scan') }}/' + decodedResult;
@@ -511,8 +505,8 @@
                         name: "sistole_span"
                     },
                     {
-                        data: "diastole",
-                        name: "diastole"
+                        data: "diastole_span",
+                        name: "diastole_span"
                     }, {
                         data: "hr_span",
                         name: "hr_span"
@@ -520,18 +514,18 @@
                         data: "temp_span",
                         name: "temp_span"
                     }, {
-                        data: "rr",
+                        data: "rr_span",
                         name: "rr"
                     }, {
-                        data: "spo2",
+                        data: "spo2_span",
                         name: "spo2"
                     },
                     {
-                        data: "romberg",
+                        data: "romberg_span",
                         name: "romberg"
                     },
                     {
-                        data: "alcohol",
+                        data: "alcohol_span",
                         name: "alcohol"
                     },
                     {
@@ -551,36 +545,36 @@
             });
 
 
-            var currenPickOff = null;
-            Pusher.logToConsole = true;
+            // var currenPickOff = null;
+            // Pusher.logToConsole = true;
 
-            var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
-                cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
-            });
-
-
-            var channel = pusher.subscribe('emergency-channel');
-            channel.bind('emergency-event', function(data) {
-                // alert(JSON.stringify(data));
-                newData(data)
-            });
-
-            var audio = new Audio('/assets/sound/siren1.mp3');
-            audio.load();
+            // var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+            //     cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
+            // });
 
 
-            // Function to pause the audio
-            function pauseAudio() {
-                audio.pause();
-            }
-            // Optional: You can also add a stop button to completely stop the audio
+            // var channel = pusher.subscribe('emergency-channel');
+            // channel.bind('emergency-event', function(data) {
+            //     // alert(JSON.stringify(data));
+            //     newData(data)
+            // });
+
+            // var audio = new Audio('/assets/sound/siren1.mp3');
+            // audio.load();
 
 
-            // Function to stop the audio
-            function stopAudio() {
-                audio.pause();
-                audio.currentTime = 0; // Reset the audio to the beginning
-            }
+            // // Function to pause the audio
+            // function pauseAudio() {
+            //     audio.pause();
+            // }
+            // // Optional: You can also add a stop button to completely stop the audio
+
+
+            // // Function to stop the audio
+            // function stopAudio() {
+            //     audio.pause();
+            //     audio.currentTime = 0; // Reset the audio to the beginning
+            // }
 
             DataTable.on("click", ".editBtn", function() {
                 var currentId = $(this).data('id');
@@ -595,8 +589,18 @@
                 ScreeningForm.hr.val(rowData["hr"])
                 ScreeningForm.rr.val(rowData["rr"])
                 ScreeningForm.spo2.val(rowData["spo2"])
-                ScreeningForm.romberg.val(rowData["romberg"])
-                ScreeningForm.alcohol.val(rowData["alcohol"])
+                // ScreeningForm.romberg.val(rowData["romberg"])
+                // console.log(ScreeningForm.rombergY)
+                if (rowData["romberg"] == "Y") {
+                    ScreeningForm.rombergY.prop('checked', true);
+                } else if (rowData["romberg"] == "N") {
+                    ScreeningForm.rombergN.prop('checked', true);
+                }
+                if (rowData["alcohol"] == "Y") {
+                    ScreeningForm.alcoholY.prop('checked', true);
+                } else if (rowData["alcohol"] == "N") {
+                    ScreeningForm.alcoholN.prop('checked', true);
+                }
                 ScreeningForm.alcohol_level.val(rowData["alcohol_level"])
                 ScreeningForm.anamnesis.val(rowData["anamnesis"])
                 ScreeningForm.description.val(rowData["description"])

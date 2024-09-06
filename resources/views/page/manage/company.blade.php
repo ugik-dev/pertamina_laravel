@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Manage Agent')
+@section('title', 'DataTables - Tables')
 
 @section('vendor-style')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}">
@@ -27,21 +27,9 @@
     <script src="{{ asset('assets/vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js') }}"></script>
 @endsection
 
-@section('page-script')
-    <script>
-        (function() {
-            'use strict'
-
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-
-        })()
-    </script>
-    {{-- <script src="{{ asset('assets/js/form-validation.js') }}"></script> --}}
-@endsection
-
 @section('content')
     <h4 class="py-3 mb-4">
-        <span class="text-muted fw-light">Manage /</span> User
+        <span class="text-muted fw-light">Manage /</span> PT/PJP
     </h4>
     @csrf
     <!-- DataTable with Buttons -->
@@ -52,10 +40,9 @@
                     <tr>
                         <th class="padat">No</th>
                         <th wlass="padat">Aksi</th>
+                        <th>Category</th>
                         <th>Nama</th>
-                        <th>Unit</th>
-                        <th>Bidang Kerja</th>
-                        <th>Role</th>
+                        <th>Address</th>
                         <th>Telpon</th>
                         <th>Email</th>
                     </tr>
@@ -66,77 +53,46 @@
     <!-- Modal to add new record -->
     <div class="offcanvas offcanvas-end" id="add-new-record" style="width : 700px !important">
         <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title" id="exampleModalLabel">Form Fasilitas Kesehatan</h5>
+            <h5 class="offcanvas-title" id="exampleModalLabel">Form PT/PJP</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body flex-grow-1">
-            <form class="needs-validation add-new-record pt-0 row g-3" id="form-user" novalidate>
+            <form class="add-new-record pt-0 row g-3" id="form-company" onsubmit="return false">
                 @csrf
-                <input type="text" id="id" hidden name="id" />
+                <input type="text" id="id" class="" name="id" />
                 <div class="col-sm-12">
-                    <label for="basicFullname">Nama :</label>
+                    <label for="basicFullname">Nama PT/PJP :</label>
                     <div class="input-group input-group-merge">
                         <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
                         <input type="text" id="name" class="form-control dt-full-name" name="name" placeholder=""
-                            aria-label="" aria-describedby="basicFullname2" required />
+                            aria-label="" aria-describedby="basicFullname2" />
                     </div>
                 </div>
                 <div class="col-sm-12">
-                    <label for="basicSalary">PT/PJP :</label>
+                    <label for="basicFullname">Kategory:</label>
                     <div class="input-group input-group-merge">
-                        <span id="basicSalary2" class="input-group-text"><i class='mdi mdi-account-outline'></i></span>
-                        <div class="form-floating form-floating-outline">
-                            <select id="company_id" name="company_id" class="form-control" required>
-                                <option value="">--</option>
-                                @foreach ($dataContent['refCompany'] as $company)
-                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicSalary">Lokasi Kerja :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicSalary2" class="input-group-text"><i class='mdi mdi-account-outline'></i></span>
-                        <div class="form-floating form-floating-outline">
-                            <select id="unit_id" name="unit_id" class="form-control" required>
-                                <option value="">--</option>
-                                @foreach ($dataContent['refUnit'] as $unit)
-                                    <option value="{{ $unit->id }}">{{ $unit->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicSalary">Bidang Kerja :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicSalary2" class="input-group-text"><i class='mdi mdi-account-outline'></i></span>
-                        <div class="form-floating form-floating-outline">
-                            <select id="field_work_id" name="field_work_id" class="form-control" required>
-                                <option value="">--</option>
-                                @foreach ($dataContent['refField'] as $field)
-                                    <option value="{{ $field->id }}">{{ $field->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
+                        <select type="text" id="category" class="form-control dt-full-name" name="category" required>
+                            <option value="">-</option>
+                            <option value="internal">Internal</option>
+                            <option value="external">External</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-sm-12">
                     <label for="basicFullname">Alamat :</label>
                     <div class="input-group input-group-merge">
                         <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="alamat" class="form-control dt-full-name" name="alamat"
-                            placeholder="" aria-label="" aria-describedby="basicFullname2" />
+                        <input type="text" id="address" class="form-control dt-full-name" name="address" placeholder=""
+                            aria-label="" aria-describedby="basicFullname2" />
                     </div>
                 </div>
                 <div class="col-sm-12">
                     <label for="basicFullname">Telepon :</label>
                     <div class="input-group input-group-merge">
                         <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="phone" class="form-control dt-full-name" name="phone"
-                            placeholder="" aria-label="" aria-describedby="basicFullname2" />
+                        <input type="text" id="phone" class="form-control dt-full-name" name="phone" placeholder=""
+                            aria-label="" aria-describedby="basicFullname2" />
                     </div>
                 </div>
                 <div class="col-sm-12">
@@ -148,59 +104,10 @@
                     </div>
                 </div>
                 <div class="col-sm-12">
-                    <label for="basicFullname">QRCode :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="qrcode" class="form-control dt-full-name" name="qrcode"
-                            placeholder="" aria-label="" aria-describedby="basicFullname2" required readonly />
-                    </div>
-                </div>
-                <div class="col-sm-12 row mt-2 mb-2">
-                    <div class="col-sm-4"> <a class="btn btn-info text-white" id="create_qr">Scan QR</a></div>
-                    <div class="col-sm-7">
-                        <div id="reader" class="mr-3 ml-3 w-80" style="margin:0 auto;"></div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicSalary">Role :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicSalary2" class="input-group-text"><i class='mdi mdi-account-outline'></i></span>
-                        <div class="form-floating form-floating-outline">
-                            <select id="role_id" name="role_id" class="form-control" required>
-                                <option value="">--</option>
-                                @foreach ($dataContent['refRole'] as $rd)
-                                    <option value="{{ $rd->id }}">{{ $rd->title }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicFullname">Username :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="username" class="form-control dt-full-name" pattern="[a-z0-9]+"
-                            name="username" placeholder="" aria-label="" aria-describedby="basicFullname2" required />
-                        <div class="invalid-feedback">
-                            Masukkan username hanya menggunakan huruf kecil dan angka, tanpa spasi dan karakter spesial
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-12">
-                    <label for="basicFullname">Password <small id="span_cp">*kosongkan jika tidak
-                            diganti</small>:</label>
-                    <div class="input-group input-group-merge">
-                        <span class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="password" id="password" class="form-control" name="password" placeholder=""
-                            required />
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <button type="submit" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="insertBtn"
-                        data-metod="ins">Tambah</button>
-                    <button type="submit" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="updateBtn"
-                        data-act="upd">Simpan Perubahan</button>
+                    <a type="" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="insertBtn"
+                        data-metod="ins">Tambah</a>
+                    <a type="" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="updateBtn"
+                        data-act="upd">Simpan Perubahan</a>
                     <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
                 </div>
             </form>
@@ -210,14 +117,14 @@
 
 @endsection
 
+
+
 @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"
-        integrity="sha512-r6rDA7W6ZeQhvl8S7yRVQUKVHdexq+GAlNkNNqVC7YyIV+NwqCTJe2hDWCiffTyRNOeGEzRRJ9ifvRm/HCzGYg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(document).ready(function() {
+            // testJS();
+            // let map;
 
-            var html5QrcodeScanner = false;
             var toolbar = {
                 'form': $('#toolbar_form'),
                 'id_role': $('#toolbar_form').find('#id_role'),
@@ -388,107 +295,39 @@
                         ]
                     },
                     {
-                        text: '<i class="mdi mdi-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Tambah User</span>',
+                        text: '<i class="mdi mdi-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Tambah Company</span>',
                         className: 'create-new btn btn-primary me-2'
                     },
                 ],
 
             });
-            $('div.head-label').html('<h5 class="card-title mb-0">Data Agent</h5>')
+            $('div.head-label').html('<h5 class="card-title mb-0">Data Company</h5>')
 
-            var UserForm = {
-                'form': $('#form-user'),
-                'insertBtn': $('#form-user').find('#insertBtn'),
-                'updateBtn': $('#form-user').find('#updateBtn'),
-                'id': $('#form-user').find('#id'),
-                'name': $('#form-user').find('#name'),
-                'role_id': $('#form-user').find('#role_id'),
-                'unit_id': $('#form-user').find('#unit_id'),
-                'company_id': $('#form-user').find('#company_id'),
-                'field_work_id': $('#form-user').find('#field_work_id'),
-                'alamat': $('#form-user').find('#alamat'),
-                'password': $('#form-user').find('#password'),
-                'span_cp': $('#form-user').find('#span_cp'),
-                'phone': $('#form-user').find('#phone'),
-                'email': $('#form-user').find('#email'),
-                'long': $('#form-user').find('#long'),
-                'lat': $('#form-user').find('#lat'),
-                'username': $('#form-user').find('#username'),
-                'create_qr': $('#form-user').find('#create_qr'),
-                'qrcode': $('#form-user').find('#qrcode'),
+            var CompanyForm = {
+                'form': $('#form-company'),
+                'insertBtn': $('#form-company').find('#insertBtn'),
+                'updateBtn': $('#form-company').find('#updateBtn'),
+                'id': $('#form-company').find('#id'),
+                'name': $('#form-company').find('#name'),
+                'address': $('#form-company').find('#address'),
+                'phone': $('#form-company').find('#phone'),
+                'email': $('#form-company').find('#email'),
+                'category': $('#form-company').find('#category'),
             }
 
-            UserForm.role_id.on("change", function() {
-                if (UserForm.role_id.val() == 5) {
-                    console.log("disable pass")
-                    UserForm.password.prop('required', false);
-                    UserForm.password.prop('disabled', true);
-                    UserForm.username.prop('required', false);
-                    UserForm.username.prop('disabled', true);
-                } else {
-                    UserForm.password.prop('required', true);
-                    UserForm.password.prop('disabled', false);
-                    UserForm.username.prop('required', true);
-                    UserForm.username.prop('disabled', false);
-                }
-            })
-
-            function onScanSuccess(decodedText, decodedResult) {
-                console.log(`Code matched = ${decodedText}`, decodedResult);
-                console.log(decodedText)
-                UserForm.qrcode.val(decodedText)
-                console.log("try destroy");
-                html5QrcodeScanner.clear().then(() => {
-                    console.error("Success to clear QR code scanner");
-                }).catch(error => {
-                    console.error("Failed to clear QR code scanner:", error);
-                });
-
-                // scanProcess(decodedText)
-            }
-            // scanProcess('d3286f12-a0ab-45a7-aba9-11b7e15f4723')
-
-            function scanProcess(decodedResult) {
-                // swalLoading();
-                // UserForm.qrcode.val(decodedResult)
-
-
-            }
-
-            function onScanFailure(error) {
-
-            }
-
-
-            UserForm.create_qr.on("click", function() {
-                html5QrcodeScanner = new Html5QrcodeScanner(
-                    "reader", {
-                        fps: 10,
-                        qrbox: {
-                            width: 250,
-                            height: 250
-                        }
-                    },
-                    /* verbose= */
-                    false);
-                html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-            })
-
-
-
-            var dataUser = {}
+            var dataCompany = {}
 
             swalLoading();
             $.when(
-                getAllUser(), ).then((e) => {
+                getAllCompany(), ).then((e) => {
                 Swal.close();
             }).fail((e) => {
                 console.log(e)
             });
 
-            function getAllUser() {
+            function getAllCompany() {
                 return $.ajax({
-                    url: `{{ route('agent.get') }}`,
+                    url: `{{ route('company.get') }}`,
                     'type': 'get',
                     data: toolbar.form.serialize(),
                     success: function(data) {
@@ -497,14 +336,14 @@
                         if (data['error']) {
                             return;
                         }
-                        dataUser = data['data'];
-                        renderUser(dataUser);
+                        dataCompany = data['data'];
+                        renderCompany(dataCompany);
                     },
                     error: function(e) {}
                 });
             }
 
-            function renderUser(data) {
+            function renderCompany(data) {
                 console.log(data)
                 if (data == null || typeof data != "object") {
                     console.log("User::UNKNOWN DATA");
@@ -523,79 +362,47 @@
                         '</ul>' +
                         '</div>' +
                         `<a href="<?= url('info-desa/sub-wilayah') ?>/${user['id']}" title="Lihat Detail" class="btn btn-sm btn-text-secondary rounded-pill btn-icon item-edit"><i class="mdi mdi-eye-outline" ></i></a>`;
-                    renderData.push([user['id'], button, user['name'],
-                        user['unit']['name'], user['field_work'] != null ? user['field_work'][
-                            'name'
-                        ] : "", user['role_title'],
-                        user['phone'], user['email'],
-
+                    renderData.push([user['id'], button, capitalizeFirstLetter(user['category']), user[
+                            'name'],
+                        user['address'],
+                        user['phone'], user['email']
                     ]);
                 });
                 FDataTable.clear().rows.add(renderData).draw('full-hold');
             }
 
+
             $('.create-new').on('click', function() {
-                UserForm.form.trigger('reset')
-                // var $newOption4 = $("<option selected='selected'></option>").val('').text("--");
-                // UserForm.user_id.append($newOption4).trigger('change');
-                UserForm.updateBtn.attr('style', 'display: none !important');
-                UserForm.span_cp.hide();
-                UserForm.insertBtn.attr('style', 'display: ""');
-                UserForm.password.prop('required', true);
-                UserForm.role_id.trigger('change');
+                CompanyForm.form.trigger('reset')
+                CompanyForm.updateBtn.attr('style', 'display: none !important');
+                CompanyForm.insertBtn.attr('style', 'display: ""');
                 offCanvasEl.show();
             })
 
             FDataTable.on('click', '.edit', function() {
-                var currentData = dataUser[$(this).data('id')];
-                UserForm.form.trigger('reset')
-                UserForm.insertBtn.attr('style', 'display: none !important');
-                UserForm.updateBtn.attr('style', 'display: ""');
-                UserForm.password.prop('required', false);
+                var currentData = dataCompany[$(this).data('id')];
+                CompanyForm.form.trigger('reset')
+                CompanyForm.insertBtn.attr('style', 'display: none !important');
+                CompanyForm.updateBtn.attr('style', 'display: ""');
                 offCanvasEl.show();
-                UserForm.span_cp.show();
-                UserForm.id.val(currentData['id']);
-                UserForm.name.val(currentData['name']);
-                UserForm.alamat.val(currentData['alamat']);
-                UserForm.unit_id.val(currentData['unit_id']).trigger("change");
-                UserForm.field_work_id.val(currentData['field_work_id']).trigger("change");
-                UserForm.company_id.val(currentData['company_id']).trigger("change");
-                UserForm.qrcode.val(currentData['qrcode']);
-                UserForm.role_id.val(currentData['role_id']);
-                UserForm.email.val(currentData['email']);
-                UserForm.username.val(currentData['username']);
-                UserForm.phone.val(currentData['phone']);
-                UserForm.role_id.trigger('change');
+                CompanyForm.id.val(currentData['id']);
+                CompanyForm.name.val(currentData['name']);
+                CompanyForm.category.val(currentData['category']).trigger("change");
+                CompanyForm.address.val(currentData['address']);
+                CompanyForm.phone.val(currentData['phone']);
+                CompanyForm.email.val(currentData['email']);
             });
 
-            var userForm = document.getElementById('form-user');
-
-
-            function validasi_form(event) {
-                if (!userForm.checkValidity()) {
-                    console.log(' not acc')
-                    validation_form = false;
-                    event.preventDefault();
-                    event.stopPropagation();
-                    userForm.classList.add('was-validated');
-                    return false;
-                } else {
-                    userForm.classList.add('was-validated');
-                    return true;
-                }
-            }
-            UserForm.form.on('submit', function(event) {
+            CompanyForm.insertBtn.on('click', () => {
                 event.preventDefault();
-                if (!validasi_form(event)) {
-                    return
-                };
-                if (UserForm.insertBtn.is(":visible")) {
-                    url = '{{ route('agent.create') }}';
-                    metode = 'POST';
-                } else {
-                    url = '{{ route('agent.update') }}';
-                    metode = 'PUT';
-                }
+                submit_form('{{ route('company.create') }}', 'POST');
+            });
+            CompanyForm.updateBtn.on('click', () => {
+                event.preventDefault();
+                submit_form('{{ route('company.update') }}', 'PUT');
+            });
+
+            function submit_form(url, metode) {
                 Swal.fire(SwalOpt()).then((result) => {
                     if (!result.isConfirmed) {
                         return;
@@ -604,23 +411,23 @@
                     $.ajax({
                         url: url,
                         'type': metode,
-                        data: UserForm.form.serialize(),
+                        data: CompanyForm.form.serialize(),
                         success: function(data) {
                             if (data['error']) {
                                 swalError(data['message'], "Simpan Gagal !!");
                                 return;
                             }
                             var user = data['data']
-                            dataUser[user['id']] = user;
+                            dataCompany[user['id']] = user;
                             swalBerhasil();
                             offCanvasEl.hide();
-                            renderUser(dataUser);
-                            // UserForm.self.modal('hide');
+                            renderCompany(dataCompany);
+                            // CompanyForm.self.modal('hide');
                         },
                         error: function(e) {}
                     });
                 });
-            });
+            };
 
             FDataTable.on('click', '.delete', function() {
                 event.preventDefault();
@@ -631,7 +438,7 @@
                         return;
                     }
                     $.ajax({
-                        url: "<?= route('agent.delete') ?>/",
+                        url: "<?= route('company.delete') ?>/",
                         'type': 'DELETE',
                         data: {
                             '_token': token,
@@ -642,14 +449,16 @@
                                 swalError(data['message'], "Simpan Gagal !!");
                                 return;
                             }
-                            delete dataUser[id];
+                            delete dataCompany[id];
                             swalBerhasil('Data berhasil di Hapus');
-                            renderUser(dataUser);
+                            renderCompany(dataCompany);
                         },
                         error: function(e) {}
                     });
                 });
             });
+
+
 
         });
     </script>

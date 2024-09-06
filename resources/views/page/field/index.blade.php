@@ -29,7 +29,7 @@
 
 @section('content')
     <h4 class="py-3 mb-4">
-        <span class="text-muted fw-light">Manage /</span> Lokasi Kerja
+        <span class="text-muted fw-light">Manage /</span> Kategori Kerja
     </h4>
     @csrf
     <!-- DataTable with Buttons -->
@@ -50,7 +50,7 @@
     <!-- Modal to add new record -->
     <div class="offcanvas offcanvas-end" id="add-new-record" style="width : 700px !important">
         <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title" id="exampleModalLabel">Form Lokasi Kerja</h5>
+            <h5 class="offcanvas-title" id="exampleModalLabel">Form Kategori Kerja</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body flex-grow-1">
@@ -58,7 +58,7 @@
                 @csrf
                 <input type="text" id="id" class="" name="id" hidden />
                 <div class="col-sm-12">
-                    <label for="basicFullname">Nama Lokasi Kerja :</label>
+                    <label for="basicFullname">Nama Kategori Kerja :</label>
                     <div class="input-group input-group-merge">
                         <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
                         <input type="text" id="name" class="form-control dt-full-name" name="name" placeholder=""
@@ -84,20 +84,14 @@
                     <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
                 </div>
             </form>
-
         </div>
     </div>
 
 @endsection
 
-
-
 @push('scripts')
     <script>
         $(document).ready(function() {
-            // testJS();
-            // let map;
-
             var toolbar = {
                 'form': $('#toolbar_form'),
                 'id_role': $('#toolbar_form').find('#id_role'),
