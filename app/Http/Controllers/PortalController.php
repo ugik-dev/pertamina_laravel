@@ -6,6 +6,7 @@ use App\Models\Bank;
 use App\Models\Content;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Exception;
 
 class PortalController extends Controller
 {
@@ -28,11 +29,31 @@ class PortalController extends Controller
     public function bank_data()
     {
         $pageConfigs = ['myLayout' => 'horizontal'];
-        $contents = Bank::with('owner', 'ref_bank')->get();
-        // dd($contents);
+        $contents = Bank::with('owner', 'ref_bank')->whereNull('user_id')->get();
         return view('content.pages.page-bank-data', compact('pageConfigs', 'contents'));
     }
 
+    public function mcu()
+    {
+        $pageConfigs = ['myLayout' => 'horizontal'];
+        return view('content.pages.page-mcu', compact('pageConfigs'));
+    }
+
+    public function get_mcu(Request $request, $code)
+    {
+        try {
+            // $query =  Bank::with(['ref_bank', 'owner']);
+            $user = User::with('mcu')->where('qrcode', $code)->firstOrFail();
+
+            // if (!empty($request->id)) $query->where('id', '=', $request->id);
+            // $res = $query->get()->toArray();
+            // $data =   DataStructure::keyValueObj($res, 'id');
+
+            return $this->responseSuccess($user);
+        } catch (Exception $ex) {
+            return  $this->ResponseError($ex->getMessage());
+        }
+    }
 
     public function home()
     {

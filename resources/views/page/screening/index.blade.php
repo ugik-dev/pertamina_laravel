@@ -174,15 +174,61 @@
                                 </div>
                             </div>
                             <hr>
+                            {{-- <div class="col-lg-4 p-4">
+                                <label for="romberg" class="col-sm-6 col-form-label">Romberg Test</label>
+                            </div> --}}
+
                             <div class="col-lg-4">
                                 <div class="form-group row">
-                                    <label for="romberg" class="col-sm-6 col-form-label">Romberg Test</label>
+                                    <label for="romberg" class="col-sm-4 col-form-label">Romberg Test</label>
+                                    <div class="col-sm-6">
+                                        <div class="input-group switches-stacked">
+                                            <div class=" ">
+                                                <label class="switch switch-success me-1">
+                                                    <input type="radio" class="switch-input" id="rombergN"
+                                                        name="romberg" value="N">
+                                                    <span class="switch-toggle-slider">
+                                                        <span class="switch-on"></span>
+                                                        <span class="switch-off"></span>
+                                                    </span>
+                                                    <span class="switch-label">Negatif</span>
+                                                </label>
+                                                <label class="switch switch-danger">
+                                                    <input type="radio" id="rombergY" class="switch-input"
+                                                        name="romberg" value="Y">
+                                                    <span class="switch-toggle-slider">
+                                                        <span class="switch-on"></span>
+                                                        <span class="switch-off"></span>
+                                                    </span>
+                                                    <span class="switch-label">Positif</span>
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    {{--
+
                                     <div class="col-sm-6">
                                         <div class="input-group">
                                             <input id="romberg" name="romberg" class="form-control">
                                             <span class="input-group-text">-</span>
                                         </div>
                                     </div>
+
+                                     --}}
+                                    {{-- <div class="col-sm-12">
+                                        <div class="input-group">
+                                            <label class="switch switch-success">
+                                                <input type="checkbox" class="switch-input" checked="">
+                                                <span class="switch-label">Negatif</span>
+                                                <span class="switch-toggle-slider">
+                                                    <span class="switch-on"></span>
+                                                    <span class="switch-off"></span>
+                                                </span>
+                                                <span class="switch-label">Positif</span>
+                                            </label>
+                                        </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             <div class="col-lg-4">
@@ -278,7 +324,7 @@
                     html5QrcodeScanner.render(onScanSuccess, onScanFailure);
                 }, 5000);
             }
-            // scanProcess('d3286f12-a0ab-45a7-aba9-11b7e15f4723')
+            scanProcess('d3286f12-a0ab-45a7-aba9-11b7e15f4723')
 
             function scanProcess(decodedResult) {
                 url = '{{ url('screening/scan') }}/' + decodedResult;
@@ -625,9 +671,9 @@
             }
             ScreeningForm.form.on('submit', function(event) {
                 event.preventDefault();
-                if (!validasi_form(event)) {
-                    return
-                };
+                // if (!validasi_form(event)) {
+                //     return
+                // };
                 if (ScreeningForm.insertBtn.is(":visible")) {
                     url = '{{ route('screening.create') }}';
                     metode = 'POST';

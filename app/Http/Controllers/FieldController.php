@@ -52,6 +52,7 @@ class FieldController extends Controller
         try {
             $att = [
                 'name' => $request->name,
+                'high_risk' => $request->high_risk,
 
             ];
             $data = Field::create($att);
@@ -81,6 +82,7 @@ class FieldController extends Controller
 
             $data->update([
                 'name' => $request->name,
+                'high_risk' => $request->high_risk,
             ]);
 
             return  $this->responseSuccess($data);

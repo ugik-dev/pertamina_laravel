@@ -71,6 +71,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Screening::class);
     }
+    public function mcu()
+    {
+        return $this->hasMany(Bank::class, 'user_id', 'id')->with('ref_bank')->where('ref_bank_id', 1);
+
+        // return $this->hasMany(Bank::class); // where bank.ref_bank_id = 1 relasi dari user.id bank.user_id
+    }
     public function unit()
     {
         return $this->belongsTo(Unit::class, 'unit_id');

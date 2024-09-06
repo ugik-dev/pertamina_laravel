@@ -42,6 +42,7 @@ Route::get('/home', [PortalController::class, 'home'])->name('home');
 Route::get('/scan-fitality', [PortalController::class, 'scan_fit'])->name('portal.scan-fit');
 Route::get('/info/content', [PortalController::class, 'content']);
 Route::get('bank-data', [PortalController::class, 'bank_data'])->name('bank_data');
+Route::get('get-mcu/{code}', [PortalController::class, 'get_mcu'])->name('get-mcu');
 Route::get('mcu', [PortalController::class, 'mcu'])->name('mcu');
 Route::get('content/show/{slug}', [ContentController::class, 'show'])->name('content.show');
 

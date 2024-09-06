@@ -212,18 +212,12 @@
             }
 
             function onScanSuccess(decodedText, decodedResult) {
-                // Panggil fungsi scanProcess setelah berhasil scan
-                scanProcess(decodedText);
-
-                // Beri jeda waktu 5 detik sebelum melanjutkan pemindaian lagi
                 html5QrcodeScanner.clear(); // Hentikan sementara pemindaian
+                scanProcess(decodedText);
                 setTimeout(() => {
-                    // Lanjutkan pemindaian setelah 5 detik
                     html5QrcodeScanner.render(onScanSuccess, onScanFailure);
                 }, 5000); // 5000 milidetik = 5 detik
             }
-
-            // scanProcess("d3286f12-a0ab-45a7-aba9-11b7e15f4723")
 
             function scanProcess(decodedResult) {
                 swalLoading();

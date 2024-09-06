@@ -12,5 +12,6 @@ class Field extends Model
 
     protected $fillable = [
         'name',
+        'high_risk'
     ];
 }

@@ -106,15 +106,16 @@
                     </a>
                 </li>
                 <li class="menu-item ">
-                    <a href="{{ route('unit.index') }}" class="menu-link">
-                        <div>PT / PJP</div>
+                    <a href="{{ route('field.index') }}" class="menu-link">
+                        <div>Lokasi Kerja</div>
                     </a>
                 </li>
                 <li class="menu-item ">
-                    <a href="{{ route('field.index') }}" class="menu-link">
-                        <div>Bidang Kerja</div>
+                    <a href="{{ route('unit.index') }}" class="menu-link">
+                        <div>PT/PJP</div>
                     </a>
                 </li>
+
             </ul>
         </li>
 

@@ -29,7 +29,7 @@
 
 @section('content')
     <h4 class="py-3 mb-4">
-        <span class="text-muted fw-light">Manage /</span> Bidang Kerja
+        <span class="text-muted fw-light">Manage /</span> Lokasi Kerja
     </h4>
     @csrf
     <!-- DataTable with Buttons -->
@@ -41,6 +41,7 @@
                         <th class="padat">No</th>
                         <th wlass="padat">Aksi</th>
                         <th>Nama</th>
+                        <th>High Risk</th>
                     </tr>
                 </thead>
             </table>
@@ -49,7 +50,7 @@
     <!-- Modal to add new record -->
     <div class="offcanvas offcanvas-end" id="add-new-record" style="width : 700px !important">
         <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title" id="exampleModalLabel">Form Bidang Kerja</h5>
+            <h5 class="offcanvas-title" id="exampleModalLabel">Form Lokasi Kerja</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body flex-grow-1">
@@ -57,11 +58,22 @@
                 @csrf
                 <input type="text" id="id" class="" name="id" hidden />
                 <div class="col-sm-12">
-                    <label for="basicFullname">Nama PT/PJP :</label>
+                    <label for="basicFullname">Nama Lokasi Kerja :</label>
                     <div class="input-group input-group-merge">
                         <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
                         <input type="text" id="name" class="form-control dt-full-name" name="name" placeholder=""
                             aria-label="" aria-describedby="basicFullname2" />
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <label for="basicFullname">High Risk :</label>
+                    <div class="input-group input-group-merge">
+                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
+                        <select id="high_risk" class="form-control dt-full-name" name="high_risk" required>
+                            <option value="-"></option>
+                            <option value="Y">Ya</option>
+                            <option value="N">Tidak</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-sm-12">
@@ -318,7 +330,8 @@
                         `<li><a class="delete dropdown-item text-danger" data-id="${user['id']}" ><i class="mdi mdi-trash-can-outline"></i> Hapus </a></li>` +
                         '</ul>' +
                         '</div>';
-                    renderData.push([user['id'], button, user['name'],
+                    renderData.push([user['id'], button, user['name'], user['high_risk'] == 'Y' ? 'YA' :
+                        '-',
 
                     ]);
                 });
@@ -341,6 +354,7 @@
                 offCanvasEl.show();
                 FieldForm.id.val(currentData['id']);
                 FieldForm.name.val(currentData['name']);
+                FieldForm.high_risk.val(currentData['high_risk']);
             });
 
             FieldForm.insertBtn.on('click', () => {

@@ -10,7 +10,8 @@ class Helpers
 
   public static function spanSistole($val, $cek = false)
   {
-    if ($val < 100 || $val > 120) {
+    // Rentang Sistole 90-140
+    if ($val < 90 || $val > 140) {
       if ($cek)
         return false;
       return "<span class='text-danger'>" . $val . "</span>";
@@ -20,9 +21,11 @@ class Helpers
       return "<span class='text-success'>" . $val . "</span>";
     }
   }
-  public static function spanTemp($val, $cek = false)
+
+  public static function spanDiastole($val, $cek = false)
   {
-    if ($val < 36 || $val > 37) {
+    // Rentang Diastole 60-100
+    if ($val < 60 || $val > 100) {
       if ($cek)
         return false;
       return "<span class='text-danger'>" . $val . "</span>";
@@ -32,9 +35,11 @@ class Helpers
       return "<span class='text-success'>" . $val . "</span>";
     }
   }
+
   public static function spanHr($val, $cek = false)
   {
-    if ($val < 59 || $val > 101) {
+    // Rentang HR 60-120
+    if ($val < 60 || $val > 120) {
       if ($cek)
         return false;
       return "<span class='text-danger'>" . $val . "</span>";
@@ -44,6 +49,52 @@ class Helpers
       return "<span class='text-success'>" . $val . "</span>";
     }
   }
+
+  public static function spanTemp($val, $cek = false)
+  {
+    // Rentang Suhu 35-38
+    if ($val < 35 || $val > 38) {
+      if ($cek)
+        return false;
+      return "<span class='text-danger'>" . $val . "</span>";
+    } else {
+      if ($cek)
+        return true;
+      return "<span class='text-success'>" . $val . "</span>";
+    }
+  }
+
+  public static function spanRr($val, $cek = false)
+  {
+    // Rentang RR 12-24
+    if ($val < 12 || $val > 24) {
+      if ($cek)
+        return false;
+      return "<span class='text-danger'>" . $val . "</span>";
+    } else {
+      if ($cek)
+        return true;
+      return "<span class='text-success'>" . $val . "</span>";
+    }
+  }
+
+  public static function spanAlcoholTest($val, $cek = false)
+  {
+    // Alkohol test -/+: N untuk negatif, Y untuk positif
+    if ($val === '-') {
+      if ($cek)
+        return 'N';  // Negatif
+      return "<span class='text-success'>Negatif</span>";
+    } elseif ($val === '+') {
+      if ($cek)
+        return 'Y';  // Positif
+      return "<span class='text-danger'>Positif</span>";
+    } else {
+      return "<span class='text-warning'>Tidak valid</span>";
+    }
+  }
+
+
   public static function appClasses()
   {
 

@@ -29,8 +29,10 @@ return new class extends Migration
             $table->double('temp')->nullable();
             $table->double('rr')->nullable();
             $table->double('spo2')->nullable();
-            $table->double('romberg')->nullable();
-            $table->double('alcohol')->nullable();
+            // $table->double('romberg')->nullable();
+            // $table->double('alcohol')->nullable();
+            $table->enum('romberg', ['Y', 'N'])->default('N');
+            $table->enum('alcohol', ['Y', 'N'])->default('N');
             $table->double('alcohol_level')->nullable();
             $table->text('anamnesis')->nullable();
             $table->text('description')->nullable();
