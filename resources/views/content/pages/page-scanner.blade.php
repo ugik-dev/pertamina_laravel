@@ -49,7 +49,12 @@
 <script src="{{ asset('assets/js/pages-auth.js') }}"></script>
 @section('content')
     <div class="position-relative">
-        <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-wrapper authentication-basic container-p-y"
+            style="background-image: url({{ asset('assets/img/background-3.jpg') }}) !important;
+        background-position: center bottom;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;">
             <div class="authentication-inner py-4">
                 <!-- Login -->
                 <div class="card p-2">
