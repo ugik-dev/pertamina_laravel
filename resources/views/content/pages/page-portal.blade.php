@@ -17,10 +17,13 @@
 @endsection @section('content')
 
 <div class="position-relative">
-    <div class="authentication-wrapper authentication-basic container-p-y" {{-- style="background-image: url({{ asset('assets/img/background-2.jpeg') }}) !important;
-                background-position: bottom right;
-                background-repeat: no-repeat;
-                background-size: contain;" --}}>
+    <div class="authentication-wrapper authentication-basic container-p-y"
+        style="background-image: url({{ asset('assets/img/background-3.jpg') }}) !important;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;">
+
 
         <div class="authentication-inner py-4">
             <!-- Login -->
