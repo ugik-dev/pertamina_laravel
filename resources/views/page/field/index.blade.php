@@ -276,6 +276,7 @@
                 'updateBtn': $('#form-field').find('#updateBtn'),
                 'id': $('#form-field').find('#id'),
                 'name': $('#form-field').find('#name'),
+                'high_risk': $('#form-field').find('#high_risk'),
             }
 
             var dataField = {}
