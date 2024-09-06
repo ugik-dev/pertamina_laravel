@@ -41,7 +41,7 @@
 
 @section('content')
     <h4 class="py-3 mb-4">
-        <span class="text-muted fw-light">Manage /</span> Agent
+        <span class="text-muted fw-light">Manage /</span> User
     </h4>
     @csrf
     <!-- DataTable with Buttons -->
@@ -53,9 +53,9 @@
                         <th class="padat">No</th>
                         <th wlass="padat">Aksi</th>
                         <th>Nama</th>
-                        <th>Role</th>
                         <th>Unit</th>
                         <th>Bidang Kerja</th>
+                        <th>Role</th>
                         <th>Telpon</th>
                         <th>Email</th>
                     </tr>
@@ -122,7 +122,7 @@
                     <div class="input-group input-group-merge">
                         <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
                         <input type="text" id="phone" class="form-control dt-full-name" name="phone"
-                            placeholder="" aria-label="" aria-describedby="basicFullname2" required />
+                            placeholder="" aria-label="" aria-describedby="basicFullname2" />
                     </div>
                 </div>
                 <div class="col-sm-12">
@@ -130,7 +130,7 @@
                     <div class="input-group input-group-merge">
                         <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
                         <input type="text" id="email" class="form-control dt-full-name" name="email"
-                            placeholder="" aria-label="" aria-describedby="basicFullname2" required />
+                            placeholder="" aria-label="" aria-describedby="basicFullname2" />
                     </div>
                 </div>
                 <div class="col-sm-12">
@@ -508,10 +508,10 @@
                         '</ul>' +
                         '</div>' +
                         `<a href="<?= url('info-desa/sub-wilayah') ?>/${user['id']}" title="Lihat Detail" class="btn btn-sm btn-text-secondary rounded-pill btn-icon item-edit"><i class="mdi mdi-eye-outline" ></i></a>`;
-                    renderData.push([user['id'], button, user['name'], user['role_title'],
+                    renderData.push([user['id'], button, user['name'],
                         user['unit']['name'], user['field_work'] != null ? user['field_work'][
                             'name'
-                        ] : "",
+                        ] : "", user['role_title'],
                         user['phone'], user['email'],
 
                     ]);

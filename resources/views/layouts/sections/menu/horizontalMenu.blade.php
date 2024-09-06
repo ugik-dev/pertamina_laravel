@@ -29,6 +29,12 @@
                     <div>Bank Data</div>
                 </a>
             </li>
+            <li class="menu-item">
+                <a href="{{ url('mcu') }}" class="menu-link ">
+                    <i class="menu-icon tf-icons mdi mdi-folder-file-outline"></i>
+                    <div>MCU</div>
+                </a>
+            </li>
 
             {{-- <li class="menu-item">
                 <a href="{{ route('portal') }}" class="menu-link ">

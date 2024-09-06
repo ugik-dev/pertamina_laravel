@@ -69,11 +69,12 @@
                                     <div class="card-body">
                                         <div class="card-info mb-2">
                                             <strong>
-                                                <h4 class="mb-3 text-nowrap text-bold text-white">Scanner</h4>
+                                                <h4 class="mb-3 text-nowrap text-bold text-white">Scan DCU</h4>
                                             </strong>
                                         </div>
                                         <div class="d-flex align-items-end">
-                                            <h5 class="mb-0 me-2 text-white">Scan disini untuk cek status Fitality</h5>
+                                            <h5 class="mb-0 me-0 text-white">Scan disini untuk cek status daily checkup
+                                            </h5>
                                         </div>
                                     </div>
                                 </div>
@@ -87,7 +88,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-lg-12 col-sm-12">
+                {{-- <div class="col-lg-12 col-sm-12">
                     <a href="{{ route('login') }}">
                         <div class="card bg-success mb-2 ">
                             <div class="row">
@@ -112,7 +113,7 @@
                             </div>
                         </div>
                     </a>
-                </div>
+                </div> --}}
                 <div class="col-lg-12 col-sm-12">
                     <a href="{{ route('login') }}">
                         <div class="card bg-danger mb-2 ">

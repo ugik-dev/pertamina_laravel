@@ -44,7 +44,7 @@
                             <div class="col-md-6 order-2 order-md-1">
                                 <div class="card-body">
                                     <h4 class="card-title pb-xl-2">Selamat datang!🎉</h4>
-                                    <p class="mb-0">Di Sistem Informasi Pertamina Fitality</p>
+                                    <p class="mb-0">Di sistem inforasi PERTAFIT</p>
                                 </div>
                             </div>
                             <div class="col-md-6 text-center text-md-end order-1 order-md-2">
@@ -246,8 +246,7 @@
                 <a href="{{ url('content') }}" class="btn btn-primary">Baca Berita dan Informasi Lainnya</a>
             </div>
         </div>
-        <!-- Sessions line chart -->
-        <div class="col-lg-4 col-sm-6">
+        {{-- <div class="col-lg-4 col-sm-6">
             <div class="card h-100">
                 <div class="card-header pb-0">
                     <div class="d-flex align-items-end mb-1 flex-wrap gap-2">
@@ -260,11 +259,9 @@
                     <div id="sessions"></div>
                 </div>
             </div>
-        </div>
-        <!--/ Sessions line chart -->
+        </div> --}}
 
-        <!-- Total Transactions & Report Chart -->
-        <div class="col-12 col-xl-8">
+        {{-- <div class="col-12 col-xl-8">
             <div class="card h-100">
                 <div class="row">
                     <div class="col-md-7 col-12 order-2 order-md-0">
@@ -333,9 +330,7 @@
                 </div>
             </div>
         </div>
-        <!--/ Total Transactions & Report Chart -->
 
-        <!-- Performance Chart -->
         <div class="col-12 col-xl-4 col-md-6">
             <div class="card h-100">
                 <div class="card-header pb-1">
@@ -359,9 +354,7 @@
                 </div>
             </div>
         </div>
-        <!--/ Performance Chart -->
 
-        <!-- Project Statistics -->
         <div class="col-md-6 col-xl-4">
             <div class="card h-100">
                 <div class="card-header d-flex align-items-center justify-content-between">
@@ -473,9 +466,7 @@
                 </div>
             </div>
         </div>
-        <!--/ Project Statistics -->
 
-        <!-- Multiple widgets -->
         <div class="col-md-6 col-xl-4">
             <div class="row g-4">
                 <!-- Total Revenue chart -->
@@ -558,9 +549,7 @@
                 <!--/ overview Radial chart -->
             </div>
         </div>
-        <!--/ Multiple widgets -->
 
-        <!-- Sales Country Chart -->
         <div class="col-12 col-xl-4 col-md-6">
             <div class="card h-100">
                 <div class="card-header">
@@ -585,10 +574,8 @@
                 </div>
             </div>
         </div>
-        <!--/ Sales Country Chart -->
 
 
-        <!-- Top Referral Source  -->
         <div class="col-12 col-xl-8">
             <div class="card h-100">
                 <div class="card-header d-flex justify-content-between">
@@ -836,9 +823,7 @@
                 </div>
             </div>
         </div>
-        <!--/ Top Referral Source  -->
 
-        <!-- Weekly Sales Chart-->
         <div class="col-12 col-xl-4 col-md-6">
             <div class="card h-100">
                 <div class="card-header">
@@ -887,10 +872,8 @@
                 </div>
             </div>
         </div>
-        <!--/ Weekly Sales Chart-->
 
 
-        <!-- visits By Day Chart-->
         <div class="col-12 col-xl-4 col-md-6">
             <div class="card h-100">
                 <div class="card-header pb-1">
@@ -926,9 +909,7 @@
                 </div>
             </div>
         </div>
-        <!--/ visits By Day Chart-->
 
-        <!-- Activity Timeline -->
         <div class="col-12 col-xl-8">
             <div class="card h-100">
                 <div class="card-header">
@@ -999,8 +980,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
-        <!-- Activity Timeline -->
+        </div> --}}
     </div>
     <script>
         $(document).ready(function() {

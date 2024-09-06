@@ -41,7 +41,7 @@
         <li class="menu-item">
             <a href="{{ route('screening.index') }}" class="menu-link ">
                 <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
-                <div>Screening</div>
+                <div>Screening DCU</div>
             </a>
         </li>
         <li class="menu-item">
@@ -107,7 +107,7 @@
                 </li>
                 <li class="menu-item ">
                     <a href="{{ route('unit.index') }}" class="menu-link">
-                        <div>Unit</div>
+                        <div>PT / PJP</div>
                     </a>
                 </li>
                 <li class="menu-item ">
