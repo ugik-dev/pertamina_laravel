@@ -44,7 +44,7 @@
                             <div class="col-md-6 order-2 order-md-1">
                                 <div class="card-body">
                                     <h4 class="card-title pb-xl-2">Selamat datang!🎉</h4>
-                                    <p class="mb-0">Di sistem inforasi PERTAFIT</p>
+                                    <p class="mb-0">Di sistem informasi PERTAFIT</p>
                                 </div>
                             </div>
                             <div class="col-md-6 text-center text-md-end order-1 order-md-2">

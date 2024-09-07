@@ -66,7 +66,7 @@
     <!-- Modal to add new record -->
     <div class="offcanvas offcanvas-end" id="add-new-record" style="width : 700px !important">
         <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title" id="exampleModalLabel">Form Fasilitas Kesehatan</h5>
+            <h5 class="offcanvas-title" id="exampleModalLabel">Form User</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body flex-grow-1">
@@ -110,7 +110,7 @@
                     </div>
                 </div>
                 <div class="col-sm-12">
-                    <label for="basicSalary">Bidang Kerja :</label>
+                    <label for="basicSalary">Kategori Kerja :</label>
                     <div class="input-group input-group-merge">
                         <span id="basicSalary2" class="input-group-text"><i class='mdi mdi-account-outline'></i></span>
                         <div class="form-floating form-floating-outline">
