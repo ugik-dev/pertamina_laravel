@@ -82,8 +82,8 @@
                     </div>
                     <div class="modal-body">
                         @csrf
-                        <input type="text" id="id" class="" name="id" />
-                        <input type="text" id="qrcode" class="" name="qrcode" />
+                        <input type="text" id="id" class="" name="id" hidden />
+                        <input type="text" id="qrcode" class="" name="qrcode" hidden />
                         <div class="row">
                             <div class="col-lg-6 mb-2">
                                 <div class="form-group row">

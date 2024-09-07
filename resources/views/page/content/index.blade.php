@@ -57,7 +57,7 @@
         <div class="offcanvas-body flex-grow-1">
             <form class="add-new-record pt-0 row g-3" id="form-content" onsubmit="return false">
                 @csrf
-                <input type="text" id="id" class="" name="id" />
+                <input type="text" id="id" class="" name="id" hidden />
                 <div class="col-sm-12">
                     <label for="basicFullname">Judul:</label>
                     <div class="input-group input-group-merge">
