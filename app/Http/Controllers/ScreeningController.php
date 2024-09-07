@@ -59,8 +59,9 @@ class ScreeningController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data =  Screening::selectRaw('screenings.*, a.name as user_name,a.qrcode as user_qrcode, b.name doctor_name')
+            $data =  Screening::selectRaw('screenings.*, a.name as user_name,a.qrcode as user_qrcode, b.name doctor_name, f.high_risk')
                 ->join('users as a', 'a.id', '=', 'screenings.user_id')
+                ->join('field_works as f', 'a.field_work_id', '=', 'f.id')
                 ->join('users as b', 'b.id', '=', 'screenings.doctor_id')
                 ->whereDate('screenings.created_at', Carbon::today())
                 // ->whereDate('screenings.created_at', "2024-09-06")
@@ -87,10 +88,12 @@ class ScreeningController extends Controller
                 return Helpers::spanAlcoholTest($data->alcohol);
             })->addColumn('result_span', function ($data) {
                 return $data->fitality == 'Y' ? "<span class='text-success'>FIT</span>" : "<span class='text-danger'>UNFIT</span>";
+            })->addColumn('high_risk_span', function ($data) {
+                return Helpers::spanRisk($data->high_risk);
             })->addColumn('aksi', function ($data) {
                 // return '<a href="' . route('detail-screening', $data->id) . '" class="btn btn-primary">Open</a>';
                 return '<button data-id="' . $data->id . '" class="editBtn btn btn-primary"><i class="mdi mdi-pencil"></i></button>';
-            })->rawColumns(['aksi', 'sistole_span', 'diastole_span', 'hr_span', 'rr_span', 'spo2_span', 'temp_span', 'result_span', 'romberg_span', 'alcohol_span'])->make(true);
+            })->rawColumns(['aksi', 'high_risk_span', 'sistole_span', 'diastole_span', 'hr_span', 'rr_span', 'spo2_span', 'temp_span', 'result_span', 'romberg_span', 'alcohol_span'])->make(true);
         }
         return view('page.screening.index', compact('request'));
     }

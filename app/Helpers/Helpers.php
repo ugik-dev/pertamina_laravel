@@ -8,6 +8,16 @@ use Illuminate\Support\Str;
 class Helpers
 {
 
+  public static function spanRisk($val, $cek = false)
+  {
+    // Rentang Sistole 90-140
+    if ($val == "N") {
+      return "<span class='text-success'> - </span>";
+    } else {
+      return "<span class='text-danger'> HIGH RISK</span>";
+    }
+  }
+
   public static function spanSistole($val, $cek = false)
   {
     // Rentang Sistole 90-140
