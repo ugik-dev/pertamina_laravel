@@ -30,7 +30,7 @@
 
     <ul class="menu-inner py-1">
         <li class="menu-item active">
-            <a href="{{ route('dashboard') }}" class="menu-link ">
+            <a href="{{ route('dashboard') }}" class="menu-link">
                 <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
                 <div>Dashboard</div>
             </a>
@@ -41,7 +41,7 @@
         <li class="menu-item">
             <a href="{{ route('screening.index') }}" class="menu-link ">
                 <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
-                <div>Screening DCU</div>
+                <div class="">Screening DCU</div>
             </a>
         </li>
         <li class="menu-item">

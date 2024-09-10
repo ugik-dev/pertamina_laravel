@@ -5,32 +5,32 @@
 <aside id="layout-menu" class="layout-menu-horizontal menu-horizontal  menu bg-menu-theme flex-grow-0">
     <div class="{{ $containerNav }} d-flex h-100">
         <ul class="menu-inner">
-            <li class="menu-item">
-                <a href="{{ route('home') }}" class="menu-link ">
-                    <i class="menu-icon tf-icons mdi mdi-chart-arc"></i>
+            <li class="menu-item text-danger">
+                <a href="{{ route('home') }}" class="menu-link text-danger">
+                    <i class="menu-icon tf-icons mdi mdi-chart-arc "></i>
                     <div>Home</div>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="{{ route('portal') }}" class="menu-link ">
+                <a href="{{ route('portal') }}" class="menu-link text-danger">
                     <i class="menu-icon tf-icons mdi mdi-home"></i>
                     <div>Portal</div>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="{{ url('info/content') }}" class="menu-link ">
+                <a href="{{ url('info/content') }}" class="menu-link text-danger">
                     <i class="menu-icon tf-icons mdi mdi-newspaper"></i>
                     <div>Berita dan Artikel</div>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="{{ url('bank-data') }}" class="menu-link ">
+                <a href="{{ url('bank-data') }}" class="menu-link text-danger">
                     <i class="menu-icon tf-icons mdi mdi-folder-file-outline"></i>
                     <div>Bank Data</div>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="{{ url('mcu') }}" class="menu-link ">
+                <a href="{{ url('mcu') }}" class="menu-link text-danger">
                     <i class="menu-icon tf-icons mdi mdi-folder-file-outline"></i>
                     <div>MCU</div>
                 </a>

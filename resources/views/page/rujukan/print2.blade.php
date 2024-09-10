@@ -206,6 +206,18 @@
             $bulan += 12;
             $tahun--;
         }
+
+        $lorem = "
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe, hic suscipit mollitia asperiores
+                    voluptatibus tenetur eveniet ullam error fuga magni, temporibus ab dolores est ex pariatur dicta
+                    voluptas! Ab, necessitatibus!
+                    Et quo dolore aspernatur voluptas, est blanditiis sint aperiam placeat modi exercitationem nesciunt
+                    animi quia ipsa natus nulla perferendis odio corrupti vel ad tenetur recusandae earum autem quasi!
+                    Eligendi, nam!
+                    Laboriosam consequuntur facere qui quidem molestiae officia quam perferendis. Architecto quam sint, est,
+                    molestiae vero quibusdam id aliquam consectetur repellendus error veritatis esse animi voluptates
+                    voluptatibus, facere nemo aspernatur fugiat.";
+        // $lorem = '';
     @endphp
 
     <body>
@@ -290,18 +302,7 @@
                 </td>
             </tr>
             <tr style="border-bottom: 1px;">
-                @php
-                    $lorem = "
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe, hic suscipit mollitia asperiores
-                    voluptatibus tenetur eveniet ullam error fuga magni, temporibus ab dolores est ex pariatur dicta
-                    voluptas! Ab, necessitatibus!
-                    Et quo dolore aspernatur voluptas, est blanditiis sint aperiam placeat modi exercitationem nesciunt
-                    animi quia ipsa natus nulla perferendis odio corrupti vel ad tenetur recusandae earum autem quasi!
-                    Eligendi, nam!
-                    Laboriosam consequuntur facere qui quidem molestiae officia quam perferendis. Architecto quam sint, est,
-                    molestiae vero quibusdam id aliquam consectetur repellendus error veritatis esse animi voluptates
-                    voluptatibus, facere nemo aspernatur fugiat.";
-                @endphp
+
                 <td colspan="4" class="fill-remaining" style="border-bottom: 1px;">
                     <div class="table-cell">
                         <div class="table-row">
