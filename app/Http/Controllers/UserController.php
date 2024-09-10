@@ -24,6 +24,44 @@ class UserController extends Controller
         ];
         return view('page.agent.index', compact('request', 'dataContent'));
     }
+    public function select2(Request $request)
+    {
+        try {
+            // Query dengan relasi yang dibutuhkan
+            $query = User::select('id', 'name');
+            // Jika ada parameter 'id', ambil berdasarkan id
+            if (!empty($request->id)) {
+                $query->where('id', $request->id);
+            }
+
+            // Jika ada parameter 'term' (biasanya untuk pencarian), filter berdasarkan term
+            if (!empty($request->searchTerm)) {
+                $query->where('name', 'like', '%' . $request->searchTerm . '%');
+            }
+
+            // Ambil hasil query
+            $users = $query->get();
+
+            // Format data untuk Select2
+            $data = $users->map(function ($user) {
+                return [
+                    'id' => $user->id,
+                    'text' => $user->name // Ini yang akan ditampilkan di dropdown Select2
+                ];
+            });
+
+            // Mengembalikan response dalam format JSON sesuai dengan kebutuhan Select2
+            return response()->json([
+                'results' => $data
+            ]);
+        } catch (Exception $ex) {
+            // Kembalikan error jika terjadi exception
+            return response()->json([
+                'error' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
 
     public function get(Request $request)
     {

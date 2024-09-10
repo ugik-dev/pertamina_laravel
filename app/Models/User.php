@@ -81,7 +81,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Unit::class, 'unit_id');
     }
-
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id');
+    }
     public function field_work()
     {
         return $this->belongsTo(Field::class, 'field_work_id');

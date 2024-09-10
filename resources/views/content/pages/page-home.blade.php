@@ -190,7 +190,7 @@
                                     @foreach ($dataContent['internalUser'] as $internal)
                                         <tr>
                                             <td>{{ $internal->name }}</td>
-                                            <td>{{ $internal->field_work->name ?? '' }}</td>
+                                            <td>{{ $internal->field_work?->high_risk == 'Y' ? 'HIGH RISK' : '' }}</td>
                                             <td>{!! spanFitality($internal->screenings?->first() ? $internal->screenings?->first()->fitality : '') !!}
                                             </td>
                                             <td>{!! $internal->screenings?->first()

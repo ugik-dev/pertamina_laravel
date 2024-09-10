@@ -56,12 +56,12 @@
                 <div>Bank Data</div>
             </a>
         </li>
-        {{-- <li class="menu-item">
-            <a href="{{ route('emergency') }}" class="menu-link ">
+        <li class="menu-item">
+            <a href="{{ route('rujukan.index') }}" class="menu-link ">
                 <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
-                <div>Permintaan Darurat</div>
+                <div>Rujukan</div>
             </a>
-        </li> --}}
+        </li>
 
         {{-- @can('crud_users')
             <li class="menu-item">

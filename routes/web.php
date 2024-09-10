@@ -19,6 +19,7 @@ use App\Http\Controllers\LiveLocationController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\RekapController;
+use App\Http\Controllers\RujukanController;
 use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\TindakanController;
 use App\Http\Controllers\UnitController;
@@ -77,6 +78,24 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('screening')->name('screening.')->group(function () {
         Route::get('', [ScreeningController::class, 'index'])->name('index');
+        Route::get('export', [ScreeningController::class, 'export'])->name('export');
+        Route::get('rekap', [ScreeningController::class, 'rekap'])->name('rekap');
+        Route::get('get', [ScreeningController::class, 'get'])->name('get');
+        Route::get('scan/{code}', [ScreeningController::class, 'scan_process'])->name('scan_get');
+        Route::post('', [ScreeningController::class, 'create'])->name('create');
+        Route::put('', [ScreeningController::class, 'update'])->name('update');
+    });
+
+    Route::prefix('select2')->name('select2.')->group(function () {
+        Route::get('user', [UserController::class, 'select2'])->name('user');
+    });
+
+    Route::prefix('rujukan')->name('rujukan.')->group(function () {
+        Route::get('', [RujukanController::class, 'index'])->name('index');
+        Route::get('form', [RujukanController::class, 'form_fresh'])->name('form');
+        Route::post('form', [RujukanController::class, 'form_save_new_fresh'])->name('save');
+
+        Route::get('open/{id}', [PdfController::class, 'rujukan'])->name('open');
         Route::get('export', [ScreeningController::class, 'export'])->name('export');
         Route::get('rekap', [ScreeningController::class, 'rekap'])->name('rekap');
         Route::get('get', [ScreeningController::class, 'get'])->name('get');
