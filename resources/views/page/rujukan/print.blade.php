@@ -1,28 +1,57 @@
 <!DOCTYPE html>
 <html>
-    <?php
-    // $imageBinary = base64_encode($dataForm->gambar);
-    // $imageSrc = 'storage/upload/tindakan/' . $dataForm->gambar;
-    ?>
 
     <head>
-        <title>Judul</title>
-        {{-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&ampdisplay=swap"
-            rel="stylesheet"> --}}
+        <title>Print</title>
     </head>
     <style>
         /* CSS untuk memberikan margin pada tabel */
-        html {
+        html,
+        body {
             margin: 3px 10px 3px 5px;
-            padding: 3px 3px 3px 3px
+            padding: 3px 3px 3px 3px;
+            height: 100%;
         }
 
-        .no-border {
+        body {
+            font-size: 10.9px;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        table.main {
+            width: 100%;
+            height: 100vh;
+            /* height: 100%; */
+            border-collapse: collapse;
+            border: 1px solid #070707;
+            /* flex-grow: 1; */
+            flex: 1;
+        }
+
+        .signature {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: left;
+        }
+
+        .signature div {
+            display: flex;
+            gap: 8px;
+        }
+
+        table.no-border {
+            border-collapse: collapse;
+            border: none;
+        }
+
+        .no-border td,
+        .no-border th {
             border: none;
             padding-bottom: 2px;
             padding-right: 2px;
-            border-collapse: collapse;
-            /* border: 1px solid red; */
         }
 
         body {
@@ -45,14 +74,15 @@
             border-collapse: collapse;
             border: 1px solid #070707;
             /* Garis antar sel tabel */
-            padding: 0px;
+            /* padding: 0px; */
+            padding: 5px;
             /* Jarak antara isi sel dengan batas sel */
             text-align: left;
             /* Penataan teks dalam sel tabel */
         }
 
         th {
-            background-color: #f2f2f2;
+            /* background-color: #f2f2f2; */
         }
 
         .text-center {
@@ -100,16 +130,29 @@
             /* Sesuaikan posisi ini */
         }
 
+        .fill-space {
+            height: 100%;
+        }
+
+        .fill-remaining {
+            height: 100%;
+            flex-grow: 1;
+        }
+
+        .break-5 {
+            line-height: 5px;
+        }
+
         .page_break {
             page-break-before: always;
         }
     </style>
 
     <body>
-        <table style="width: 100%">
+        <table style="width: 100%" class="main">
             <tr>
-                <th width="50px" rowspan="4"> </th>
-                <th colspan=2 class="text-center" width="50%" style="font-size: 12">
+                <td width="50px" rowspan="6"> </td>
+                <td colspan=2 class="text-center" width="500px" style="font-size: 10">
                     <table class="no-border">
                         <tr class="no-border">
                             <td class="no-border">Nama Pasien</td>
@@ -127,12 +170,18 @@
                             <td class="no-border">{{ $dataForm->pasien->dob }}</td>
                         </tr>
                     </table>
+                </td>
+                <th colspan=2 rowspan="2" class="text-center" width="500px"
+                    style="font-size: 14 ;margin: 20px 0 0 0 ; padding: 10px 0 0 0 !important;"><img
+                        style="margin-left: 3px;width: 180px; " src="{{ public_path('assets/img/logo2.png') }}" />
+                    <h3>KLINIK PERTAMINA</h3>
+                    <p style="font-weight: normal; margin: 5px 0; padding: 0px 0;">
+                        SURAT PERMINTAAN KONSULTASI
+                    </p>
                 </th>
-                <th colspan=2 class="text-center" style="font-size: 14"><img style="margin-left: 3px;width: 80px"
-                        src="{{ public_path('assets/img/logo2.png') }}" />
-                    <h4>KLINIK PERTAMINA</h4>
-                    <h5>SURAT PERMINTAAN KONSULTASI</h5>
-                </th>
+            </tr>
+            <tr>
+                <th width="50px" colspan="2"> </th>
             </tr>
             <tr>
                 <td>Kepada RS/Dokter:
@@ -166,7 +215,25 @@
 
                 </td>
             </tr>
-            <tr>
+            <tr class="fill-remaining">
+                <td colspan="4">
+                    <div>Diagnosis : {{ $dataForm->diagnosis }}</div>
+                    {{-- <br>
+                    <div>Ikhtisar klinik singkat : {{ $dataForm->ikhtisar }}</div>
+                    <br>
+                    <div>Pengobatan yang telah diberikan : {{ $dataForm->pengobatan_diberikan }}</div>
+                    <br>
+                    <div>Konsultasi yang diminta : {{ $dataForm->konsultasi_diminta }}</div> --}}
+                </td>
+            </tr>
+            <tr class="signature-row">
+                <td colspan="4" class="signature">
+                    <div>Tanda tangan dokter pengirim:</div>
+                    <br><br><br>
+                    <div>{{ $dataForm->doctor->name }}</div>
+                </td>
+            </tr>
+            {{-- <tr class="fill-spacse">
                 <td colspan="4">
                     <br>
                     <div style="display: flex; gap: 8px;">
@@ -188,59 +255,22 @@
                         <div>Konsultasi yang diminta : </div>
                         <div>{{ $dataForm->konsultasi_diminta }} </div>
                     </div>
-                    <br><br><br><br><br><br>
-                    <div style="flex: d-flex">
-                        <div>Tanda tangan dokter pengirim : <br><br><br><br><br></div>
-                        <div>{{ $dataForm->doctor->name }} </div>
-                    </div>
+
 
                 </td>
-            </tr>
-
-            {{-- <tr>
-                <th> </th>
-
-                <td style="width: 40% !important">
-                    <table style="width: 100%" class="no-border text-center">
-                        <tr class="no-border">
-                            <td class="no-border" style="width: 15%"> </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="text-center no-border"
-                                style="font-size: 19px; font-style: bold  ">PEMERINTAH
-                                KABUPATEN
-                                BANGKA</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="text-center no-border"
-                                style="font-size: 15px; font-style: bold  ">DINAS KESEHATAN KABUPATEN BANGKA</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="text-center no-border"
-                                style="font-size: 15px; font-style: bold  ">UPTD PSC-119 SEPINTU SEDULANG</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="text-center no-border" style="font-size: 10px;  ">Jl. Jendral
-                                Sudirman Ex. SD Tingkat 33215,
-                                Telp/Fax :0717-93766, HP :08127199119
-                                <br> Email/facebook :
-                                spgdt.sepintusedulang@gmail.com, website : psc.bangka.go.id
-                            </td>
-                        </tr>
-
-                    </table>
-                </td>
-            </tr>
-
-            <tr>
-                <th> </th>
-
-                <td class="text-center">PETUGAS<br><br><br> <b> <b> ( {{ $dataForm->pasien->name }} )</b></td>
-                <td class="text-center">PETUGAS YANG MENERIMA RUJUKAN
-                    <br><br><br> <b> <b> ( ............................................... )</b>
+            </tr> --}}
+            {{-- <tr class="signature-row">
+                <td colspan="4" class="signature">
+                    <div>Tanda tangan dokter pengirim:</div>
+                    <br><br><br>
+                    <div>{{ $dataForm->doctor->name }}</div>
                 </td>
             </tr> --}}
         </table>
+        {{-- <div class="signature">
+            <div>Tanda tangan dokter pengirim:</div>
+            <div>{{ $dataForm->doctor->name }}</div>
+        </div> --}}
     </body>
 
 </html>

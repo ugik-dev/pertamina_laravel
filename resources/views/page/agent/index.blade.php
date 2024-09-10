@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Manage Agent')
+@section('title', 'Management User')
 
 @section('vendor-style')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}">
@@ -56,6 +56,9 @@
                         <th>Lokasi</th>
                         <th>Kategori</th>
                         <th>Role</th>
+                        <th>ID Pekerja</th>
+                        <th>Penjamin</th>
+                        <th>Tgl Lahir</th>
                         <th>Telpon</th>
                         <th>Email</th>
                     </tr>
@@ -79,6 +82,64 @@
                         <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
                         <input type="text" id="name" class="form-control dt-full-name" name="name" placeholder=""
                             aria-label="" aria-describedby="basicFullname2" required />
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <label for="empoyee_id">No Pekerja :</label>
+                    <div class="input-group input-group-merge">
+                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
+                        <input type="text" id="empoyee_id" class="form-control dt-full-name" name="empoyee_id"
+                            aria-label="" aria-describedby="basicFullname2" />
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <label for="dob">Tanggal Lahir :</label>
+                    <div class="input-group input-group-merge">
+                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-calendar"></i></span>
+                        <input type="date" id="dob" class="form-control dt-full-name" name="dob" placeholder=""
+                            aria-label="" aria-describedby="basicFullname2" />
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <label for="gender">Jenis Kelamin:</label>
+                    <div class="input-group input-group-merge">
+                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
+                        <select type="text" id="gender" class="form-control dt-full-name" name="gender"
+                            aria-label="" aria-describedby="basicFullname2">
+                            <option value=""> - </option>
+                            <option value="L"> Laki-laki </option>
+                            <option value="P"> Perempuan </option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <label for="rm_number">No. RM :</label>
+                    <div class="input-group input-group-merge">
+                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
+                        <input type="text" id="rm_number" class="form-control dt-full-name" name="rm_number"
+                            aria-label="" aria-describedby="basicFullname2" />
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <label for="guarantor_id">Penjamin:</label>
+                    <div class="input-group input-group-merge">
+                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
+                        <select type="text" id="guarantor_id" class="form-control dt-full-name" name="guarantor_id"
+                            aria-label="" aria-describedby="basicFullname2">
+                            <option value=""> - </option>
+                            @foreach ($dataContent['refGuarantor'] as $guarantor)
+                                <option value="{{ $guarantor->id }}">{{ $guarantor->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <label for="guarantor_number">No Penjamin:</label>
+                    <div class="input-group input-group-merge">
+                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
+                        <input type="text" id="guarantor_number" class="form-control dt-full-name"
+                            name="guarantor_number" aria-label="" aria-describedby="basicFullname2" />
                     </div>
                 </div>
                 <div class="col-sm-12">
@@ -226,7 +287,7 @@
             }
 
             const offCanvasEl = new bootstrap.Offcanvas($('#add-new-record'));
-
+            const printCol = [2, 3, 4, 6, 7, 8, 9]
             var FDataTable = $('#FDataTable').DataTable({
                 columnDefs: [],
                 order: [
@@ -336,7 +397,7 @@
                                 text: '<i class="mdi mdi-file-pdf-box me-1"></i>Pdf',
                                 className: 'dropdown-item',
                                 exportOptions: {
-                                    columns: [3, 4, 5, 6, 7],
+                                    columns: printCol,
                                     // prevent avatar to be display
                                     format: {
                                         body: function(inner, coldex, rowdex) {
@@ -416,6 +477,14 @@
                 'username': $('#form-user').find('#username'),
                 'create_qr': $('#form-user').find('#create_qr'),
                 'qrcode': $('#form-user').find('#qrcode'),
+                'dob': $('#form-user').find('#dob'),
+                'rm_number': $('#form-user').find('#rm_number'),
+                'guarantor_number': $('#form-user').find('#guarantor_number'),
+                'empoyee_id': $('#form-user').find('#empoyee_id'),
+                'gender': $('#form-user').find('#gender'),
+                'guarantor_id': $('#form-user').find('#guarantor_id'),
+
+
             }
 
             UserForm.role_id.on("change", function() {
@@ -531,7 +600,9 @@
                     renderData.push([user['id'], button, user['name'],
                         user['unit']['name'], user['field_work'] != null ? user['field_work'][
                             'name'
-                        ] : "", user['role_title'],
+                        ] : "", user['role_title'], user['empoyee_id'], user['guarantor_number'],
+                        user[
+                            'dob'],
                         user['phone'], user['email'],
 
                     ]);
@@ -571,6 +642,13 @@
                 UserForm.username.val(currentData['username']);
                 UserForm.phone.val(currentData['phone']);
                 UserForm.role_id.trigger('change');
+                UserForm.phone.val(currentData['phone']);
+                UserForm.dob.val(currentData['dob']);
+                UserForm.rm_number.val(currentData['rm_number']);
+                UserForm.guarantor_number.val(currentData['guarantor_number']);
+                UserForm.empoyee_id.val(currentData['empoyee_id']);
+                UserForm.guarantor_id.val(currentData['guarantor_id']).trigger("change");
+                UserForm.gender.val(currentData['gender']).trigger("change");
             });
 
             var userForm = document.getElementById('form-user');

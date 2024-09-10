@@ -87,8 +87,8 @@ class PdfController extends Controller
             'margin_bottom' => 2, // Set bottom margin in millimeters
             'margin_left' => 2,
         ]);
-        // return view('page.emergency.print', $compact,);
-        $pdf = PDF::loadView('page.rujukan.print', $compact, [
+        // return view('page.rujukan.print2', $compact,);
+        $pdf = PDF::loadView('page.rujukan.print2', $compact, [
             'dpi' => 150,
             'defaultFont' => 'sans-serif',
             'margin_top' => 2,

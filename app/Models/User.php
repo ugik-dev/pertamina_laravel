@@ -33,6 +33,13 @@ class User extends Authenticatable
         'unit_id',
         'field_work_id',
         'qrcode',
+        'dob',
+        'rm_number',
+        'guarantor_number',
+        'empoyee_id',
+        'gender',
+        'guarantor_id',
+
     ];
     protected $keyLength = 191;
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\DataStructure;
 use App\Models\Company;
 use App\Models\Field;
+use App\Models\Guarantor;
 use App\Models\Unit;
 use App\Models\User;
 use Exception;
@@ -21,6 +22,7 @@ class UserController extends Controller
             'refUnit' => Unit::get(),
             'refField' => Field::get(),
             'refCompany' => Company::get(),
+            'refGuarantor' => Guarantor::get(),
         ];
         return view('page.agent.index', compact('request', 'dataContent'));
     }
@@ -90,6 +92,12 @@ class UserController extends Controller
                 'phone' => $request->phone,
                 'qrcode' => $request->qrcode,
                 'email' => $request->email,
+                'dob' => $request->dob,
+                'rm_number' => $request->rm_number,
+                'guarantor_number' => $request->guarantor_number,
+                'empoyee_id' => $request->empoyee_id,
+                'gender' => $request->gender,
+                'guarantor_id' => $request->guarantor_id,
                 'password' => Hash::make($request->password),
             ];
             $data = User::create($att);
@@ -116,6 +124,12 @@ class UserController extends Controller
                 'qrcode' => $request->qrcode,
                 'phone' => $request->phone,
                 'email' => $request->email,
+                'dob' => $request->dob,
+                'rm_number' => $request->rm_number,
+                'guarantor_number' => $request->guarantor_number,
+                'empoyee_id' => $request->empoyee_id,
+                'gender' => $request->gender,
+                'guarantor_id' => $request->guarantor_id,
             ]);
             if (!empty($request->password))
                 $data->update([
