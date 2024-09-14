@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportDCU;
 use App\Helpers\Helpers;
 use App\Models\Form;
 use App\Models\LoginSession;
@@ -13,6 +14,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class ScreeningController extends Controller
@@ -68,32 +70,33 @@ class ScreeningController extends Controller
                 // ->latest()->get();
                 ->limit(100)->get();
             // dd($data);
-            return DataTables::of($data)->addColumn('timescan', function ($data) {
-                return \Carbon\Carbon::parse($data->created_at)->format('H:i');
-            })->addColumn('sistole_span', function ($data) {
-                return Helpers::spanSistole($data->sistole);
-            })->addColumn('diastole_span', function ($data) {
-                return Helpers::spanDiastole($data->diastole);
-            })->addColumn('hr_span', function ($data) {
-                return Helpers::spanHr($data->hr);
-            })->addColumn('rr_span', function ($data) {
-                return Helpers::spanRr($data->rr);
-            })->addColumn('temp_span', function ($data) {
-                return Helpers::spanTemp($data->temp);
-            })->addColumn('spo2_span', function ($data) {
-                return Helpers::spanSpo2($data->spo2);
-            })->addColumn('romberg_span', function ($data) {
-                return Helpers::spanRomberg($data->romberg);
-            })->addColumn('alcohol_span', function ($data) {
-                return Helpers::spanAlcoholTest($data->alcohol);
-            })->addColumn('result_span', function ($data) {
-                return $data->fitality == 'Y' ? "<span class='text-success'>FIT</span>" : "<span class='text-danger'>UNFIT</span>";
-            })->addColumn('high_risk_span', function ($data) {
-                return Helpers::spanRisk($data->high_risk);
-            })->addColumn('aksi', function ($data) {
-                // return '<a href="' . route('detail-screening', $data->id) . '" class="btn btn-primary">Open</a>';
-                return '<button data-id="' . $data->id . '" class="editBtn btn btn-primary"><i class="mdi mdi-pencil"></i></button>';
-            })->rawColumns(['aksi', 'high_risk_span', 'sistole_span', 'diastole_span', 'hr_span', 'rr_span', 'spo2_span', 'temp_span', 'result_span', 'romberg_span', 'alcohol_span'])->make(true);
+            return DataTables::of($data)->addIndexColumn()
+                ->addColumn('timescan', function ($data) {
+                    return \Carbon\Carbon::parse($data->created_at)->format('H:i');
+                })->addColumn('sistole_span', function ($data) {
+                    return Helpers::spanSistole($data->sistole);
+                })->addColumn('diastole_span', function ($data) {
+                    return Helpers::spanDiastole($data->diastole);
+                })->addColumn('hr_span', function ($data) {
+                    return Helpers::spanHr($data->hr);
+                })->addColumn('rr_span', function ($data) {
+                    return Helpers::spanRr($data->rr);
+                })->addColumn('temp_span', function ($data) {
+                    return Helpers::spanTemp($data->temp);
+                })->addColumn('spo2_span', function ($data) {
+                    return Helpers::spanSpo2($data->spo2);
+                })->addColumn('romberg_span', function ($data) {
+                    return Helpers::spanRomberg($data->romberg);
+                })->addColumn('alcohol_span', function ($data) {
+                    return Helpers::spanAlcoholTest($data->alcohol);
+                })->addColumn('result_span', function ($data) {
+                    return $data->fitality == 'Y' ? "<span class='text-success'>FIT</span>" : "<span class='text-danger'>UNFIT</span>";
+                })->addColumn('high_risk_span', function ($data) {
+                    return Helpers::spanRisk($data->high_risk);
+                })->addColumn('aksi', function ($data) {
+                    // return '<a href="' . route('detail-screening', $data->id) . '" class="btn btn-primary">Open</a>';
+                    return '<button data-id="' . $data->id . '" class="editBtn btn btn-primary"><i class="mdi mdi-pencil"></i></button>';
+                })->rawColumns(['aksi', 'high_risk_span', 'sistole_span', 'diastole_span', 'hr_span', 'rr_span', 'spo2_span', 'temp_span', 'result_span', 'romberg_span', 'alcohol_span'])->make(true);
         }
         return view('page.screening.index', compact('request'));
     }
@@ -107,8 +110,10 @@ class ScreeningController extends Controller
                 if (isset($param['name'])) {
                     if ($param['name'] === 'date_start') {
                         $date_start = $param['value'];
+                        $date_start = $date_start . ' 00:00:00';
                     } elseif ($param['name'] === 'date_end') {
                         $date_end = $param['value'];
+                        $date_end = $date_end . ' 23:59:59';
                     }
                 }
             }
@@ -121,22 +126,23 @@ class ScreeningController extends Controller
             } else {
                 $data = $query->whereBetween('screenings.created_at', [$date_start, $date_end])->latest()->get();
             }
-            return DataTables::of($data)->addColumn('datescan', function ($data) {
-                return \Carbon\Carbon::parse($data->created_at)->format('Y-m-d');
-            })->addColumn('timescan', function ($data) {
-                return \Carbon\Carbon::parse($data->created_at)->format('H:i');
-            })->addColumn('sistole_span', function ($data) {
-                return Helpers::spanSistole($data->sistole);
-            })->addColumn('hr_span', function ($data) {
-                return Helpers::spanHr($data->hr);
-            })->addColumn('temp_span', function ($data) {
-                return Helpers::spanTemp($data->temp);
-            })->addColumn('result_span', function ($data) {
-                return $data->fitality == 'Y' ? "<span class='text-success'>FIT</span>" : "<span class='text-danger'>UNFIT</span>";
-            })->addColumn('aksi', function ($data) {
-                // return '<a href="' . route('detail-screening', $data->id) . '" class="btn btn-primary">Open</a>';
-                return '<a href="" class="btn btn-primary"><i class="fa fa-pencil"></i></a>';
-            })->rawColumns(['aksi', 'sistole_span', 'hr_span', 'temp_span', 'result_span'])->make(true);
+            return DataTables::of($data)->addIndexColumn()
+                ->addColumn('datescan', function ($data) {
+                    return \Carbon\Carbon::parse($data->created_at)->format('Y-m-d');
+                })->addColumn('timescan', function ($data) {
+                    return \Carbon\Carbon::parse($data->created_at)->format('H:i');
+                })->addColumn('sistole_span', function ($data) {
+                    return Helpers::spanSistole($data->sistole);
+                })->addColumn('hr_span', function ($data) {
+                    return Helpers::spanHr($data->hr);
+                })->addColumn('temp_span', function ($data) {
+                    return Helpers::spanTemp($data->temp);
+                })->addColumn('result_span', function ($data) {
+                    return $data->fitality == 'Y' ? "<span class='text-success'>FIT</span>" : "<span class='text-danger'>UNFIT</span>";
+                })->addColumn('aksi', function ($data) {
+                    // return '<a href="' . route('detail-screening', $data->id) . '" class="btn btn-primary">Open</a>';
+                    return '<a href="" class="btn btn-primary"><i class="fa fa-pencil"></i></a>';
+                })->rawColumns(['aksi', 'sistole_span', 'hr_span', 'temp_span', 'result_span'])->make(true);
         }
         return view('page.screening.rekap', compact('request'));
     }
@@ -307,5 +313,35 @@ class ScreeningController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function export(Request $request)
+    {
+        $filter = $request->query(); // atau $request->all()
+        $filter['date_start']  = $filter['date_start']  . ' 00:00:00';
+        $filter['date_end']  = $filter['date_end']  . ' 23:59:59';
+        // Atau ambil parameter tertentu
+        // $date_start = null;
+        // $date_end = null;
+        // if (isset($param['name'])) {
+        //     if ($param['name'] === 'date_start') {
+        //         $date_start = $param['value'];
+        //     } elseif ($param['name'] === 'date_end') {
+        //         $date_end = $param['value'];
+        //     }
+        // }
+        // dd($date_end, $date_start);
+        $filename = "dcu-rekap-" . $filter['date_start'] . '-sd-' . $filter['date_end'];
+        $query =  Screening::selectRaw('screenings.*, a.name as user_name,a.qrcode as user_qrcode, b.name doctor_name')
+            ->join('users as a', 'a.id', '=', 'screenings.user_id')
+            ->join('users as b', 'b.id', '=', 'screenings.doctor_id')->orderBy("screenings.created_at", "asc");
+        if ($filter['date_start'] == $filter['date_end']) {
+            $data = $query->whereDate('screenings.created_at', $filter['date_start'])->latest()->get();
+        } else {
+            $data = $query->whereBetween('screenings.created_at', [$filter['date_start'], $filter['date_end']])->latest()->get();
+        }
+        // $data = $query->get();
+        // dd($data);
+        return Excel::download(new ExportDCU($data, $filter),  $filename . '.xlsx');
     }
 }

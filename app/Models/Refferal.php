@@ -106,11 +106,11 @@ class Refferal extends Model
 
     public function doctor()
     {
-        return $this->belongsTo(User::class, 'doctor_id')->select('name');
+        return $this->belongsTo(User::class, 'doctor_id')->select('name', 'id');
     }
 
     public function assist()
     {
-        return $this->belongsTo(User::class, 'assist_id')->select('name');
+        return $this->belongsTo(User::class, 'assist_id')->select('name', 'id');
     }
 }

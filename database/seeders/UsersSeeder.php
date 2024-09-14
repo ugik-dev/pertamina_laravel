@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Field;
 use App\Models\Screening;
 use App\Models\User;
 use Carbon\Carbon;
@@ -20,6 +21,10 @@ class UsersSeeder extends Seeder
      */
     public function run(): void
     {
+        $faker = Faker::create();
+
+        Field::create(['name' => "Ketinggian"]);
+        Field::create(['name' => "Satpam"]);
         $admin = User::updateOrCreate(
             [
                 'username' => 'fersi',
@@ -27,14 +32,14 @@ class UsersSeeder extends Seeder
                 'qrcode' => 'd3286f12-a0ab-45a7-aba9-11b7e15f4723',
                 'email' => 'fersi@example.com',
                 'password' => Hash::make('123'),
-                'role_id' => 1
+                'role_id' => 1,
+                // 'field_work_id' => $faker->numberBetween(1, 2),
             ],
         );
         $role = Role::findOrFail(1);
         $admin->assignRole($role);
 
 
-        $faker = Faker::create();
         $role = Role::where('name', 'staf')->firstOrFail();
         for ($i = 0; $i < 15; $i++) {
             $username = $faker->userName;
@@ -45,7 +50,9 @@ class UsersSeeder extends Seeder
                     // 'username' => $username,
                     'qrcode' => $username,
                     'name' => $faker->name,
+                    'field_work_id' => $faker->numberBetween(1, 2),
                     'email' => $faker->unique()->safeEmail,
+                    'dob' => $faker->dateTimeBetween('-60 years', '-18 years'),
                     // 'password' => Hash::make('123'),
                     'role_id' => $role->id
                 ]
@@ -60,12 +67,12 @@ class UsersSeeder extends Seeder
                 Screening::create([
                     'user_id' => $user->id,
                     'doctor_id' => $admin->id, // doctor_id is ugikdev
-                    'sistole' => $faker->numberBetween(90, 140),
-                    'diastole' => $faker->numberBetween(60, 100),
-                    'hr' => $faker->numberBetween(60, 120),
-                    'temp' => $faker->numberBetween(35, 38),
-                    'rr' => $faker->numberBetween(12, 24),
-                    'spo2' => $faker->numberBetween(90, 100),
+                    'sistole' => $faker->numberBetween(70, 160),
+                    'diastole' => $faker->numberBetween(50, 120),
+                    'hr' => $faker->numberBetween(49, 150),
+                    'temp' => $faker->numberBetween(25, 48),
+                    'rr' => $faker->numberBetween(8, 34),
+                    'spo2' => $faker->numberBetween(60, 110),
                     'romberg' => $faker->randomElement(['Y', 'N']),
                     'alcohol' => $faker->randomElement(['Y', 'N']),
                     'fitality' => $faker->randomElement(['Y', 'N']),

@@ -64,8 +64,8 @@
                         {{-- @include('page.rujukan.form_partials.tap_2_waktu') --}}
                         @include('page.rujukan.form_partials.tap_3_keluhan')
                         {{-- @include('page.rujukan.form_partials.tap_6') --}}
-                        @include('page.rujukan.form_partials.tap_4_primary')
-                        @include('page.rujukan.form_partials.tap_5_secondary')
+                        {{-- @include('page.rujukan.form_partials.tap_4_primary') --}}
+                        {{-- @include('page.rujukan.form_partials.tap_5_secondary') --}}
                     </div>
                 </form>
             </div>
@@ -133,9 +133,9 @@
 
 
         $(document).ready(function() {
-            var canvas = document.getElementById('myCanvas');
-            var ctx = canvas.getContext('2d');
-            var drawing = false;
+            // var canvas = document.getElementById('myCanvas');
+            // var ctx = canvas.getContext('2d');
+            // var drawing = false;
 
             var saveBtn = $('#saveBtn');
             var TindakanForm = {
@@ -209,30 +209,30 @@
                 // sumber_informasi
             }
 
-            $('input[name="gcs_res_verbal"]').change(function() {
-                count_gcs()
-            });
+            // $('input[name="gcs_res_verbal"]').change(function() {
+            //     count_gcs()
+            // });
 
-            $('input[name="gcs_res_mata"]').change(function() {
-                count_gcs()
-            });
+            // $('input[name="gcs_res_mata"]').change(function() {
+            //     count_gcs()
+            // });
 
-            $('input[name="gcs_res_motorik"]').change(function() {
-                count_gcs()
-            });
+            // $('input[name="gcs_res_motorik"]').change(function() {
+            //     count_gcs()
+            // });
 
-            function count_gcs() {
-                var gcs_e = parseInt($('input[name="gcs_res_mata"]:checked').val() ?? 0);
-                var gcs_v = parseInt($('input[name="gcs_res_verbal"]:checked').val() ?? 0);
-                var gcs_m = parseInt($('input[name="gcs_res_motorik"]:checked').val() ?? 0);
+            // function count_gcs() {
+            //     var gcs_e = parseInt($('input[name="gcs_res_mata"]:checked').val() ?? 0);
+            //     var gcs_v = parseInt($('input[name="gcs_res_verbal"]:checked').val() ?? 0);
+            //     var gcs_m = parseInt($('input[name="gcs_res_motorik"]:checked').val() ?? 0);
 
-                gcs = gcs_e + gcs_v + gcs_m;
-                TindakanForm.gcs.val(gcs);
-                console.log("Ey:", gcs_e);
-                console.log("Ver:", gcs_v);
-                console.log("Mtr:", gcs_m);
-                console.log("GCS:", gcs);
-            }
+            //     gcs = gcs_e + gcs_v + gcs_m;
+            //     TindakanForm.gcs.val(gcs);
+            //     console.log("Ey:", gcs_e);
+            //     console.log("Ver:", gcs_v);
+            //     console.log("Mtr:", gcs_m);
+            //     console.log("GCS:", gcs);
+            // }
 
             var tindakanForm = document.getElementById('form-tindakan');
 
@@ -295,18 +295,18 @@
                 // }
                 // data: TindakanForm.form.serialize(),
                 url = '{{ $form_url }}';
-                var imageData = canvas.toDataURL("image/png");
+                // var imageData = canvas.toDataURL("image/png");
 
-                var fileInput = $("<input>").attr({
-                    type: "file",
-                    name: "gambar",
-                    value: dataURLtoBlob(imageData),
-                    style: "display: none"
-                });
+                // var fileInput = $("<input>").attr({
+                //     type: "file",
+                //     name: "gambar",
+                //     value: dataURLtoBlob(imageData),
+                //     style: "display: none"
+                // });
                 var formData = new FormData($("#form-tindakan")[0]);
-                var imageData = canvas.toDataURL("image/png");
-                formData.delete('gambar');
-                formData.append("gambar", dataURLtoBlob(imageData), "gambar.png");
+                // var imageData = canvas.toDataURL("image/png");
+                // formData.delete('gambar');
+                // formData.append("gambar", dataURLtoBlob(imageData), "gambar.png");
 
                 //     return formData;
                 // }
@@ -318,7 +318,7 @@
                     if (!result.isConfirmed) {
                         return;
                     }
-                    // swalLoading();
+                    swalLoading();
                     $.ajax({
                         url: url,
                         'type': 'POST',
@@ -330,196 +330,195 @@
                                 swalError(data['message'], "Simpan Gagal !!");
                                 return;
                             }
-                            // window.location.href =
-                            //     '{{ !empty($id) ? route('detail-rujukan', $dataContent->id) : (!empty($dataForm->request_call_id) ? route('detail-rujukan', $dataForm->request_call_id) : route('rekap.tindakan')) }}';
+                            window.location.href = "{{ route('rujukan.index') }}";
                         },
                         error: function(e) {}
                     });
                 });
             });
 
-            function dataURLtoBlob(dataURL) {
-                var arr = dataURL.split(',');
-                var mime = arr[0].match(/:(.*?);/)[1];
-                var bstr = atob(arr[1]);
-                var n = bstr.length;
-                var u8arr = new Uint8Array(n);
+            // function dataURLtoBlob(dataURL) {
+            //     var arr = dataURL.split(',');
+            //     var mime = arr[0].match(/:(.*?);/)[1];
+            //     var bstr = atob(arr[1]);
+            //     var n = bstr.length;
+            //     var u8arr = new Uint8Array(n);
 
-                while (n--) {
-                    u8arr[n] = bstr.charCodeAt(n);
-                }
+            //     while (n--) {
+            //         u8arr[n] = bstr.charCodeAt(n);
+            //     }
 
-                return new Blob([u8arr], {
-                    type: mime
-                });
-            }
+            //     return new Blob([u8arr], {
+            //         type: mime
+            //     });
+            // }
 
-            // function function_drawing() {
-            var penConfig = {
-                thickness: 5,
-                color: '#000000',
-                eraserMode: false
-            };
+            // // function function_drawing() {
+            // var penConfig = {
+            //     thickness: 5,
+            //     color: '#000000',
+            //     eraserMode: false
+            // };
 
             // Fungsi untuk memulai penggambaran
-            function startDrawing(e) {
-                e.preventDefault();
-                console.log('start draw')
-                drawing = true;
-                draw(e);
-            }
+            // function startDrawing(e) {
+            //     e.preventDefault();
+            //     console.log('start draw')
+            //     drawing = true;
+            //     draw(e);
+            // }
 
             // Fungsi untuk mengakhiri penggambaran
-            function stopDrawing() {
-                console.log('stop draw')
-                drawing = false;
-                ctx.beginPath();
-            }
+            // function stopDrawing() {
+            //     console.log('stop draw')
+            //     drawing = false;
+            //     ctx.beginPath();
+            // }
 
-            @if (!empty($dataForm->gambar))
-                // var gambarDataUrl = 'data:image/png;base64,{{ base64_encode($dataForm->gambar) }}';
-                var gambarDataUrl = '{{ url('/storage/upload/tindakan/' . $dataForm->gambar) }}';
-                console.log(gambarDataUrl)
-                var defaultImage = new Image();
-                defaultImage.src = gambarDataUrl;
-                defaultImage.onload = function() {
-                    ctx.drawImage(defaultImage, 0, 0);
-                };
-            @endif
+            // @if (!empty($dataForm->gambar))
+            //     // var gambarDataUrl = 'data:image/png;base64,{{ base64_encode($dataForm->gambar) }}';
+            //     var gambarDataUrl = '{{ url('/storage/upload/tindakan/' . $dataForm->gambar) }}';
+            //     console.log(gambarDataUrl)
+            //     var defaultImage = new Image();
+            //     defaultImage.src = gambarDataUrl;
+            //     defaultImage.onload = function() {
+            //         ctx.drawImage(defaultImage, 0, 0);
+            //     };
+            // @endif
 
-            // Fungsi untuk menggambar di atas canvas
-            function draw(e) {
-                if (!drawing) return;
+            // // Fungsi untuk menggambar di atas canvas
+            // function draw(e) {
+            //     if (!drawing) return;
 
-                if (e.touches && e.touches.length > 0) {
-                    // Tangani input sentuh (touch input)
-                    x = e.touches[0].clientX - canvas.getBoundingClientRect().left;
-                    y = e.touches[0].clientY - canvas.getBoundingClientRect().top;
-                } else {
-                    // Tangani input mouse
-                    x = e.clientX - canvas.getBoundingClientRect().left;
-                    y = e.clientY - canvas.getBoundingClientRect().top;
-                }
+            //     if (e.touches && e.touches.length > 0) {
+            //         // Tangani input sentuh (touch input)
+            //         x = e.touches[0].clientX - canvas.getBoundingClientRect().left;
+            //         y = e.touches[0].clientY - canvas.getBoundingClientRect().top;
+            //     } else {
+            //         // Tangani input mouse
+            //         x = e.clientX - canvas.getBoundingClientRect().left;
+            //         y = e.clientY - canvas.getBoundingClientRect().top;
+            //     }
 
-                if (penConfig.eraserMode) {
-                    var eraserSize = penConfig.thickness * 3;
-                    ctx.clearRect(x - eraserSize / 2, y - eraserSize / 2, eraserSize, eraserSize);
-                } else {
-                    ctx.strokeStyle = penConfig.color;
-                    ctx.lineWidth = penConfig.thickness;
-                    ctx.lineJoin = 'round';
-                    ctx.lineCap = 'round';
+            //     if (penConfig.eraserMode) {
+            //         var eraserSize = penConfig.thickness * 3;
+            //         ctx.clearRect(x - eraserSize / 2, y - eraserSize / 2, eraserSize, eraserSize);
+            //     } else {
+            //         ctx.strokeStyle = penConfig.color;
+            //         ctx.lineWidth = penConfig.thickness;
+            //         ctx.lineJoin = 'round';
+            //         ctx.lineCap = 'round';
 
-                    ctx.lineTo(x, y);
-                    ctx.stroke();
+            //         ctx.lineTo(x, y);
+            //         ctx.stroke();
 
-                    ctx.beginPath();
-                    ctx.moveTo(x, y);
-                }
-            }
+            //         ctx.beginPath();
+            //         ctx.moveTo(x, y);
+            //     }
+            // }
 
-            // Fungsi untuk menghapus garis terakhir
-            function clearLine() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-            }
+            // // Fungsi untuk menghapus garis terakhir
+            // function clearLine() {
+            //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // }
 
-            // Fungsi untuk menghapus seluruh gambar
-            function clearCanvas() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-            }
+            // // Fungsi untuk menghapus seluruh gambar
+            // function clearCanvas() {
+            //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // }
 
-            // Fungsi untuk mengupdate konfigurasi pena
-            function updatePenConfig() {
-                penConfig.thickness = document.getElementById('ketebalanPena').value;
-                penConfig.color = document.getElementById('warnaPena').value;
-                penConfig.eraserMode = document.getElementById('modePenghapus').checked;
-            }
+            // // Fungsi untuk mengupdate konfigurasi pena
+            // function updatePenConfig() {
+            //     penConfig.thickness = document.getElementById('ketebalanPena').value;
+            //     penConfig.color = document.getElementById('warnaPena').value;
+            //     penConfig.eraserMode = document.getElementById('modePenghapus').checked;
+            // }
 
-            function isCanvasFullscreen() {
-                return !!(document.fullscreenElement || document.webkitFullscreenElement || document
-                    .msFullscreenElement);
-            }
-            document.addEventListener('fullscreenchange', function() {
-                if (!document.fullscreenElement) {
-                    drawing = false; // Turn off drawing mode when exiting fullscreen
-                }
-            });
-            // Event listener untuk inputan ketebalan pena
-            document.getElementById('ketebalanPena').addEventListener('input', updatePenConfig);
-            document.getElementById('warnaPena').addEventListener('input', updatePenConfig);
-            document.getElementById('modePenghapus').addEventListener('change', updatePenConfig);
-            document.getElementById('hapusGambar').addEventListener('click', clearCanvas);
+            // function isCanvasFullscreen() {
+            //     return !!(document.fullscreenElement || document.webkitFullscreenElement || document
+            //         .msFullscreenElement);
+            // }
+            // document.addEventListener('fullscreenchange', function() {
+            //     if (!document.fullscreenElement) {
+            //         drawing = false; // Turn off drawing mode when exiting fullscreen
+            //     }
+            // });
+            // // Event listener untuk inputan ketebalan pena
+            // document.getElementById('ketebalanPena').addEventListener('input', updatePenConfig);
+            // document.getElementById('warnaPena').addEventListener('input', updatePenConfig);
+            // document.getElementById('modePenghapus').addEventListener('change', updatePenConfig);
+            // document.getElementById('hapusGambar').addEventListener('click', clearCanvas);
 
 
-            $('#fullScreen').on('click', function() {
-                var el = document.getElementById('myCanvas');
+            // $('#fullScreen').on('click', function() {
+            //     var el = document.getElementById('myCanvas');
 
-                if (el.webkitRequestFullScreen) {
-                    el.webkitRequestFullScreen();
-                } else {
-                    el.mozRequestFullScreen();
-                }
-                // if (!isCanvasFullscreen()) {
-                //     enterFullscreen(); // Masuk ke mode layar penuh saat mengklik canvas
-                // } else {
-                //     exitFullscreen(); // Keluar dari mode layar penuh jika sudah dalam mode layar penuh
-                // }
-                // updateEventListenerForFullscreen();
-            });
+            //     if (el.webkitRequestFullScreen) {
+            //         el.webkitRequestFullScreen();
+            //     } else {
+            //         el.mozRequestFullScreen();
+            //     }
+            //     // if (!isCanvasFullscreen()) {
+            //     //     enterFullscreen(); // Masuk ke mode layar penuh saat mengklik canvas
+            //     // } else {
+            //     //     exitFullscreen(); // Keluar dari mode layar penuh jika sudah dalam mode layar penuh
+            //     // }
+            //     // updateEventListenerForFullscreen();
+            // });
 
-            function enterFullscreen() {
-                if (canvas.requestFullscreen) {
-                    canvas.requestFullscreen();
-                } else if (canvas.webkitRequestFullscreen) {
-                    /* Safari */
-                    canvas.webkitRequestFullscreen();
-                } else if (canvas.msRequestFullscreen) {
-                    /* IE11 */
-                    canvas.msRequestFullscreen();
-                }
-                isCanvasFullscreen = true;
-            }
+            // function enterFullscreen() {
+            //     if (canvas.requestFullscreen) {
+            //         canvas.requestFullscreen();
+            //     } else if (canvas.webkitRequestFullscreen) {
+            //         /* Safari */
+            //         canvas.webkitRequestFullscreen();
+            //     } else if (canvas.msRequestFullscreen) {
+            //         /* IE11 */
+            //         canvas.msRequestFullscreen();
+            //     }
+            //     isCanvasFullscreen = true;
+            // }
 
-            // Fungsi untuk keluar dari mode layar penuh
-            function exitFullscreen() {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) {
-                    /* Safari */
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) {
-                    /* IE11 */
-                    document.msExitFullscreen();
-                }
-                isCanvasFullscreen = false;
-            }
+            // // Fungsi untuk keluar dari mode layar penuh
+            // function exitFullscreen() {
+            //     if (document.exitFullscreen) {
+            //         document.exitFullscreen();
+            //     } else if (document.webkitExitFullscreen) {
+            //         /* Safari */
+            //         document.webkitExitFullscreen();
+            //     } else if (document.msExitFullscreen) {
+            //         /* IE11 */
+            //         document.msExitFullscreen();
+            //     }
+            //     isCanvasFullscreen = false;
+            // }
 
-            updateEventListenerForFullscreen()
+            // updateEventListenerForFullscreen()
 
-            function updateEventListenerForFullscreen() {
-                // if (isCanvasFullscreen()) {
-                console.log('masuk fullscren')
-                canvas.addEventListener('mousedown', startDrawing);
-                canvas.addEventListener('mouseup', stopDrawing);
-                canvas.addEventListener('mousemove', draw);
-                canvas.addEventListener('touchstart', startDrawing);
-                canvas.addEventListener('touchend', stopDrawing);
-                canvas.addEventListener('touchmove', draw);
-                // } else {
-                //     console.log('keluar fullscren')
-                //     canvas.removeEventListener('mousedown', handleDrawingEvent);
-                //     canvas.removeEventListener('mouseup', function() {
-                //         drawing = false;
-                //     });
-                //     canvas.removeEventListener('mousemove', handleDrawingEvent);
+            // function updateEventListenerForFullscreen() {
+            //     // if (isCanvasFullscreen()) {
+            //     console.log('masuk fullscren')
+            //     canvas.addEventListener('mousedown', startDrawing);
+            //     canvas.addEventListener('mouseup', stopDrawing);
+            //     canvas.addEventListener('mousemove', draw);
+            //     canvas.addEventListener('touchstart', startDrawing);
+            //     canvas.addEventListener('touchend', stopDrawing);
+            //     canvas.addEventListener('touchmove', draw);
+            //     // } else {
+            //     //     console.log('keluar fullscren')
+            //     //     canvas.removeEventListener('mousedown', handleDrawingEvent);
+            //     //     canvas.removeEventListener('mouseup', function() {
+            //     //         drawing = false;
+            //     //     });
+            //     //     canvas.removeEventListener('mousemove', handleDrawingEvent);
 
-                //     canvas.removeEventListener('touchstart', handleDrawingEvent);
-                //     canvas.removeEventListener('touchend', function() {
-                //         drawing = false;
-                //     });
-                //     canvas.removeEventListener('touchmove', handleDrawingEvent);
-                // }
-            }
+            //     //     canvas.removeEventListener('touchstart', handleDrawingEvent);
+            //     //     canvas.removeEventListener('touchend', function() {
+            //     //         drawing = false;
+            //     //     });
+            //     //     canvas.removeEventListener('touchmove', handleDrawingEvent);
+            //     // }
+            // }
 
 
             // }

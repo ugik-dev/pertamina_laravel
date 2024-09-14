@@ -9,6 +9,7 @@
 @section('content')
     <h1>Rujukan</h1>
     <a class="btn btn-primary" href="{{ route('rujukan.form') }}">Buat Rujukan Baru </a>
+    @csrf
     <table id="datatable">
         <thead>
             <!-- Definisi Kolom -->
@@ -52,7 +53,7 @@
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#datatable').DataTable({
+            Datatable = $('#datatable').DataTable({
                 processing: true,
                 paggination: true,
                 responsive: false,
@@ -86,7 +87,33 @@
                     name: "aksi"
                 }, ]
             });
-
+            Datatable.on("click", '.delBtn', function(ev) {
+                event.preventDefault();
+                var id = $(this).data('id');
+                var token = $("[name='_token']").val();
+                Swal.fire(SwalOpt('Konfirmasi hapus ?', 'Data ini akan dihapus!', )).then((result) => {
+                    if (!result.isConfirmed) {
+                        return;
+                    }
+                    $.ajax({
+                        url: "<?= route('rujukan.delete') ?>/",
+                        'type': 'DELETE',
+                        data: {
+                            '_token': token,
+                            'id': id
+                        },
+                        success: function(data) {
+                            if (data['error']) {
+                                swalError(data['message'], "Simpan Gagal !!");
+                                return;
+                            }
+                            Datatable.ajax.reload(null, false);
+                            swalBerhasil('Data berhasil di Hapus');
+                        },
+                        error: function(e) {}
+                    });
+                });
+            })
             var currenPickOff = null;
             Pusher.logToConsole = true;
 

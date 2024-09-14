@@ -80,6 +80,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('', [ScreeningController::class, 'index'])->name('index');
         Route::get('export', [ScreeningController::class, 'export'])->name('export');
         Route::get('rekap', [ScreeningController::class, 'rekap'])->name('rekap');
+        Route::get('rekap/export', [ScreeningController::class, 'export'])->name('rekap.export');
         Route::get('get', [ScreeningController::class, 'get'])->name('get');
         Route::get('scan/{code}', [ScreeningController::class, 'scan_process'])->name('scan_get');
         Route::post('', [ScreeningController::class, 'create'])->name('create');
@@ -93,15 +94,12 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('rujukan')->name('rujukan.')->group(function () {
         Route::get('', [RujukanController::class, 'index'])->name('index');
         Route::get('form', [RujukanController::class, 'form_fresh'])->name('form');
+        Route::get('form/{id}', [RujukanController::class, 'form_edit'])->name('edit');
         Route::post('form', [RujukanController::class, 'form_save_new_fresh'])->name('save');
+        Route::post('form/{id}', [RujukanController::class, 'form_save_edit'])->name('save-edit');
+        Route::delete('/', [RujukanController::class, 'destroy'])->name('delete');
 
         Route::get('open/{id}', [PdfController::class, 'rujukan'])->name('open');
-        Route::get('export', [ScreeningController::class, 'export'])->name('export');
-        Route::get('rekap', [ScreeningController::class, 'rekap'])->name('rekap');
-        Route::get('get', [ScreeningController::class, 'get'])->name('get');
-        Route::get('scan/{code}', [ScreeningController::class, 'scan_process'])->name('scan_get');
-        Route::post('', [ScreeningController::class, 'create'])->name('create');
-        Route::put('', [ScreeningController::class, 'update'])->name('update');
     });
 
 

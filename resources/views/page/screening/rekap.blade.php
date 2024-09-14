@@ -58,8 +58,14 @@
                                 </div>
                             </div>
                         </div>
-
-
+                        <div class="col-lg-6">
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <button id="exportExcel" class="btn btn-success"><i
+                                            class="mdi mdi-file-excel-outline me-1"></i>Excel</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -112,7 +118,6 @@
                 'start': $('#formFilter').find('#date_start'),
                 'end': $('#formFilter').find('#date_end'),
             }
-
             formFilter.start.on('change', reloadDataTable);
             formFilter.end.on('change', reloadDataTable);
 
@@ -120,6 +125,12 @@
                 DataTable.ajax.reload(null, false);
             }
 
+            $("#exportExcel").on("click", function(event) {
+                event.preventDefault();
+                var query = formFilter.form.serialize();
+                var url = "{{ url('screening/rekap/export') }}?" + query;
+                window.open(url, '_blank');
+            })
             var DataTable = $('#datatable').DataTable({
                 processing: true,
                 paggination: true,
@@ -137,7 +148,9 @@
                                 text: '<i class="mdi mdi-file-excel-outline me-1"></i>Excel',
                                 className: 'dropdown-item',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+                                        13, 14, 15
+                                    ],
                                 },
                                 action: function(e, dt, button, config) {
                                     var self = this;
@@ -145,15 +158,21 @@
                                         url: "{{ route('screening.rekap') }}",
                                         data: {
                                             length: -1,
-                                            ...formFilter.form.serializeArray()
+                                            ...formFilter.form
+                                            .serializeArray()
                                         },
                                         success: function(json) {
-                                            var oldData = dt.rows().data();
-                                            dt.clear().rows.add(json.data).draw();
-                                            $.fn.dataTable.ext.buttons.excelHtml5
-                                                .action.call(self, e, dt, button,
+                                            var oldData = dt.rows()
+                                                .data();
+                                            dt.clear().rows.add(json
+                                                .data).draw();
+                                            $.fn.dataTable.ext.buttons
+                                                .excelHtml5
+                                                .action.call(self, e,
+                                                    dt, button,
                                                     config);
-                                            dt.clear().rows.add(oldData).draw();
+                                            dt.clear().rows.add(oldData)
+                                                .draw();
                                         }
                                     });
                                 }
@@ -163,16 +182,21 @@
                                 text: '<i class="mdi mdi-file-pdf-box me-1"></i>Pdf',
                                 className: 'dropdown-item',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+                                        13, 14, 15
+                                    ],
                                 },
                                 customize: function(doc) {
                                     // Set orientation to landscape
                                     doc.pageOrientation = 'landscape';
 
                                     // Remove default title
-                                    doc.content = doc.content.filter(function(item) {
-                                        return !(item.text && item.text.includes(
-                                            'Screening | Pertamina Screening'));
+                                    doc.content = doc.content.filter(function(
+                                        item) {
+                                        return !(item.text && item.text
+                                            .includes(
+                                                'Screening | Pertamina Screening'
+                                            ));
                                     });
 
                                     doc.content.unshift({
@@ -216,15 +240,21 @@
                                         url: "{{ route('screening.rekap') }}",
                                         data: {
                                             length: -1,
-                                            ...formFilter.form.serializeArray()
+                                            ...formFilter.form
+                                            .serializeArray()
                                         },
                                         success: function(json) {
-                                            var oldData = dt.rows().data();
-                                            dt.clear().rows.add(json.data).draw();
-                                            $.fn.dataTable.ext.buttons.pdfHtml5
-                                                .action.call(self, e, dt, button,
+                                            var oldData = dt.rows()
+                                                .data();
+                                            dt.clear().rows.add(json
+                                                .data).draw();
+                                            $.fn.dataTable.ext.buttons
+                                                .pdfHtml5
+                                                .action.call(self, e,
+                                                    dt, button,
                                                     config);
-                                            dt.clear().rows.add(oldData).draw();
+                                            dt.clear().rows.add(oldData)
+                                                .draw();
                                         }
                                     });
                                 }
@@ -241,8 +271,8 @@
                     }
                 },
                 columns: [{
-                        data: "id",
-                        name: "id"
+                        data: "DT_RowIndex",
+                        name: "DT_RowIndex"
                     }, {
                         data: "datescan",
                         name: "datescan"

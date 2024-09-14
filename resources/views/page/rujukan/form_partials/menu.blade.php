@@ -17,7 +17,7 @@
             <span class="align-middle">Rujukan</span>
         </button>
     </li>
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#primary_assessment">
             <i class="mdi mdi-wallet-giftcard me-1"></i>
             <span class="align-middle">Primary Assessment</span>
@@ -28,5 +28,5 @@
             <i class="mdi mdi-wallet-giftcard me-1"></i>
             <span class="align-middle">Secondary Assessment</span>
         </button>
-    </li>
+    </li> --}}
 </ul>

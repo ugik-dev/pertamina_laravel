@@ -29,13 +29,13 @@ class RujukanController extends Controller
         return view('page.rujukan.form', compact('dataContent', 'form_url', 'refUsers'));
     }
 
-    public function form_edit($id, $id_form, Request $request)
+    public function form_edit($id, Request $request)
     {
-        $data = RequestCall::with(['login_session', 'ref_rujukan'])
-            ->findOrFail($id);
-        $data_all = Form::with('user')->find($id_form);
-        $form_url = route('rujukan-form-save-edit', ['id' => $data->id, 'id_form' => $data_all->id]);
-        $compact = ['dataContent' => $data, 'form_url' => $form_url, 'dataForm' => $data_all];
+        $data = Refferal::findOrFail($id);
+        // dd($data->doctor);
+        // $data_all = Form::with('user')->find($id);
+        $form_url = route('rujukan.save-edit', ['id' => $data->id,]);
+        $compact = ['dataContent' => $data, 'form_url' => $form_url, 'dataForm' => $data];
         return view('page.rujukan.form', $compact);
     }
 
@@ -47,12 +47,6 @@ class RujukanController extends Controller
         return view('page.rujukan.form', $compact);
     }
 
-    public function form_save_edit_fresh($id, Request $request)
-    {
-        return $this->form_save(null, $id, $request);
-    }
-
-
     public function form_save_new_fresh(Request $request)
     {
         try {
@@ -61,8 +55,7 @@ class RujukanController extends Controller
             return  $this->ResponseError($ex->getMessage());
         }
     }
-
-    public function form_save_new($id,  Request $request)
+    public function form_save_edit($id, Request $request)
     {
         try {
             return $this->form_save($id, null, $request);
@@ -71,33 +64,20 @@ class RujukanController extends Controller
         }
     }
 
+
     public function form_save($id, $id_form = null,  Request $request)
     {
         try {
             if ($id) {
-                $data = RequestCall::with(['login_session', 'ref_rujukan', 'logs.user'])
-                    ->findOrFail($id);
+                $data = Refferal::findOrFail($id);
             }
 
             $formData = $request->except(['_token', 'gambar']);
 
-            if ($id) {
-                $formData['request_call_id'] = $data->id;
-            }
-
-            // $formData['user_id'] = Auth::user()->id;
 
 
-            if (!empty($id_form)) {
-                // if ($request->hasFile('gambar')) {
-                //     $photo = $request->file('gambar');
-                //     $path = $photo->storeAs('upload/tindakan',  $id_form . '.png', 'public');
-                //     $formData['gambar'] = $id_form . '.png';
-                // }
-                $old_data = Refferal::find($id_form);
-                $formData['request_call_id'] = $old_data->request_call_id;
-                $old_data->update($formData);
-                $id = $id_form;
+            if (!empty($id)) {
+                $data->update($formData);
             } else {
                 $res = Refferal::create($formData);
                 $id =  $res->id;
@@ -155,7 +135,11 @@ class RujukanController extends Controller
             })->addColumn('span_time', function ($data) {
                 return \Carbon\Carbon::parse($data->created_at)->format('Y-m-d h:i');
             })->addColumn('aksi', function ($data) {
-                return '<a href="' . route('rujukan.open', $data->id) . '" class="btn btn-primary">Open</a>';
+                return '
+                    <a href="' . route('rujukan.open', $data->id) . '" class="btn btn-primary">Open</a>
+                    <a href="' . route('rujukan.edit', $data->id) . '" class="btn btn-warning">Edit</a>
+                    <button data-id="' .  $data->id . '" class="delBtn btn btn-danger">Hapus</button>
+                    ';
             })->rawColumns(['aksi'])->make(true);
         }
         return view('page.rujukan.index', compact('request'));
@@ -204,8 +188,14 @@ class RujukanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        try {
+            $data = Refferal::findOrFail($request->id);
+            $data->delete();
+            return  $this->responseSuccess($data);
+        } catch (Exception $ex) {
+            return  $this->ResponseError($ex->getMessage());
+        }
     }
 }

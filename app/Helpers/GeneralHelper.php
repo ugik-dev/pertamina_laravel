@@ -1,11 +1,15 @@
 <?php
 
 if (!function_exists('spanFitality')) {
-    function spanFitality($val)
+    function spanFitality($val, $cek = false)
     {
         if ($val == 'Y') {
+            if ($cek)
+                return true;
             return "<span class='text-success'>FIT</span>";
         } else if ($val == 'N') {
+            if ($cek)
+                return false;
             return "<span class='text-danger'>UNFIT</span>";
         } else {
             return "<span class='text-warning'> - </span>";
