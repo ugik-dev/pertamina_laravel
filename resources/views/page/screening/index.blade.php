@@ -321,17 +321,19 @@
             // scanProcess('d3286f12-a0ab-45a7-aba9-11b7e15f4723')
 
             function scanProcess(decodedResult) {
+                swalLoading();
                 url = '{{ url('screening/scan') }}/' + decodedResult;
                 $.ajax({
                     url: url,
                     'type': 'GET',
-
                     success: function(data) {
                         ScreeningForm.form.trigger("reset")
                         if (data['error']) {
                             swalError(data['message'], "Simpan Gagal !!");
                             return;
                         }
+                        Swal.close();
+                        // swalBerhasil();
                         $('#emergencyModal').modal('show');
                         user = data["data"]
                         console.log(user['name'])
@@ -689,7 +691,7 @@
                     if (!result.isConfirmed) {
                         return;
                     }
-                    // swalLoading();
+                    swalLoading();
                     $.ajax({
                         url: url,
                         'type': metode,
@@ -699,6 +701,7 @@
                                 swalError(data['message'], "Simpan Gagal !!");
                                 return;
                             }
+                            swalBerhasil();
                             $('#emergencyModal').modal('hide');
                             DataTable.ajax.reload(null, false)
                         },
