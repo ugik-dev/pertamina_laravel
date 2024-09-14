@@ -217,7 +217,7 @@
                     Laboriosam consequuntur facere qui quidem molestiae officia quam perferendis. Architecto quam sint, est,
                     molestiae vero quibusdam id aliquam consectetur repellendus error veritatis esse animi voluptates
                     voluptatibus, facere nemo aspernatur fugiat.";
-        // $lorem = '';
+        $lorem = '';
     @endphp
 
     <body>
