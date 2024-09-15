@@ -147,7 +147,7 @@ class ExportDCU implements FromCollection,  WithStyles,  WithCustomStartCell, Wi
                 $w1 = 20;
                 $w2 = 10;
                 $w3 = 6;
-                $w = [6, 15, 7, 15, 20, 5, 12, 20];
+                $w = [5, 13, 7, 16, 20, 5, 12, 20];
                 $sheet->getColumnDimension('A')->setWidth($w[0]);
                 $sheet->getColumnDimension('B')->setWidth($w[1]);
                 $sheet->getColumnDimension('C')->setWidth($w[2]);
@@ -156,6 +156,8 @@ class ExportDCU implements FromCollection,  WithStyles,  WithCustomStartCell, Wi
                 $sheet->getColumnDimension('F')->setWidth($w[5]);
                 $sheet->getColumnDimension('G')->setWidth($w[6]);
                 $sheet->getColumnDimension('H')->setWidth($w[7]);
+                $sheet->getColumnDimension('R')->setWidth(12);
+                $sheet->getColumnDimension('S')->setWidth(12);
                 $i = 5;
                 $sheet->mergeCells('A1:T1');
                 $sheet->setCellValue('A1', 'Daily Check UP');

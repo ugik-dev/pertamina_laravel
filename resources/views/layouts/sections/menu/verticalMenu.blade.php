@@ -76,7 +76,7 @@
             <li class="menu-item">
                 <a href="{{ route('content.index') }}" class="menu-link ">
                     <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
-                    <div>Halaman Informasi</div>
+                    <div>Berita & Informasi</div>
                 </a>
             </li>
         @endcan
@@ -90,7 +90,7 @@
         <li class="menu-item">
             <a href="{{ route('screening.rekap') }}" class="menu-link ">
                 <i class="menu-icon tf-icons mdi mdi-account-details-outline"></i>
-                <div>Rekap</div>
+                <div>Rekap DCU</div>
             </a>
         </li>
         <li class="menu-item" style="">

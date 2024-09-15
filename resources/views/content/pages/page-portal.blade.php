@@ -50,11 +50,11 @@
                                     <div class="card-body">
                                         <div class="card-info mb-1">
                                             <strong>
-                                                <h4 class="mb-3 text-nowrap text-white">Berita dan Informasi</h4>
+                                                <h4 class="mb-3 text-nowrap text-white">Dashbord</h4>
                                             </strong>
                                         </div>
                                         <div class="d-flex align-items-end">
-                                            <h5 class="mb-0 text-white ">Ayo baca informasi serta artikel lainnya</h5>
+                                            <h5 class="mb-0 text-white ">Informasi utama dan artikel lainnya</h5>
                                         </div>
                                     </div>
                                 </div>

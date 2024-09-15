@@ -7,7 +7,9 @@
 @section('title', 'Emergency Callls')
 
 @section('content')
-    <h1>Rujukan</h1>
+    <h4 class="py-3 mb-4">
+        <span class="text-muted fw-light">Manage /</span> Rujukan
+    </h4>
     <a class="btn btn-primary" href="{{ route('rujukan.form') }}">Buat Rujukan Baru </a>
     @csrf
     <table id="datatable">

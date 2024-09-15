@@ -118,8 +118,9 @@ class ScreeningController extends Controller
                 }
             }
             // dd($date_end, $date_start);
-            $query =  Screening::selectRaw('screenings.*, a.name as user_name,a.qrcode as user_qrcode, b.name doctor_name')
+            $query =  Screening::selectRaw('screenings.*, a.name as user_name,a.qrcode as user_qrcode, b.name doctor_name,f.high_risk')
                 ->join('users as a', 'a.id', '=', 'screenings.user_id')
+                ->join('field_works as f', 'a.field_work_id', '=', 'f.id')
                 ->join('users as b', 'b.id', '=', 'screenings.doctor_id');
             if ($date_start == $date_end) {
                 $data = $query->whereDate('screenings.created_at', $date_start)->latest()->get();
@@ -133,16 +134,40 @@ class ScreeningController extends Controller
                     return \Carbon\Carbon::parse($data->created_at)->format('H:i');
                 })->addColumn('sistole_span', function ($data) {
                     return Helpers::spanSistole($data->sistole);
+                })->addColumn('diastole_span', function ($data) {
+                    return Helpers::spanDiastole($data->diastole);
                 })->addColumn('hr_span', function ($data) {
                     return Helpers::spanHr($data->hr);
+                })->addColumn('rr_span', function ($data) {
+                    return Helpers::spanRr($data->rr);
                 })->addColumn('temp_span', function ($data) {
                     return Helpers::spanTemp($data->temp);
+                })->addColumn('spo2_span', function ($data) {
+                    return Helpers::spanSpo2($data->spo2);
+                })->addColumn('romberg_span', function ($data) {
+                    return Helpers::spanRomberg($data->romberg);
+                })->addColumn('alcohol_span', function ($data) {
+                    return Helpers::spanAlcoholTest($data->alcohol);
                 })->addColumn('result_span', function ($data) {
                     return $data->fitality == 'Y' ? "<span class='text-success'>FIT</span>" : "<span class='text-danger'>UNFIT</span>";
+                })->addColumn('high_risk_span', function ($data) {
+                    return Helpers::spanRisk($data->high_risk);
                 })->addColumn('aksi', function ($data) {
                     // return '<a href="' . route('detail-screening', $data->id) . '" class="btn btn-primary">Open</a>';
-                    return '<a href="" class="btn btn-primary"><i class="fa fa-pencil"></i></a>';
-                })->rawColumns(['aksi', 'sistole_span', 'hr_span', 'temp_span', 'result_span'])->make(true);
+                    return '<button data-id="' . $data->id . '" class="editBtn btn btn-primary"><i class="mdi mdi-pencil"></i></button>';
+                })->rawColumns([
+                    'aksi',
+                    'high_risk_span',
+                    'sistole_span',
+                    'diastole_span',
+                    'hr_span',
+                    'rr_span',
+                    'spo2_span',
+                    'temp_span',
+                    'result_span',
+                    'romberg_span',
+                    'alcohol_span'
+                ])->make(true);
         }
         return view('page.screening.rekap', compact('request'));
     }

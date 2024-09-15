@@ -31,7 +31,7 @@
 
 @section('content')
     <h4 class="py-3 mb-4">
-        <span class="text-muted fw-light">Manage /</span> Kontent Informasi
+        <span class="text-muted fw-light">Manage /</span> Bank Data
     </h4>
     @csrf
     <div class="card">
@@ -61,7 +61,7 @@
         <div class="offcanvas-body flex-grow-1">
             <form class="add-new-record pt-0 row g-3" id="form-content" onsubmit="return false">
                 @csrf
-                <input type="text" id="id" class="" name="id" />
+                <input type="text" id="id" class="" hidden name="id" />
                 <div class="col-sm-12">
                     <label for="basicSalary">Nama Staf :</label>
                     {{-- <div class="input-group input-group-merge"> --}}

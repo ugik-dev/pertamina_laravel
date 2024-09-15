@@ -8,7 +8,7 @@
             <li class="menu-item text-danger">
                 <a href="{{ route('home') }}" class="menu-link text-danger">
                     <i class="menu-icon tf-icons mdi mdi-chart-arc "></i>
-                    <div>Home</div>
+                    <div>Dashboard</div>
                 </a>
             </li>
             <li class="menu-item">

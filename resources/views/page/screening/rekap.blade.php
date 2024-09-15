@@ -27,20 +27,21 @@
 @endsection
 
 @section('content')
-    <h1>Rekap</h1>
+    <h4 class="py-3 mb-4">
+        <span class="text-muted fw-light">Rekap /</span> DCU
+    </h4>
     <div class="card mb-2">
         <div class="card-body pt-0">
             <form id="formFilter">
                 <div class="col-lg-12 mt-2 mb-2">
                     <div class="row">
-
                         <div class="col-lg-6">
                             <div class="form-group row">
                                 <label for="date_start" class="col-sm-6 col-form-label">Dari Tanggal</label>
                                 <div class="col-sm-6">
                                     <div class="input-group">
                                         <input id="date_start" name="date_start" type="date"
-                                            value="{{ Carbon\Carbon::today()->subDays(1)->toDateString() }}"
+                                            value="{{ Carbon\Carbon::now()->startOfMonth()->toDateString() }}"
                                             class="form-control">
                                     </div>
                                 </div>
@@ -52,7 +53,7 @@
                                 <div class="col-sm-6">
                                     <div class="input-group">
                                         <input id="date_end" name="date_end"
-                                            value="{{ Carbon\Carbon::today()->toDateString() }}" type="date"
+                                            value="{{ Carbon\Carbon::now()->endOfMonth()->toDateString() }}" type="date"
                                             class="form-control">
                                     </div>
                                 </div>
@@ -138,131 +139,129 @@
                 serverSide: true,
                 searching: true,
                 ordering: true,
-                dom: '<"card-header flex-column flex-md-row"<"head-label text-center"><"dt-action-buttons text-end pt-3 pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-                buttons: [{
-                        extend: 'collection',
-                        className: 'btn btn-label-primary dropdown-toggle me-2',
-                        text: '<i class="mdi mdi-export-variant me-sm-1"></i> <span class="d-none d-sm-inline-block">Export</span>',
-                        buttons: [{
-                                extend: 'excelHtml5',
-                                text: '<i class="mdi mdi-file-excel-outline me-1"></i>Excel',
-                                className: 'dropdown-item',
-                                exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-                                        13, 14, 15
-                                    ],
-                                },
-                                action: function(e, dt, button, config) {
-                                    var self = this;
-                                    $.ajax({
-                                        url: "{{ route('screening.rekap') }}",
-                                        data: {
-                                            length: -1,
-                                            ...formFilter.form
-                                            .serializeArray()
-                                        },
-                                        success: function(json) {
-                                            var oldData = dt.rows()
-                                                .data();
-                                            dt.clear().rows.add(json
-                                                .data).draw();
-                                            $.fn.dataTable.ext.buttons
-                                                .excelHtml5
-                                                .action.call(self, e,
-                                                    dt, button,
-                                                    config);
-                                            dt.clear().rows.add(oldData)
-                                                .draw();
-                                        }
-                                    });
-                                }
-                            },
-                            {
-                                extend: 'pdf',
-                                text: '<i class="mdi mdi-file-pdf-box me-1"></i>Pdf',
-                                className: 'dropdown-item',
-                                exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-                                        13, 14, 15
-                                    ],
-                                },
-                                customize: function(doc) {
-                                    // Set orientation to landscape
-                                    doc.pageOrientation = 'landscape';
+                // dom: '<"card-header flex-column flex-md-row"<"head-label text-center"><"dt-action-buttons text-end pt-3 pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+                // buttons: [{
+                //     extend: 'collection',
+                //     className: 'btn btn-label-primary dropdown-toggle me-2',
+                //     text: '<i class="mdi mdi-export-variant me-sm-1"></i> <span class="d-none d-sm-inline-block">Export</span>',
+                //     buttons: [{
+                //             extend: 'excelHtml5',
+                //             text: '<i class="mdi mdi-file-excel-outline me-1"></i>Excel',
+                //             className: 'dropdown-item',
+                //             exportOptions: {
+                //                 columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+                //                     13, 14, 15
+                //                 ],
+                //             },
+                //             action: function(e, dt, button, config) {
+                //                 var self = this;
+                //                 $.ajax({
+                //                     url: "{{ route('screening.rekap') }}",
+                //                     data: {
+                //                         length: -1,
+                //                         ...formFilter.form
+                //                         .serializeArray()
+                //                     },
+                //                     success: function(json) {
+                //                         var oldData = dt.rows()
+                //                             .data();
+                //                         dt.clear().rows.add(json
+                //                             .data).draw();
+                //                         $.fn.dataTable.ext.buttons
+                //                             .excelHtml5
+                //                             .action.call(self, e,
+                //                                 dt, button,
+                //                                 config);
+                //                         dt.clear().rows.add(oldData)
+                //                             .draw();
+                //                     }
+                //                 });
+                //             }
+                //         },
+                //         {
+                //             extend: 'pdf',
+                //             text: '<i class="mdi mdi-file-pdf-box me-1"></i>Pdf',
+                //             className: 'dropdown-item',
+                //             exportOptions: {
+                //                 columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+                //                     13, 14, 15
+                //                 ],
+                //             },
+                //             customize: function(doc) {
+                //                 // Set orientation to landscape
+                //                 doc.pageOrientation = 'landscape';
 
-                                    // Remove default title
-                                    doc.content = doc.content.filter(function(
-                                        item) {
-                                        return !(item.text && item.text
-                                            .includes(
-                                                'Screening | Pertamina Screening'
-                                            ));
-                                    });
+                //                 // Remove default title
+                //                 doc.content = doc.content.filter(function(
+                //                     item) {
+                //                     return !(item.text && item.text
+                //                         .includes(
+                //                             'Screening | Pertamina Screening'
+                //                         ));
+                //                 });
 
-                                    doc.content.unshift({
-                                        text: 'Tanggal: ' + new Date()
-                                            .toLocaleDateString(), // Custom date text
-                                        fontSize: 14,
-                                        bold: false,
-                                        margin: [0, 0, 0,
-                                            10
-                                        ], // Margin: left, top, right, bottom
-                                        alignment: 'center'
-                                    });
+                //                 doc.content.unshift({
+                //                     text: 'Tanggal: ' + new Date()
+                //                         .toLocaleDateString(), // Custom date text
+                //                     fontSize: 14,
+                //                     bold: false,
+                //                     margin: [0, 0, 0,
+                //                         10
+                //                     ], // Margin: left, top, right, bottom
+                //                     alignment: 'center'
+                //                 });
 
-                                    // Add border to table
-                                    if (doc.content[1] && doc.content[1].table) {
-                                        doc.content[1].layout = {
-                                            hLineWidth: function(i, node) {
-                                                return 1;
-                                            },
-                                            vLineWidth: function(i, node) {
-                                                return 1;
-                                            },
-                                            hLineColor: function(i, node) {
-                                                return '#aaa';
-                                            },
-                                            vLineColor: function(i, node) {
-                                                return '#aaa';
-                                            },
-                                            paddingLeft: function(i, node) {
-                                                return 4;
-                                            },
-                                            paddingRight: function(i, node) {
-                                                return 4;
-                                            }
-                                        };
-                                    }
-                                },
-                                action: function(e, dt, button, config) {
-                                    var self = this;
-                                    $.ajax({
-                                        url: "{{ route('screening.rekap') }}",
-                                        data: {
-                                            length: -1,
-                                            ...formFilter.form
-                                            .serializeArray()
-                                        },
-                                        success: function(json) {
-                                            var oldData = dt.rows()
-                                                .data();
-                                            dt.clear().rows.add(json
-                                                .data).draw();
-                                            $.fn.dataTable.ext.buttons
-                                                .pdfHtml5
-                                                .action.call(self, e,
-                                                    dt, button,
-                                                    config);
-                                            dt.clear().rows.add(oldData)
-                                                .draw();
-                                        }
-                                    });
-                                }
-                            },
-                        ]
-                    },
-
-                ],
+                //                 // Add border to table
+                //                 if (doc.content[1] && doc.content[1].table) {
+                //                     doc.content[1].layout = {
+                //                         hLineWidth: function(i, node) {
+                //                             return 1;
+                //                         },
+                //                         vLineWidth: function(i, node) {
+                //                             return 1;
+                //                         },
+                //                         hLineColor: function(i, node) {
+                //                             return '#aaa';
+                //                         },
+                //                         vLineColor: function(i, node) {
+                //                             return '#aaa';
+                //                         },
+                //                         paddingLeft: function(i, node) {
+                //                             return 4;
+                //                         },
+                //                         paddingRight: function(i, node) {
+                //                             return 4;
+                //                         }
+                //                     };
+                //                 }
+                //             },
+                //             action: function(e, dt, button, config) {
+                //                 var self = this;
+                //                 $.ajax({
+                //                     url: "{{ route('screening.rekap') }}",
+                //                     data: {
+                //                         length: -1,
+                //                         ...formFilter.form
+                //                         .serializeArray()
+                //                     },
+                //                     success: function(json) {
+                //                         var oldData = dt.rows()
+                //                             .data();
+                //                         dt.clear().rows.add(json
+                //                             .data).draw();
+                //                         $.fn.dataTable.ext.buttons
+                //                             .pdfHtml5
+                //                             .action.call(self, e,
+                //                                 dt, button,
+                //                                 config);
+                //                         dt.clear().rows.add(oldData)
+                //                             .draw();
+                //                     }
+                //                 });
+                //             }
+                //         },
+                //     ]
+                // }, ],
                 order: [0, 'desc'],
                 ajax: {
                     url: "{{ route('screening.rekap') }}",
@@ -294,7 +293,7 @@
                         name: "sistole_span"
                     },
                     {
-                        data: "diastole",
+                        data: "diastole_span",
                         name: "diastole"
                     }, {
                         data: "hr_span",
@@ -303,18 +302,18 @@
                         data: "temp_span",
                         name: "temp_span"
                     }, {
-                        data: "rr",
+                        data: "rr_span",
                         name: "rr"
                     }, {
-                        data: "spo2",
+                        data: "spo2_span",
                         name: "spo2"
                     },
                     {
-                        data: "romberg",
+                        data: "romberg_span",
                         name: "romberg"
                     },
                     {
-                        data: "alcohol",
+                        data: "alcohol_span",
                         name: "alcohol"
                     },
                     {
@@ -326,8 +325,8 @@
                         name: "anamnesis"
                     },
                     {
-                        data: "description",
-                        name: "description"
+                        data: "high_risk_span",
+                        name: "high_risk"
                     },
                     {
                         data: "aksi",

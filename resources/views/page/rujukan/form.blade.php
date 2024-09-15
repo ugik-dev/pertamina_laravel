@@ -23,15 +23,14 @@
 
     <h4 class="py-3 mb-4">
         @if (!empty($id))
-            <span class="text-muted fw-light">Rujukan Call /</span>
-            Form Kejadian
-
+            <span class="text-muted fw-light">Rujukan /</span>
+            Form Edit
             {{-- <a class="btn btn-primary float-end ms-2" href="{{ route('detail-rujukan', $dataContent->id) }}"> <i
                     class="mdi mdi-keyboard-backspace me-2"></i>
                 Kembali</a> --}}
         @else
-            <span class="text-muted fw-light">Tindakan /</span>
-            Tambah Tindakan Baru
+            <span class="text-muted fw-light">Rujukan /</span>
+            Form
         @endif
         <a class="btn btn-primary float-end ms-2"
             href='{{ !empty($id) ? route('detail-rujukan', $dataContent->id) : (!empty($dataForm->request_call_id) ? route('detail-rujukan', $dataForm->request_call_id) : route('rekap.tindakan')) }}';>

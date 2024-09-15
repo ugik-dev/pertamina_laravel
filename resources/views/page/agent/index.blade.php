@@ -455,7 +455,7 @@
                 ],
 
             });
-            $('div.head-label').html('<h5 class="card-title mb-0">Data Agent</h5>')
+            $('div.head-label').html('<h5 class="card-title mb-0">Data User</h5>')
 
             var UserForm = {
                 'form': $('#form-user'),

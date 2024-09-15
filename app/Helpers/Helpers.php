@@ -13,9 +13,9 @@ class Helpers
     // Rentang Sistole 90-140
     if ($val == "N") {
       return "<span class='text-success'> - </span>";
-    } else {
+    } else if ($val == "Y") {
       return "<span class='text-danger'> HIGH RISK</span>";
-    }
+    } else return "-";
   }
 
   public static function spanSistole($val, $cek = false)
