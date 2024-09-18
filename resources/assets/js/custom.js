@@ -429,6 +429,23 @@ function swalBerhasil(label = 'Berhasil !!', btn = true) {
   });
 }
 
+function swalBerhasil2(message = '', label = 'Berhasil !!', btn = true) {
+  btnclass = btn ? '' : 'd-none';
+  Swal.fire({
+    title: label,
+    text: message,
+    icon: 'success',
+    showClass: {
+      popup: 'animate__animated animate__flipInX'
+    },
+    allowOutsideClick: !true,
+    customClass: {
+      confirmButton: `btn btn-primary waves-effect waves-light ${btnclass}`
+    },
+    buttonsStyling: false
+  });
+}
+
 function swalError(message = '', label = 'Gagal !!', btn = true) {
   Swal.fire({
     title: label,

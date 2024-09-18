@@ -77,9 +77,9 @@
                     </div>
 
                     <div class="col-lg-12 col-sm-12">
-                        <div id="result" class="card mb-2 ">
+                        <div id="result" style="display: none" class="card mb-2 ">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-8">
                                     <div class="card-body">
                                         <div class="card-info mb-2">
                                             <strong>
@@ -95,10 +95,25 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-6 text-end d-flex align-items-end">
+                                <div class="col-4 text-end d-flex align-items-end">
                                     <div class="card-body pb-0 pt-3">
-                                        <img src="{{ asset('assets/img/illustrations/scanner2.png') }}" alt="Ratings"
-                                            class="img-fluid" width="95">
+                                        <div class="col-lg-3 d-flex justify-content-center align-items-center">
+                                            <svg style="display: none" xmlns="http://www.w3.org/2000/svg" id="icon-close"
+                                                viewBox="0 0 24 24">
+                                                <title>close</title>
+                                                <path
+                                                    d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
+                                                    fill="red" />
+                                            </svg>
+                                            <svg style="display: none" xmlns="http://www.w3.org/2000/svg" id="icon-check"
+                                                viewBox="0 0 24 24">
+                                                <title>check-bold</title>
+                                                <path fill="green"
+                                                    d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z" />
+                                            </svg>
+                                        </div>
+                                        {{-- <img src="{{ asset('assets/img/illustrations/scanner2.png') }}" alt="Ratings"
+                                            class="img-fluid" width="95"> --}}
                                     </div>
                                 </div>
                             </div>
@@ -223,7 +238,7 @@
                     html5QrcodeScanner.render(onScanSuccess, onScanFailure);
                 }, 5000); // 5000 milidetik = 5 detik
             }
-            // scanProcess("d3286f12-a0ab-45a7-aba9-11b7e15f4723");
+            scanProcess("d3286f12-a0ab-45a7-aba9-11b7e15f4723");
 
             function scanProcess(decodedResult) {
                 swalLoading();
@@ -260,6 +275,11 @@
                         Result.alcohol_level.html(user['screening']["alcohol_level"])
                         Result.anamnesis.html(user['screening']["anamnesis"])
                         Result.description.html(user['screening']["description"])
+                        if (user['screening']["fitality"] == 'Y') {
+                            swalBerhasil2("Anda dalam kondisi FIT", "FIT !");
+                        } else {
+                            swalError("Anda dalam kondisi tidak FIT", "UNFIT !!");
+                        }
                         Result.result.html(user['screening']["fitality"] == 'Y' ?
                             "<h4 class='badge rounded-pill bg-label-success'><strong>FIT</strong></h4>" :
                             "<h4 class='badge rounded-pill bg-label-danger'><strong>UNFIT</strong></h4>"
