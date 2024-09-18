@@ -238,7 +238,7 @@
                     html5QrcodeScanner.render(onScanSuccess, onScanFailure);
                 }, 5000); // 5000 milidetik = 5 detik
             }
-            scanProcess("d3286f12-a0ab-45a7-aba9-11b7e15f4723");
+            // scanProcess("d3286f12-a0ab-45a7-aba9-11b7e15f4723");
 
             function scanProcess(decodedResult) {
                 swalLoading();
@@ -276,7 +276,7 @@
                         Result.anamnesis.html(user['screening']["anamnesis"])
                         Result.description.html(user['screening']["description"])
                         if (user['screening']["fitality"] == 'Y') {
-                            swalBerhasil2("Anda dalam kondisi FIT", "FIT !");
+                            swalBerhasil2("Anda dalam kondisi FIT", "FIT !", true);
                         } else {
                             swalError("Anda dalam kondisi tidak FIT", "UNFIT !!");
                         }

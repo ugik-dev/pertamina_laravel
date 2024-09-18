@@ -438,7 +438,7 @@ function swalBerhasil2(message = '', label = 'Berhasil !!', btn = true) {
     showClass: {
       popup: 'animate__animated animate__flipInX'
     },
-    allowOutsideClick: !true,
+    allowOutsideClick: true,
     customClass: {
       confirmButton: `btn btn-primary waves-effect waves-light ${btnclass}`
     },
