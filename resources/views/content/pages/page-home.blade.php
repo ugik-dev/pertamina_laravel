@@ -997,7 +997,8 @@
                     }
                 },
                 "order": [
-                    [3, 'desc']
+                    [3, 'desc'],
+                    [0, 'asc'],
                 ],
                 "pageLength": 10, // Set default page length to 10
                 "lengthChange": false, // Disable length change dropdown
