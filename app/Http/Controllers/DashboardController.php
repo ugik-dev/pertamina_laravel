@@ -21,12 +21,13 @@ class DashboardController extends Controller
             ->get();
 
         $results = User::whereHas('unit', function ($query) {
-            $query->where('category', 'internal');
+            // $query->where('category', 'internal');
         })->with(['field_work', 'unit', 'screenings' => function ($query) {
             // $query->whereDate('created_at', '2024-09-06')
             $query->whereDate('created_at', Carbon::today())
                 ->orderBy('created_at', 'desc');
         }])->get();
+
         $external  = User::whereHas('unit', function ($query) {
             $query->where('category', 'external');
         })->whereHas('screenings', function ($query) {
