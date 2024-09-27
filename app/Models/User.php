@@ -35,6 +35,7 @@ class User extends Authenticatable
         'qrcode',
         'dob',
         'rm_number',
+        'company_id',
         'guarantor_number',
         'empoyee_id',
         'gender',
