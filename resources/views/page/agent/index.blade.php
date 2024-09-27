@@ -54,6 +54,7 @@
                         <th wlass="padat">Aksi</th>
                         <th>Nama</th>
                         <th>Lokasi</th>
+                        <th>PT/PJP</th>
                         <th>Kategori</th>
                         <th>Role</th>
                         <th>ID Pekerja</th>
@@ -598,9 +599,11 @@
                         '</div>' +
                         `<a href="<?= url('info-desa/sub-wilayah') ?>/${user['id']}" title="Lihat Detail" class="btn btn-sm btn-text-secondary rounded-pill btn-icon item-edit"><i class="mdi mdi-eye-outline" ></i></a>`;
                     renderData.push([user['id'], button, user['name'],
-                        user['unit']['name'], user['field_work'] != null ? user['field_work'][
-                            'name'
-                        ] : "", user['role_title'], user['empoyee_id'], user['guarantor_number'],
+                        user['unit']['name'],
+                        user['company'] != null ? user['company']['name'] : "",
+                        user['field_work'] != null ? user['field_work']['name'] : "",
+                        user[
+                            'role_title'], user['empoyee_id'], user['guarantor_number'],
                         user[
                             'dob'],
                         user['phone'], user['email'],

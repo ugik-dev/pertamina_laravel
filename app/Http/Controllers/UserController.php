@@ -68,7 +68,7 @@ class UserController extends Controller
     public function get(Request $request)
     {
         try {
-            $query =  User::withRole()->with(['unit', 'field_work']);
+            $query =  User::withRole()->with(['unit', 'field_work', 'company']);
             if (!empty($request->id)) $query->where('id', '=', $request->id);
             $res = $query->get()->toArray();
             $data =   DataStructure::keyValueObj($res, 'id');
