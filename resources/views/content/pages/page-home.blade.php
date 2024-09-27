@@ -181,7 +181,7 @@
                                 <thead>
                                     <tr>
                                         <th>Nama</th>
-                                        <th>Bidang</th>
+                                        <th>PT/PJP</th>
                                         <th>Status</th>
                                         <th>Waktu</th>
                                     </tr>
@@ -190,7 +190,8 @@
                                     @foreach ($dataContent['internalUser'] as $internal)
                                         <tr>
                                             <td>{{ $internal->name }}</td>
-                                            <td>{{ $internal->field_work?->high_risk == 'Y' ? 'HIGH RISK' : '' }}</td>
+                                            <td>{{ $internal->company->name }}</td>
+                                            {{-- <td>{{ $internal->field_work?->high_risk == 'Y' ? 'HIGH RISK' : '' }}</td> --}}
                                             <td>{!! spanFitality($internal->screenings?->first() ? $internal->screenings?->first()->fitality : '') !!}
                                             </td>
                                             <td>{!! $internal->screenings?->first()
@@ -995,6 +996,9 @@
                         "next": "Next"
                     }
                 },
+                "order": [
+                    [3, 'asc']
+                ],
                 "pageLength": 10, // Set default page length to 10
                 "lengthChange": false, // Disable length change dropdown
                 "pagingType": "simple_numbers", // Use simple pagination type
