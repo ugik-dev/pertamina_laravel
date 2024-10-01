@@ -218,7 +218,7 @@ class RujukanController extends Controller
                     }
 
                     // Delete button
-                    $aksi .= '<li><a href="javascript:;" data-id="' . $data->id . '" class="delete dropdown-item text-danger"><i class="mdi mdi-trash-can-outline"></i> Hapus</a></li>';
+                    $aksi .= '<li><button href="javascript:;" data-id="' . $data->id . '" class="delete delBtn dropdown-item text-danger"><i class="mdi mdi-trash-can-outline"></i> Hapus</button></li>';
 
                     // Close dropdown structure
                     $aksi .= '</ul></div>';
