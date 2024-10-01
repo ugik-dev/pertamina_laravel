@@ -569,9 +569,13 @@
                         name: "anamnesis"
                     },
                     {
-                        data: "high_risk_span",
-                        name: "high_risk"
-                    },
+                        data: "description",
+                        name: "description"
+                    }
+                    // {
+                    //     data: "high_risk_span",
+                    //     name: "high_risk"
+                    // },
 
                 ]
             });
