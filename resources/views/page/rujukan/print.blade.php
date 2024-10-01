@@ -201,7 +201,7 @@
             </tr>
             <tr>
                 <td>Nama & hubungan keluarga penanggung:
-                    <br>Pekerja
+                    <br>{{ $dataForm->realation_desc }}
                 </td>
                 <td>Pekerjaan:
                     @php $dataForm->pasien->load('unit') @endphp

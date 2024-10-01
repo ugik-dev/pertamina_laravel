@@ -4,7 +4,7 @@
 
 @extends('layouts/layoutMaster')
 
-@section('title', 'Emergency Callls')
+@section('title', 'Rujukan')
 
 @section('content')
     <h4 class="py-3 mb-4">
@@ -67,8 +67,8 @@
                     url: "{{ route('rujukan.index') }}"
                 },
                 columns: [{
-                    data: "id",
-                    name: "id"
+                    data: "DT_RowIndex",
+                    name: "DT_RowIndex"
                 }, {
                     data: "span_time",
                     name: "span_time"

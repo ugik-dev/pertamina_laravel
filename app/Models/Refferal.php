@@ -9,8 +9,8 @@ class Refferal extends Model
 {
     use HasFactory;
     protected $fillable = [
-        // 'request_call_id',
         'user_id',
+        'ia_dari',
         'doctor_id',
         'assist_id',
         'form_data',
@@ -21,7 +21,8 @@ class Refferal extends Model
         'konsultasi_diminta',
         'atas_beban',
         'tujuan',
-        // 'nama_pemanggil',
+        'relation_desc',
+        'no_poli',
         // 'nama_pemanggil',
         // 'phone_pemanggil',
         // 'nama_pasien',

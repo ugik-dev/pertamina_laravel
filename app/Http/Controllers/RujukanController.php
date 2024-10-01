@@ -124,23 +124,25 @@ class RujukanController extends Controller
         if ($request->ajax()) {
             $data =  Refferal::latest()->get();
             // $data =  Refferal::where('id', 4)->get();
-            return DataTables::of($data)->addColumn('id', function ($data) {
-                return $data->id;
-            })->addColumn('pasien_name', function ($data) {
-                return $data->pasien->name ?? '';
-            })->addColumn('doctor_name', function ($data) {
-                return $data->doctor->name ?? '';
-            })->addColumn('assist_name', function ($data) {
-                return $data->assist->name ?? '';
-            })->addColumn('span_time', function ($data) {
-                return \Carbon\Carbon::parse($data->created_at)->format('Y-m-d h:i');
-            })->addColumn('aksi', function ($data) {
-                return '
+            // dd($data[0]->assist ? 'null' : 'x');
+            return DataTables::of($data)->addIndexColumn()
+                ->addColumn('id', function ($data) {
+                    return $data->id;
+                })->addColumn('pasien_name', function ($data) {
+                    return $data->pasien->name ?? '';
+                })->addColumn('doctor_name', function ($data) {
+                    return $data->doctor->name ?? '';
+                })->addColumn('assist_name', function ($data) {
+                    return  $data->assist->name ?? '';
+                })->addColumn('span_time', function ($data) {
+                    return \Carbon\Carbon::parse($data->created_at)->format('Y-m-d h:i');
+                })->addColumn('aksi', function ($data) {
+                    return '
                     <a href="' . route('rujukan.open', $data->id) . '" class="btn btn-primary">Open</a>
                     <a href="' . route('rujukan.edit', $data->id) . '" class="btn btn-warning">Edit</a>
                     <button data-id="' .  $data->id . '" class="delBtn btn btn-danger">Hapus</button>
                     ';
-            })->rawColumns(['aksi'])->make(true);
+                })->rawColumns(['aksi'])->make(true);
         }
         return view('page.rujukan.index', compact('request'));
     }

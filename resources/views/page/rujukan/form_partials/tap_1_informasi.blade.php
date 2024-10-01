@@ -49,6 +49,11 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-2">
+                            <label for="no_poli" class="form-label">No Poli :</label>
+                            <input class="form-control" id="no_poli" name="no_poli"
+                                value="{{ $dataForm->no_poli ?? '' }}">
+                        </div>
+                        <div class="col-md-6 mb-2">
                             <label for="tujuan" class="form-label">Kepada RS/Dokter :</label>
                             <input class="form-control" id="tujuan" name="tujuan"
                                 value="{{ $dataForm->tujuan ?? '' }}">
@@ -57,6 +62,18 @@
                             <label for="atas_beban" class="form-label">Biaya atas beban :</label>
                             <input class="form-control" id="atas_beban" name="atas_beban"
                                 value="{{ $dataForm->atas_beban ?? '' }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <label for="ia_dari" class="form-label">I/A dari :</label>
+                            <input class="form-control" id="ia_dari" name="ia_dari"
+                                value="{{ $dataForm->ia_dari ?? '' }}">
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label for="relation_desc" class="form-label">Nama & Hubungan :</label>
+                            <input class="form-control" id="relation_desc" name="relation_desc"
+                                value="{{ $dataForm->relation_desc ?? 'Pekerja' }}">
                         </div>
                     </div>
                 </div>

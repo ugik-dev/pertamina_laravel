@@ -234,7 +234,9 @@
                         <tr class="no-border">
                             <td class="no-border">I/A dari</td>
                             <td class="no-border">:</td>
-                            <td class="no-border"> .................................................</td>
+                            <td class="no-border">
+                                {{ $dataForm->ia_dari ?? '.................................................' }}
+                            </td>
                         </tr>
                         <tr class="no-border">
                             <td class="no-border">Tgl. Lahir</td>
@@ -268,7 +270,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2">No. Poli/RS<br> Pengirim :
+                <td colspan="2">No. Poli/RS<br> Pengirim : {{ $dataForm->no_poli }}
                 </td>
                 <td colspan="2" class="text-center" style="border-top: 0px; ">
                     <span style="font-weight: bold !important">SURAT PERMINTAAN KONSULTASI</span>
@@ -290,7 +292,7 @@
             </tr>
             <tr>
                 <td>Nama & hubungan keluarga penanggung:
-                    <br>Pekerja
+                    <br>{{ $dataForm->relation_desc ?? 'Pekerja' }}
                 </td>
                 <td>Pekerjaan:
                     <br>{{ $dataForm->pasien->company->name }} - {{ $dataForm->pasien->unit->name }}
