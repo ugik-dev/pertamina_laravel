@@ -95,8 +95,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('', [RujukanController::class, 'index'])->name('index');
         Route::get('form', [RujukanController::class, 'form_fresh'])->name('form');
         Route::get('form/{id}', [RujukanController::class, 'form_edit'])->name('edit');
+        Route::get('upload/{id}', [RujukanController::class, 'upload'])->name('upload');
         Route::post('form', [RujukanController::class, 'form_save_new_fresh'])->name('save');
         Route::post('form/{id}', [RujukanController::class, 'form_save_edit'])->name('save-edit');
+        Route::post('upload/{id}', [RujukanController::class, 'upload_process'])->name('upload-process');
         Route::delete('/', [RujukanController::class, 'destroy'])->name('delete');
 
         Route::get('open/{id}', [PdfController::class, 'rujukan'])->name('open');

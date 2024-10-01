@@ -23,6 +23,7 @@ class Refferal extends Model
         'tujuan',
         'relation_desc',
         'no_poli',
+        'file_tte',
         // 'nama_pemanggil',
         // 'phone_pemanggil',
         // 'nama_pasien',

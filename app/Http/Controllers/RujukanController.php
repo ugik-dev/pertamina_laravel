@@ -39,6 +39,16 @@ class RujukanController extends Controller
         return view('page.rujukan.form', $compact);
     }
 
+
+    public function upload($id, Request $request)
+    {
+        $data = Refferal::findOrFail($id);
+        // dd($data->doctor);
+        $form_url = route('rujukan.upload-process', ['id' => $data->id,]);
+        $compact = ['dataContent' => $data, 'form_url' => $form_url, 'dataForm' => $data];
+        return view('page.rujukan.upload', $compact);
+    }
+
     public function form_edit_fresh($id)
     {
         $data_all = Form::with('user')->find($id);
@@ -64,6 +74,56 @@ class RujukanController extends Controller
         }
     }
 
+    public function upload_process($id,  Request $request)
+    {
+        try {
+            // if ($id) {
+            $data = Refferal::findOrFail($id);
+            // }
+
+            $formData = $request->except(['_token', 'gambar']);
+
+
+
+            // if (!empty($id)) {
+            // $data->update($formData);
+            // } else {
+            // $res = Refferal::create($formData);
+            // $id =  $res->id;
+
+            if ($request->hasFile('file_upload')) {
+                // $photo = $request->file('file_upload');
+
+                // $path = $photo->storeAs('upload/tte',  'namafile+timestamp', 'public');
+                // $data->file_tte = filename;
+                // $data->save();
+
+                $photo = $request->file('file_upload');
+
+                // Generate a unique filename using the original name and timestamp
+                $timestamp = time();
+                $originalName = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                $extension = $photo->getClientOriginalExtension();
+                $filename = $originalName . '_' . $timestamp . '.' . $extension;
+
+                // Store the file in the 'upload/tte' directory in the 'public' disk
+                $path = $photo->storeAs('upload/tte', $filename, 'public');
+
+                // Save the filename to the database
+                $data->file_tte = $filename;
+                $data->save();
+            }
+            // }
+
+
+
+
+
+            return $this->responseSuccess($id);
+        } catch (Exception $ex) {
+            return  $this->ResponseError($ex->getMessage());
+        }
+    }
 
     public function form_save($id, $id_form = null,  Request $request)
     {
@@ -137,11 +197,33 @@ class RujukanController extends Controller
                 })->addColumn('span_time', function ($data) {
                     return \Carbon\Carbon::parse($data->created_at)->format('Y-m-d h:i');
                 })->addColumn('aksi', function ($data) {
-                    return '
-                    <a href="' . route('rujukan.open', $data->id) . '" class="btn btn-primary">Open</a>
-                    <a href="' . route('rujukan.edit', $data->id) . '" class="btn btn-warning">Edit</a>
-                    <button data-id="' .  $data->id . '" class="delBtn btn btn-danger">Hapus</button>
-                    ';
+                    $aksi = '<div class="d-inline-block">
+                <a href="javascript:;" class="btn btn-sm btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <i class="mdi mdi-dots-vertical"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end m-0">';
+
+                    // Print Draft button
+                    $aksi .= '<li><a href="' . route('rujukan.open', $data->id) . '" class="dropdown-item"><i class="mdi mdi-printer"></i> Print Draft</a></li>';
+
+                    // Edit button
+                    $aksi .= '<li><a href="' . route('rujukan.edit', $data->id) . '" class="dropdown-item"><i class="mdi mdi-pencil-outline"></i> Edit</a></li>';
+
+                    // Upload button
+                    $aksi .= '<li><a href="' . route('rujukan.upload', $data->id) . '" class="dropdown-item"><i class="mdi mdi-cloud-upload"></i> Upload</a></li>';
+
+                    // Check if file_tte is not null before showing TTE button
+                    if (!is_null($data->file_tte)) {
+                        $aksi .= '<li><a target="_blank" href="' . url('storage/upload/tte', $data->file_tte) . '" class="dropdown-item"><i class="mdi mdi-file-document-outline"></i> TTE</a></li>';
+                    }
+
+                    // Delete button
+                    $aksi .= '<li><a href="javascript:;" data-id="' . $data->id . '" class="delete dropdown-item text-danger"><i class="mdi mdi-trash-can-outline"></i> Hapus</a></li>';
+
+                    // Close dropdown structure
+                    $aksi .= '</ul></div>';
+
+                    return $aksi;
                 })->rawColumns(['aksi'])->make(true);
         }
         return view('page.rujukan.index', compact('request'));
