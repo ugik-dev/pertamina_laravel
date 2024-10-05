@@ -276,7 +276,7 @@
                 }
                 html = `
                 <div id="itemRow_${drugId}">
-                <input name="receipt_drug_id[]" value="${cur_id}">
+                <input name="receipt_drug_id[]" hidden value="${cur_id}">
                 
                 <div class="row mt-2">
                     <div class="col-lg-9">

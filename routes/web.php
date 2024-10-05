@@ -190,6 +190,15 @@ Route::middleware(['auth'])->group(function () {
         Route::put('', [FieldController::class, 'update'])->name('update');
         Route::delete('/', [FieldController::class, 'delete'])->name('delete');
     });
+
+
+    Route::prefix('manage-drug')->name('drug.')->group(function () {
+        Route::get('', [DrugController::class, 'index'])->name('index');
+        Route::get('get', [DrugController::class, 'get'])->name('get');
+        Route::post('', [DrugController::class, 'create'])->name('create');
+        Route::put('', [DrugController::class, 'update'])->name('update');
+        Route::delete('/', [DrugController::class, 'delete'])->name('delete');
+    });
     Route::prefix('manage-live-location')->name('live-location.')->group(function () {
         Route::get('', [LiveLocationController::class, 'index'])->name('index');
         Route::get('get', [LiveLocationController::class, 'get'])->name('get');

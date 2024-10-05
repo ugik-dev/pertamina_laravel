@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Drug extends Model
 {
     use HasFactory;
+    protected $fillable = ['name', 'satuan'];
 
     public function scopeWithRole($query)
     {

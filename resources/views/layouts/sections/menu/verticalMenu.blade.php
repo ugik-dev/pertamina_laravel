@@ -125,7 +125,11 @@
                         <div>PT/PJP</div>
                     </a>
                 </li>
-
+                <li class="menu-item">
+                    <a href="{{ route('drug.index') }}" class="menu-link">
+                        <div>Obat</div>
+                    </a>
+                </li>
             </ul>
         </li>
 
