@@ -5,5 +5,8 @@
         "500": "D:\\laravel10\\psc-app\\storage\\fonts\/inter_500_5227956572435006df168ae4e07c5148",
         "600": "D:\\laravel10\\psc-app\\storage\\fonts\/inter_600_d0d96b12edf8a78fd85c552d12762fb0",
         "bold": "inter_bold_868976cd8a549429e4b1d38e6b1b6bed"
+    },
+    "great vibes": {
+        "normal": "great_vibes_normal_0d324051d278d51231dc927548d03d9f"
     }
 }

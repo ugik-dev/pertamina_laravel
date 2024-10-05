@@ -13,11 +13,13 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DrugController;
 use App\Http\Controllers\FaskesController;
 use App\Http\Controllers\FieldController;
 use App\Http\Controllers\LiveLocationController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PortalController;
+use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\RekapController;
 use App\Http\Controllers\RujukanController;
 use App\Http\Controllers\ScreeningController;
@@ -89,6 +91,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('select2')->name('select2.')->group(function () {
         Route::get('user', [UserController::class, 'select2'])->name('user');
+        Route::get('drug', [DrugController::class, 'select2'])->name('drug');
     });
 
     Route::prefix('rujukan')->name('rujukan.')->group(function () {
@@ -102,6 +105,18 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/', [RujukanController::class, 'destroy'])->name('delete');
 
         Route::get('open/{id}', [PdfController::class, 'rujukan'])->name('open');
+    });
+
+    Route::prefix('recipe')->name('recipe.')->group(function () {
+        Route::get('', [RecipeController::class, 'index'])->name('index');
+        Route::get('form', [RecipeController::class, 'form_fresh'])->name('form');
+        Route::get('form/{id}', [RecipeController::class, 'form_edit'])->name('edit');
+        Route::get('upload/{id}', [RecipeController::class, 'upload'])->name('upload');
+        Route::post('form', [RecipeController::class, 'form_save_new_fresh'])->name('save');
+        Route::post('form/{id}', [RecipeController::class, 'form_save_edit'])->name('save-edit');
+        Route::post('upload/{id}', [RecipeController::class, 'upload_process'])->name('upload-process');
+        Route::delete('/', [RecipeController::class, 'destroy'])->name('delete');
+        Route::get('open/{id}', [PdfController::class, 'recipe'])->name('open');
     });
 
 

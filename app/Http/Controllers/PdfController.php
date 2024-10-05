@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Form;
+use App\Models\Recipe;
 use App\Models\Refferal;
 use App\Models\RequestCall;
 use Illuminate\Http\Request;
@@ -66,19 +67,11 @@ class PdfController extends Controller
     {
 
         $data_all = Refferal::findOrFail($id);
-        // dd($data_all);
-        // $jsonData = json_decode($data_all->form_data);
         $compact = [
             // 'dataContent' => $data,
             'dataForm' => $data_all,
         ];
 
-        // $data = [
-        //     'title' => 'Sample PDF Document',
-        //     'content' => 'Hello, this is a sample PDF document created with Dompdf in Laravel.',
-        // ];
-
-        // return view('page.emergency.print', $compact);
         Pdf::setOption([
             'dpi' => 150,
             'defaultFont' => 'sans-serif',
@@ -97,6 +90,40 @@ class PdfController extends Controller
             'margin_left' => 2,
         ]);
         $pdf->setPaper([0, 0, 596, 935], 'portrait');
+        // return $pdf->stream('document.pdf');
+        return Response::make($pdf->output(), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename=document.pdf',
+        ]);
+    }
+
+    public function recipe($id)
+    {
+
+        $data_all = Recipe::findOrFail($id);
+        $compact = [
+            // 'dataContent' => $data,
+            'dataForm' => $data_all,
+        ];
+
+        Pdf::setOption([
+            'dpi' => 150,
+            'defaultFont' => 'sans-serif',
+            'margin_top' => 2,    // Set top margin in millimeters
+            'margin_right' => 2,  // Set right margin in millimeters
+            'margin_bottom' => 2, // Set bottom margin in millimeters
+            'margin_left' => 2,
+        ]);
+        // return view('page.rujukan.print2', $compact,);
+        $pdf = PDF::loadView('page.recipe.print2', $compact, [
+            'dpi' => 150,
+            'defaultFont' => 'sans-serif',
+            'margin_top' => 2,
+            'margin_right' => 2,
+            'margin_bottom' => 2,
+            'margin_left' => 2,
+        ]);
+        $pdf->setPaper([0, 0, 298, 935], 'portrait');
         // return $pdf->stream('document.pdf');
         return Response::make($pdf->output(), 200, [
             'Content-Type' => 'application/pdf',

@@ -304,7 +304,6 @@
                 </td>
             </tr>
             <tr style="border-bottom: 1px;">
-
                 <td colspan="4" class="fill-remaining" style="border-bottom: 1px;">
                     <div class="table-cell">
                         <div class="table-row">

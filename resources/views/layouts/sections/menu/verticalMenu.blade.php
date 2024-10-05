@@ -62,7 +62,12 @@
                 <div>Rujukan</div>
             </a>
         </li>
-
+        <li class="menu-item">
+            <a href="{{ route('recipe.index') }}" class="menu-link ">
+                <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
+                <div>Resep</div>
+            </a>
+        </li>
         {{-- @can('crud_users')
             <li class="menu-item">
                 <a href="{{ route('pengguna') }}" class="menu-link ">
