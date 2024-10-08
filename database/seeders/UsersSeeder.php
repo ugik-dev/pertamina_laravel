@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Field;
 use App\Models\Screening;
+use App\Models\Sebuse;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -63,7 +64,7 @@ class UsersSeeder extends Seeder
 
             // }
 
-            for ($j = 0; $j < 7; $j++) {
+            for ($j = 0; $j < 30; $j++) {
                 Screening::create([
                     'user_id' => $user->id,
                     'doctor_id' => $admin->id, // doctor_id is ugikdev
@@ -80,6 +81,16 @@ class UsersSeeder extends Seeder
                     'fisik' => $faker->randomElement(['baik', 'umum', 'buruk']),
                     'created_at' => Carbon::create(2024, 9, 1 + $j), // Start from October 1, 2023
                     'updated_at' => Carbon::create(2024, 9, 1 + $j),
+                ]);
+
+                Sebuse::create([
+                    'user_id' => $user->id,
+                    'kal_val' => $faker->numberBetween(70, 160),
+                    'kal_attch' => $faker->randomElement(['upload/sebuse/kalori/1728421246_Putra_01-10-2024_20.42_signed.pdf', 'upload/sebuse/streching/1728421246_Putra_01-10-2024_20.42_signed.pdf', null]),
+                    'str_attch' => $faker->randomElement(['upload/sebuse/kalori/1728421246_Putra_01-10-2024_20.42_signed.pdf', 'upload/sebuse/streching/1728421246_Putra_01-10-2024_20.42_signed.pdf', null]),
+                    'gym_attch' => $faker->randomElement(['upload/sebuse/kalori/1728421246_Putra_01-10-2024_20.42_signed.pdf', 'upload/sebuse/streching/1728421246_Putra_01-10-2024_20.42_signed.pdf', null]),
+                    'created_at' => Carbon::create(2024, 10, 1 + $j), // Start from October 1, 2023
+                    'updated_at' => Carbon::create(2024, 10, 1 + $j),
                 ]);
             }
             Screening::create([

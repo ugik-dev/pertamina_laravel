@@ -98,6 +98,12 @@
                 <div>Rekap DCU</div>
             </a>
         </li>
+        <li class="menu-item">
+            <a href="{{ route('sebuse.rekap') }}" class="menu-link ">
+                <i class="menu-icon tf-icons mdi mdi-account-details-outline"></i>
+                <div>SEBUSE</div>
+            </a>
+        </li>
         <li class="menu-item" style="">
             <a href="javascript:void(0);" class="menu-link menu-toggle waves-effect">
                 <i class="menu-icon tf-icons mdi mdi-form-select"></i>

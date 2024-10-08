@@ -74,10 +74,19 @@ class User extends Authenticatable
     {
         return $query->select('users.*')->selectRaw('roles.title as role_title')->leftJoin('roles', 'roles.id', '=', 'users.role_id');
     }
-
+    public function scopeSebuseToday($query)
+    {
+        // return $query->whereHas('sebuses', function ($q) {
+        //     $q->whereDate('created_at', now()->toDateString());
+        // })->with('sebuses');
+    }
     public function screenings()
     {
         return $this->hasMany(Screening::class);
+    }
+    public function sebuses()
+    {
+        return $this->hasMany(Sebuse::class);
     }
     public function mcu()
     {

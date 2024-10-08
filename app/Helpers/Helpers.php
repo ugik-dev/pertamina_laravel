@@ -18,6 +18,82 @@ class Helpers
     } else return "-";
   }
 
+  public static function spanAttchSebuse($val, $cek = false)
+  {
+    // Rentang Sistole 90-140
+    if (!empty($val)) {
+      return "<a target='_blank' href=" . url('storage/' . $val) . "> <span class='text-success'> Lihat </span> </a>";
+    } else {
+      return "<span class='text-danger'> - </span>";
+    }
+  }
+
+  public static function groupingSebuse($data)
+  {
+    // Inisialisasi array untuk menampung hasil grouping
+    $groupedData = [];
+
+    foreach ($data as $row) {
+      // Ambil `user_id` dan `user_name`
+      $userId = $row->user_id;
+      $userName = $row->user_name;
+
+      // Ambil tahun, bulan, dan hari dari created_at
+      $year = $row->created_at->format('Y');
+      $month = $row->created_at->format('m');
+      $day = $row->created_at->format('d');
+
+      // Masukkan data ke dalam struktur array berdasarkan user_id
+      if (!isset($groupedData[$userId])) {
+        $groupedData[$userId] = [
+          'user_id' => $userId,
+          'user_name' => $userName,
+          'data' => []
+        ];
+      }
+
+      // Inisialisasi untuk setiap tahun, bulan, dan hari jika belum ada
+      if (!isset($groupedData[$userId]['data'][$year])) {
+        $groupedData[$userId]['data'][$year] = [];
+      }
+      if (!isset($groupedData[$userId]['data'][$year][$month])) {
+        $groupedData[$userId]['data'][$year][$month] = [];
+      }
+      if (!isset($groupedData[$userId]['data'][$year][$month][$day])) {
+        $groupedData[$userId]['data'][$year][$month][$day] = [];
+      }
+
+      // Masukkan row ke hari yang sesuai
+      $groupedData[$userId]['data'][$year][$month][$day][] = $row;
+    }
+
+    return $groupedData;
+  }
+  public static function spanStatusSebuse($val, $cek = false)
+  {
+    // Rentang Sistole 90-140
+    if (!empty($val)) {
+      if ($cek == "Y") {
+        return "<span class='text-success'> Verified </span>";
+      } else if ($cek == "N") {
+        return "<span class='text-danger'> Not Verified</span>";
+      } else return "-";
+    } else {
+      return "<span class='text-danger'> - </span>";
+    }
+  }
+
+  public static function spanStatusSebuse2($val, $cek = false)
+  {
+    // Rentang Sistole 90-140
+    // if (!empty($val)) {
+    if ($val == "Y") {
+      return "<span class='text-success'> Verified </span>";
+    } else if ($val == "N") {
+      return "<span class='text-danger'> Not Verified</span>";
+    } else return "-";
+  }
+
   public static function spanSistole($val, $cek = false)
   {
     // Rentang Sistole 90-140

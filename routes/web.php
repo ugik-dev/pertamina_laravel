@@ -23,6 +23,7 @@ use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\RekapController;
 use App\Http\Controllers\RujukanController;
 use App\Http\Controllers\ScreeningController;
+use App\Http\Controllers\SebuseController;
 use App\Http\Controllers\TindakanController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
@@ -44,6 +45,7 @@ use GuzzleHttp\Psr7\Request;
 Route::get('/', [PortalController::class, 'index'])->name('portal');
 Route::get('/home', [PortalController::class, 'home'])->name('home');
 Route::get('/scan-fitality', [PortalController::class, 'scan_fit'])->name('portal.scan-fit');
+Route::get('/scan-sebuse', [PortalController::class, 'scan_sebuse'])->name('portal.scan-sebuse');
 Route::get('/info/content', [PortalController::class, 'content']);
 Route::get('bank-data', [PortalController::class, 'bank_data'])->name('bank_data');
 Route::get('get-mcu/{code}', [PortalController::class, 'get_mcu'])->name('get-mcu');
@@ -53,6 +55,8 @@ Route::get('content/show/{slug}', [ContentController::class, 'show'])->name('con
 Route::get('/login', [LoginBasic::class, 'index'])->name('login');
 Route::get('/page-2', [Page2::class, 'index'])->name('pages-page-2');
 Route::get('scanner/checker/{code}', [ScreeningController::class, 'scanner_process'])->name('scanner.check');
+Route::get('scanner/checker-sebuse/{code}', [SebuseController::class, 'scanner_process'])->name('scanner.check-sebuse');
+Route::post('scanner/sebuse/post', [SebuseController::class, 'store'])->name('sebuse-post');
 
 // pages
 Route::get('/pages/misc-error', [MiscError::class, 'index'])->name('pages-misc-error');
@@ -87,6 +91,17 @@ Route::middleware(['auth'])->group(function () {
         Route::get('scan/{code}', [ScreeningController::class, 'scan_process'])->name('scan_get');
         Route::post('', [ScreeningController::class, 'create'])->name('create');
         Route::put('', [ScreeningController::class, 'update'])->name('update');
+    });
+
+    Route::prefix('sebuse')->name('sebuse.')->group(function () {
+        // Route::get('', [SebuseController::class, 'index'])->name('index');
+        Route::get('export', [SebuseController::class, 'export'])->name('export');
+        Route::get('rekap', [SebuseController::class, 'rekap'])->name('rekap');
+        Route::get('rekap/export', [SebuseController::class, 'export'])->name('rekap.export');
+        // Route::get('get', [SebuseController::class, 'get'])->name('get');
+        // Route::get('scan/{code}', [SebuseController::class, 'scan_process'])->name('scan_get');
+        // Route::post('', [SebuseController::class, 'create'])->name('create');
+        Route::put('verif', [SebuseController::class, 'verif'])->name('verif');
     });
 
     Route::prefix('select2')->name('select2.')->group(function () {

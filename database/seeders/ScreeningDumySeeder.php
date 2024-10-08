@@ -43,6 +43,7 @@ class ScreeningDumySeeder extends Seeder
                 'updated_at' => now(),
             ];
 
+
             // Insert data in batches
             if (($i + 1) % $batchSize === 0) {
                 DB::table('screenings')->insert($screenings);
