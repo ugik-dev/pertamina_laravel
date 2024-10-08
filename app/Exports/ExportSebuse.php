@@ -42,7 +42,7 @@ class ExportSebuse implements FromCollection,  WithStyles,  WithCustomStartCell,
 
     public function startCell(): string
     {
-        return 'A8';
+        return 'A9';
     }
 
     public function collection()
@@ -51,33 +51,36 @@ class ExportSebuse implements FromCollection,  WithStyles,  WithCustomStartCell,
         $datas = $this->data;
         $exportData = collect();
         $i = 1;
-        // foreach ($datas as $data) {
-        //     $pushData = [
-        //         $i,
-        //         Carbon::parse($data->created_at)->format('Y-m-d'),
-        //         Carbon::parse($data->created_at)->format('h:i'),
-        //         $data->user->unit->name,
-        //         $data->user_name,
-        //         // Carbon::parse($data->user->dob)->format('Y-m-d'),
-        //         Carbon::parse($data->user->dob)->age,
-        //         $data->user->field_work->name ?? "",
-        //         $data->anamnesis,
-        //         $data->fisik,
-        //         $data->sistole,
-        //         $data->diastole,
-        //         $data->hr,
-        //         $data->temp,
-        //         $data->rr,
-        //         $data->spo2,
-        //         $data->romberg == "Y" ? "Positif" : "-",
-        //         $data->alcohol == "Y" ? "Positif" : "-",
-        //         $data->alcohol_level,
-        //         $data->fitality == "Y" ? "FIT" : "UNFIT",
-        //         $data->description,
-        //     ];
-        //     $exportData->push($pushData);
-        //     $i++;
-        // }
+        foreach ($datas as $userId => $userData) {
+            $userName = $userData['user_name'];
+            $pushData = [];
+            $pushData[] = $i;
+            // Carbon::parse($data->created_at)->format('Y-m-d'),  // Tanggal
+            // Carbon::parse($data->created_at)->format('h:i'),    // Waktu
+            $pushData[] = $userData['user_name'];
+            // dd($userData['userdata']);
+            $pushData[] = Carbon::parse($userData['userdata']->dob)->age;
+            $pushData[] = "tb";
+            $pushData[] = "bb";
+            $pushData[] = "fat";
+            $pushData[] = "pinggang";
+            $pushData[] = "tkndrh";
+            $pushData[] = "gdp";
+            $pushData[] = "gd2";
+            $pushData[] = "kol";
+            $pushData[] = "as_ur";
+            $pushData[] = "skor";
+            foreach ($userData['data'] as $year => $months) {
+                foreach ($months as $month => $days) {
+                    foreach ($days as $day => $dailyData) {
+                        foreach ($dailyData as $data) {
+                        }
+                    }
+                }
+            }
+            $exportData->push($pushData);
+            $i++;
+        }
         $this->total_data = $i - 1;
         return $exportData;
     }
@@ -162,34 +165,71 @@ class ExportSebuse implements FromCollection,  WithStyles,  WithCustomStartCell,
                 $sheet->mergeCells('A1:T1');
                 $sheet->setCellValue('A1', 'Daily Check UP');
 
-                $sheet->mergeCells('A' . $i + 1 . ':I' . $i + 1);
-                $sheet->mergeCells('J' . $i + 1 . ':O' . $i + 1);
-                $sheet->mergeCells('P' . $i + 1 . ':R' . $i + 1);
-                $sheet->mergeCells('S' . $i + 1 . ':S' . $i + 2);
-                $sheet->mergeCells('T' . $i + 1 . ':T' . $i + 2);
-                $sheet->setCellValue('A' . $i + 1, 'Data Umum');
-                $sheet->setCellValue('J' . $i + 1, 'Tanda-Tanda Vital');
-                $sheet->setCellValue('P' . $i + 1, 'Pemeriksaan Tambahan');
-                $sheet->setCellValue('A' . $i + 2, 'No');
-                $sheet->setCellValue('B' . $i + 2, 'Tanggal');
-                $sheet->setCellValue('C' . $i + 2, 'Waktu');
-                $sheet->setCellValue('D' . $i + 2, 'Lokasi');
-                $sheet->setCellValue('E' . $i + 2, 'Nama');
-                $sheet->setCellValue('F' . $i + 2, 'Usia');
-                $sheet->setCellValue('G' . $i + 2, 'Kategori');
-                $sheet->setCellValue('H' . $i + 2, 'Anamnesis');
-                $sheet->setCellValue('I' . $i + 2, 'KU Fisik');
-                $sheet->setCellValue('J' . $i + 2, 'Sistole');
-                $sheet->setCellValue('K' . $i + 2, 'Diastole');
-                $sheet->setCellValue('L' . $i + 2, 'HR');
-                $sheet->setCellValue('M' . $i + 2, 'SUHU');
-                $sheet->setCellValue('N' . $i + 2, 'RR');
-                $sheet->setCellValue('O' . $i + 2, 'SPO2');
-                $sheet->setCellValue('P' . $i + 2, 'Romberg');
-                $sheet->setCellValue('Q' . $i + 2, 'Alcohol');
-                $sheet->setCellValue('R' . $i + 2, 'Alcohol Lvl');
-                $sheet->setCellValue('S' . $i + 1, 'FIT/UNFIT');
-                $sheet->setCellValue('T' . $i + 1, 'Ket');
+                $sheet->mergeCells('A' . $i + 1 . ':A' . $i + 3);
+                $sheet->mergeCells('B' . $i + 1 . ':B' . $i + 3);
+                $sheet->mergeCells('C' . $i + 1 . ':C' . $i + 3);
+                $sheet->mergeCells('D' . $i + 1 . ':D' . $i + 3);
+                $sheet->mergeCells('E' . $i + 1 . ':E' . $i + 3);
+                $sheet->mergeCells('F' . $i + 1 . ':F' . $i + 3);
+                $sheet->mergeCells('G' . $i + 1 . ':G' . $i + 3);
+                $sheet->mergeCells('H' . $i + 1 . ':H' . $i + 3);
+                $sheet->mergeCells('I' . $i + 1 . ':I' . $i + 3);
+                $sheet->mergeCells('J' . $i + 1 . ':J' . $i + 3);
+                $sheet->mergeCells('K' . $i + 1 . ':K' . $i + 3);
+                $sheet->mergeCells('L' . $i + 1 . ':L' . $i + 3);
+                $sheet->mergeCells('M' . $i + 1 . ':M' . $i + 3);
+                $sheet->mergeCells('M' . $i + 1 . ':M' . $i + 3);
+
+                // $sheet->mergeCells('J' . $i + 1 . ':O' . $i + 3);
+                // $sheet->mergeCells('P' . $i + 1 . ':R' . $i + 3);
+                // $sheet->mergeCells('S' . $i + 1 . ':S' . $i + 3);
+                // $sheet->mergeCells('T' . $i + 1 . ':T' . $i + 3);
+                // $sheet->setCellValue('A' . $i + 1, 'Data Umum');
+                // $sheet->setCellValue('J' . $i + 1, 'Tanda-Tanda Vital');
+                // $sheet->setCellValue('P' . $i + 1, 'Pemeriksaan Tambahan');
+                $sheet->setCellValue('A' . $i + 1, 'No');
+                $sheet->setCellValue('B' . $i + 1, 'Nama');
+                $sheet->setCellValue('C' . $i + 1, 'Usia');
+                $sheet->setCellValue('D' . $i + 1, 'TB');
+                $sheet->setCellValue('E' . $i + 1, 'BB');
+                $sheet->setCellValue('F' . $i + 1, 'Visceral Fat');
+                $sheet->setCellValue('G' . $i + 1, 'Lingkar Pinggang');
+                $sheet->setCellValue('H' . $i + 1, 'Tekanan Darah');
+                $sheet->setCellValue('I' . $i + 1, 'GDP');
+                $sheet->setCellValue('J' . $i + 1, 'GD2JPP');
+                $sheet->setCellValue('K' . $i + 1, 'Kolestrol Total');
+                $sheet->setCellValue('L' . $i + 1, 'Asam Urat');
+                $sheet->setCellValue('M' . $i + 1, 'Skor Kebugaran');
+                $sheet->setCellValue('N' . $i + 2, 'KARDIO (KALORI)');
+                $columnIndex = 'M';
+                $dateStart = Carbon::parse($this->filter['date_start']);
+                $dateEnd = Carbon::parse($this->filter['date_end']);
+                for ($date = $dateStart; $date->lte($dateEnd); $date->addDay()) {
+                    // dd(++$columnIndex);
+                    // dd($date->format('d'));
+
+                    // $sheet->setCellValue(++$columnIndex . $i + 3, "S");
+                    $sheet->setCellValue(++$columnIndex . $i + 3, $date->format('d'));
+
+                    // if (isset($userData['data'][$date->year][$date->format('m')][$date->format('d')])) {
+                    //     $dailyData = $userData['data'][$date->year][$date->format('m')][$date->format('d')];
+
+                    // Isi data per tanggal di kolom yang sesuai
+                    // foreach ($dailyData as $data) {
+                    //     $sheet->setCellValue($columnIndex . $row, $data->kardio ?? ''); // Contoh: data kardio
+                    // }
+                }
+
+                // Pindah ke kolom berikutnya (kanan)
+                // $columnIndex++;
+                // }
+                // dd($this->filter);
+                // $sheet->setCellValue('O' . $i + 2, 'SPO2');
+                // $sheet->setCellValue('P' . $i + 2, 'Romberg');
+                // $sheet->setCellValue('Q' . $i + 2, 'Alcohol');
+                // $sheet->setCellValue('R' . $i + 2, 'Alcohol Lvl');
+                // $sheet->setCellValue('S' . $i + 1, 'FIT/UNFIT');
+                // $sheet->setCellValue('T' . $i + 1, 'Ket');
                 $sheet->mergeCells('A3:B3');
                 $sheet->mergeCells('A4:B4');
                 $sheet->mergeCells('A5:B5');

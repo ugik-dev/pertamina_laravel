@@ -25,4 +25,9 @@ class Sebuse extends Model
         'mkn_status',
         'created_at', // Ini harus ditambahkan jika Anda melakukan updateOrCreate berdasarkan tanggal
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

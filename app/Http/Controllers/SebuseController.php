@@ -400,7 +400,7 @@ class SebuseController extends Controller
             $data = $query->whereBetween('sebuses.created_at', [$filter['date_start'], $filter['date_end']])->latest()->get();
         }
         $data =  Helpers::groupingSebuse($data);
-        dd($data);
+        // dd($data);
         // $data = $query->get();
         return Excel::download(new ExportSebuse($data, $filter),  $filename . '.xlsx');
     }

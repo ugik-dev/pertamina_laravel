@@ -37,7 +37,6 @@ class Helpers
       // Ambil `user_id` dan `user_name`
       $userId = $row->user_id;
       $userName = $row->user_name;
-
       // Ambil tahun, bulan, dan hari dari created_at
       $year = $row->created_at->format('Y');
       $month = $row->created_at->format('m');
@@ -48,6 +47,7 @@ class Helpers
         $groupedData[$userId] = [
           'user_id' => $userId,
           'user_name' => $userName,
+          'userdata' => $row->user,
           'data' => []
         ];
       }
