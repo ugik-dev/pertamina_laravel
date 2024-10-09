@@ -15,17 +15,20 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 
 
-class ExportSebuse implements FromCollection,  WithStyles,  WithCustomStartCell, WithEvents, WithTitle, WithProperties
+class ExportSebuse implements WithStyles,  WithCustomStartCell, WithEvents, WithTitle, WithProperties
 {
+    // FromCollection, 
     protected $data;
     protected $total_data;
     protected $filter;
+    protected $exportDatas;
 
     public function __construct($data, $filter)
     {
         $this->data = $data;
         $this->filter = $filter;
         $this->total_data = 0;
+        $this->exportDatas = collect();
     }
     public function title(): string
     {
@@ -47,42 +50,59 @@ class ExportSebuse implements FromCollection,  WithStyles,  WithCustomStartCell,
 
     public function collection()
     {
+        // dd("col");
+        // $datas = $this->data;
+        // $exportData = collect();
+        // $i = 1;
+        // foreach ($datas as $userId => $userData) {
+        //     $userName = $userData['user_name'];
+        //     $pushData = [];
+        //     $pushData[] = $i;
+        //     // Carbon::parse($data->created_at)->format('Y-m-d'),  // Tanggal
+        //     // Carbon::parse($data->created_at)->format('h:i'),    // Waktu
+        //     $pushData[] = $userData['user_name'];
+        //     // dd($userData['userdata']);
+        //     $pushData[] = Carbon::parse($userData['userdata']->dob)->age;
+        //     $pushData[] = "tb";
+        //     $pushData[] = "bb";
+        //     $pushData[] = "fat";
+        //     $pushData[] = "pinggang";
+        //     $pushData[] = "tkndrh";
+        //     $pushData[] = "gdp";
+        //     $pushData[] = "gd2";
+        //     $pushData[] = "kol";
+        //     $pushData[] = "as_ur";
+        //     $pushData[] = "skor";
+        //     $columnIndex = 'M';
+        //     $columnStart = 'N';
+        //     $dateStart = Carbon::parse($this->filter['date_start']);
+        //     $dateEnd = Carbon::parse($this->filter['date_end']);
+        //     $kal_frek = 0;
+        //     $kal_total = 0;
+        //     for ($date = $dateStart; $date->lte($dateEnd); $date->addDay()) {
+        //         $kal_val =  $userData['data'][$date->format('Y')][$date->format('m')][$date->format('d')][0]['kal_val'];
+        //         $pushData[] = $kal_val;
+        //         !empty($kal_val) ? $kal_frek++ : '';
+        //         !empty($kal_val) ? $kal_total += $kal_val : '';
+        //     }
+        //     $pushData[] = $kal_total;
+        //     $pushData[] = $kal_frek;
 
-        $datas = $this->data;
-        $exportData = collect();
-        $i = 1;
-        foreach ($datas as $userId => $userData) {
-            $userName = $userData['user_name'];
-            $pushData = [];
-            $pushData[] = $i;
-            // Carbon::parse($data->created_at)->format('Y-m-d'),  // Tanggal
-            // Carbon::parse($data->created_at)->format('h:i'),    // Waktu
-            $pushData[] = $userData['user_name'];
-            // dd($userData['userdata']);
-            $pushData[] = Carbon::parse($userData['userdata']->dob)->age;
-            $pushData[] = "tb";
-            $pushData[] = "bb";
-            $pushData[] = "fat";
-            $pushData[] = "pinggang";
-            $pushData[] = "tkndrh";
-            $pushData[] = "gdp";
-            $pushData[] = "gd2";
-            $pushData[] = "kol";
-            $pushData[] = "as_ur";
-            $pushData[] = "skor";
-            foreach ($userData['data'] as $year => $months) {
-                foreach ($months as $month => $days) {
-                    foreach ($days as $day => $dailyData) {
-                        foreach ($dailyData as $data) {
-                        }
-                    }
-                }
-            }
-            $exportData->push($pushData);
-            $i++;
-        }
-        $this->total_data = $i - 1;
-        return $exportData;
+
+        //     foreach ($userData['data'] as $year => $months) {
+        //         foreach ($months as $month => $days) {
+        //             foreach ($days as $day => $dailyData) {
+        //                 foreach ($dailyData as $data) {
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     $exportData->push($pushData);
+        //     $i++;
+        // }
+        // $this->total_data = $i - 1;
+        // dd($this->exportDatas);
+        return $this->exportDatas;
     }
 
 
@@ -113,15 +133,43 @@ class ExportSebuse implements FromCollection,  WithStyles,  WithCustomStartCell,
                     'font' => [
                         'bold' => true,
                     ],
-                    'fill' => [
-                        'fillType'   => Fill::FILL_SOLID,
-                        'startColor' => ['argb' => '03AED2']
-                    ]
+                    'alignment' => [
+                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    ],
+                    // 'fill' => [
+                    //     'fillType'   => Fill::FILL_SOLID,
+                    //     'startColor' => ['argb' => '03AED2']
+                    // ]
                 ];
                 $filRed = [
                     'fill' => [
                         'fillType'   => Fill::FILL_SOLID,
                         'startColor' => ['argb' => 'ff6666']
+                    ]
+                ];
+
+                $filBlue = [
+                    'fill' => [
+                        'fillType'   => Fill::FILL_SOLID,
+                        'startColor' => ['argb' => '8EA6E5']
+                    ]
+                ];
+                $filSky = [
+                    'fill' => [
+                        'fillType'   => Fill::FILL_SOLID,
+                        'startColor' => ['argb' => '76E4FF']
+                    ]
+                ];
+                $filYellow = [
+                    'fill' => [
+                        'fillType'   => Fill::FILL_SOLID,
+                        'startColor' => ['argb' => 'D3EB5E']
+                    ]
+                ];
+                $filGrey = [
+                    'fill' => [
+                        'fillType'   => Fill::FILL_SOLID,
+                        'startColor' => ['argb' => '848484']
                     ]
                 ];
                 $filGreen = [
@@ -132,13 +180,13 @@ class ExportSebuse implements FromCollection,  WithStyles,  WithCustomStartCell,
                 ];
                 $sheet = $event->sheet;
                 $style = $event->sheet->getDelegate();
-                $style->getStyle('A6:T7')->applyFromArray($centerStyle);
-                $style->getStyle('A6:T7')->applyFromArray($headerStyle);
-                $style->getStyle('A1')->applyFromArray($centerStyle);
-                $style->getStyle('A1')->applyFromArray($boldStyle);
-                $style->getStyle('A6:T' . ($this->total_data + 7))->applyFromArray($borderStyle);
-                $style->getStyle('J8:T' . ($this->total_data + 7))->applyFromArray($filGreen);
-                $style->getStyle('I8:T' . ($this->total_data + 7))->applyFromArray($centerStyle);
+                // $style->getStyle('A6:T7')->applyFromArray($centerStyle);
+                // $style->getStyle('A6:T7')->applyFromArray($headerStyle);
+                // $style->getStyle('A1')->applyFromArray($centerStyle);
+                // $style->getStyle('A1')->applyFromArray($boldStyle);
+                // $style->getStyle('A6:T' . ($this->total_data + 7))->applyFromArray($borderStyle);
+                // $style->getStyle('J8:T' . ($this->total_data + 7))->applyFromArray($filGreen);
+                // $style->getStyle('I8:T' . ($this->total_data + 7))->applyFromArray($centerStyle);
 
                 // $style->getStyle('A6:T7')->applyFromArray($centerStyle);
                 // $style->getStyle('A6:T7')->applyFromArray($headerStyle);
@@ -150,7 +198,7 @@ class ExportSebuse implements FromCollection,  WithStyles,  WithCustomStartCell,
                 $w1 = 20;
                 $w2 = 10;
                 $w3 = 6;
-                $w = [5, 13, 7, 16, 20, 5, 12, 20];
+                $w = [5, 20, 5, 7, 7, 7, 7, 7, 7, 7, 7];
                 $sheet->getColumnDimension('A')->setWidth($w[0]);
                 $sheet->getColumnDimension('B')->setWidth($w[1]);
                 $sheet->getColumnDimension('C')->setWidth($w[2]);
@@ -159,11 +207,15 @@ class ExportSebuse implements FromCollection,  WithStyles,  WithCustomStartCell,
                 $sheet->getColumnDimension('F')->setWidth($w[5]);
                 $sheet->getColumnDimension('G')->setWidth($w[6]);
                 $sheet->getColumnDimension('H')->setWidth($w[7]);
-                $sheet->getColumnDimension('R')->setWidth(12);
-                $sheet->getColumnDimension('S')->setWidth(12);
+                $sheet->getColumnDimension('I')->setWidth($w[7]);
+                $sheet->getColumnDimension('J')->setWidth($w[7]);
+                $sheet->getColumnDimension('L')->setWidth($w[7]);
+                $sheet->getColumnDimension('M')->setWidth($w[7]);
+                // $sheet->getColumnDimension('L')->setWidth($w[7]);
+                // $sheet->getColumnDimension('R')->setWidth(12);
+                // $sheet->getColumnDimension('S')->setWidth(12);
                 $i = 5;
-                $sheet->mergeCells('A1:T1');
-                $sheet->setCellValue('A1', 'Daily Check UP');
+
 
                 $sheet->mergeCells('A' . $i + 1 . ':A' . $i + 3);
                 $sheet->mergeCells('B' . $i + 1 . ':B' . $i + 3);
@@ -179,14 +231,6 @@ class ExportSebuse implements FromCollection,  WithStyles,  WithCustomStartCell,
                 $sheet->mergeCells('L' . $i + 1 . ':L' . $i + 3);
                 $sheet->mergeCells('M' . $i + 1 . ':M' . $i + 3);
                 $sheet->mergeCells('M' . $i + 1 . ':M' . $i + 3);
-
-                // $sheet->mergeCells('J' . $i + 1 . ':O' . $i + 3);
-                // $sheet->mergeCells('P' . $i + 1 . ':R' . $i + 3);
-                // $sheet->mergeCells('S' . $i + 1 . ':S' . $i + 3);
-                // $sheet->mergeCells('T' . $i + 1 . ':T' . $i + 3);
-                // $sheet->setCellValue('A' . $i + 1, 'Data Umum');
-                // $sheet->setCellValue('J' . $i + 1, 'Tanda-Tanda Vital');
-                // $sheet->setCellValue('P' . $i + 1, 'Pemeriksaan Tambahan');
                 $sheet->setCellValue('A' . $i + 1, 'No');
                 $sheet->setCellValue('B' . $i + 1, 'Nama');
                 $sheet->setCellValue('C' . $i + 1, 'Usia');
@@ -202,24 +246,88 @@ class ExportSebuse implements FromCollection,  WithStyles,  WithCustomStartCell,
                 $sheet->setCellValue('M' . $i + 1, 'Skor Kebugaran');
                 $sheet->setCellValue('N' . $i + 2, 'KARDIO (KALORI)');
                 $columnIndex = 'M';
+                $columnStart = 'N';
                 $dateStart = Carbon::parse($this->filter['date_start']);
                 $dateEnd = Carbon::parse($this->filter['date_end']);
                 for ($date = $dateStart; $date->lte($dateEnd); $date->addDay()) {
-                    // dd(++$columnIndex);
-                    // dd($date->format('d'));
-
-                    // $sheet->setCellValue(++$columnIndex . $i + 3, "S");
                     $sheet->setCellValue(++$columnIndex . $i + 3, $date->format('d'));
-
-                    // if (isset($userData['data'][$date->year][$date->format('m')][$date->format('d')])) {
-                    //     $dailyData = $userData['data'][$date->year][$date->format('m')][$date->format('d')];
-
-                    // Isi data per tanggal di kolom yang sesuai
-                    // foreach ($dailyData as $data) {
-                    //     $sheet->setCellValue($columnIndex . $row, $data->kardio ?? ''); // Contoh: data kardio
-                    // }
+                    $sheet->getColumnDimension($columnIndex)->setWidth($w[7]);
                 }
+                ++$columnIndex;
+                $sheet->setCellValue($columnIndex . $i + 3, "TOTAL");
+                ++$columnIndex;
+                $sheet->setCellValue($columnIndex . $i + 3, "FREKUENSI");
+                $sheet->mergeCells($columnStart . $i + 2 . ':' . $columnIndex . $i + 2);
+                $style->getStyle($columnStart . '7:' . $columnIndex . '8')->applyFromArray($filBlue);
 
+                // $columnIndex = 'M';
+                $columnStart = $columnIndex;
+                $columnStart++;
+                $sheet->setCellValue($columnStart . $i + 2, 'Streching');
+
+                // dd($columnStart);
+                $dateStart = Carbon::parse($this->filter['date_start']);
+                $dateEnd = Carbon::parse($this->filter['date_end']);
+                for ($date = $dateStart; $date->lte($dateEnd); $date->addDay()) {
+                    $sheet->setCellValue(++$columnIndex . $i + 3, $date->format('d'));
+                    $sheet->getColumnDimension($columnIndex)->setWidth($w[7]);
+                }
+                ++$columnIndex;
+                $sheet->setCellValue($columnIndex . $i + 3, "TOTAL");
+                // ++$columnIndex;
+                // $sheet->setCellValue($columnIndex . $i + 3, "FREKUENSI");
+                // dd($columnStart . $i + 2 . ':' . $columnIndex . $i + 2);
+                $sheet->mergeCells($columnStart . $i + 2 . ':' . $columnIndex . $i + 2);
+                $style->getStyle($columnStart . '7:' . $columnIndex . '8')->applyFromArray($filYellow)->getAlignment()
+                    ->setWrapText(true);;
+
+                $columnStart = $columnIndex;
+                $columnStart++;
+                $sheet->setCellValue($columnStart . $i + 2, 'GYM');
+                $dateStart = Carbon::parse($this->filter['date_start']);
+                $dateEnd = Carbon::parse($this->filter['date_end']);
+                for ($date = $dateStart; $date->lte($dateEnd); $date->addDay()) {
+                    $sheet->setCellValue(++$columnIndex . $i + 3, $date->format('d'));
+                    $sheet->getColumnDimension($columnIndex)->setWidth($w[7]);
+                }
+                ++$columnIndex;
+                $sheet->setCellValue($columnIndex . $i + 3, "TOTAL");
+                $sheet->mergeCells($columnStart . $i + 2 . ':' . $columnIndex . $i + 2);
+                $style->getStyle($columnStart . '7:' . $columnIndex . '8')->applyFromArray($filGrey);
+
+
+                // mkn
+                $columnStart = $columnIndex;
+                $columnStart++;
+                $sheet->setCellValue($columnStart . $i + 2, 'Makan Sehat');
+                $dateStart = Carbon::parse($this->filter['date_start']);
+                $dateEnd = Carbon::parse($this->filter['date_end']);
+                for ($date = $dateStart; $date->lte($dateEnd); $date->addDay()) {
+                    $sheet->setCellValue(++$columnIndex . $i + 3, $date->format('d'));
+                    $sheet->getColumnDimension($columnIndex)->setWidth($w[7]);
+                }
+                ++$columnIndex;
+                $sheet->setCellValue($columnIndex . $i + 3, "TOTAL");
+                $sheet->mergeCells($columnStart . $i + 2 . ':' . $columnIndex . $i + 2);
+                $style->getStyle($columnStart . '7:' . $columnIndex . '8')->applyFromArray($filSky);
+
+                ++$columnIndex;
+                $sheet->setCellValue($columnIndex . $i + 2, "Webinar");
+                $sheet->mergeCells($columnIndex . $i + 2 . ':' . $columnIndex . $i + 3);
+
+                ++$columnIndex;
+                $sheet->setCellValue($columnIndex . $i + 2, "Kesimpulan");
+                $sheet->mergeCells($columnIndex . $i + 2 . ':' . $columnIndex . $i + 3);
+                $sheet->mergeCells("N" . $i + 1 . ':' . $columnIndex . $i + 1);
+                // $style->getStyle('A6:' . $columnIndex . '8')->applyFromArray($headerStyle);
+
+
+                // $style = $sheet->getStyle('A7:' . $columnIndex . '8');
+                // $style->applyFromArray($headerStyle);
+                // $style->getAlignment()->setWrapText(true);
+
+                // render data
+                // end mkn
                 // Pindah ke kolom berikutnya (kanan)
                 // $columnIndex++;
                 // }
@@ -251,42 +359,116 @@ class ExportSebuse implements FromCollection,  WithStyles,  WithCustomStartCell,
                 $sheet->setCellValue('C4', ':');
                 $sheet->setCellValue('C5', ':');
                 $sheet->setCellValue('D3', 'IT PANGKAL BALAM');
-                $sheet->setCellValue('D4', $this->filter['date_start']);
-                $sheet->setCellValue('D5', $this->filter['date_end']);
+                $sheet->setCellValue('D4', date('Y-m-d', strtotime($this->filter['date_start'])));
+                $sheet->setCellValue('D5', date('Y-m-d', strtotime($this->filter['date_end'])));
 
                 $datas = $this->data;
-                $i = 1;
-                // foreach ($datas as $data) {
-                //     if (!spanFitality($data->fitality, true)) {
-                //         $style->getStyle('S' . $i + 7)->applyFromArray($filRed);
-                //     }
-                //     if (!Helpers::spanSistole($data->sistole, true)) {
-                //         $style->getStyle('J' . $i + 7)->applyFromArray($filRed);
-                //     }
-                //     if (!Helpers::spanDiastole($data->diastole, true)) {
-                //         $style->getStyle('K' . $i + 7)->applyFromArray($filRed);
-                //     }
-                //     if (!Helpers::spanHr($data->hr, true)) {
-                //         $style->getStyle('L' . $i + 7)->applyFromArray($filRed);
-                //     }
-                //     if (!Helpers::spanTemp($data->temp, true)) {
-                //         $style->getStyle('M' . $i + 7)->applyFromArray($filRed);
-                //     }
-                //     if (!Helpers::spanRr($data->rr, true)) {
-                //         $style->getStyle('N' . $i + 7)->applyFromArray($filRed);
-                //     }
-                //     if (!Helpers::spanSpo2($data->spo2, true)) {
-                //         $style->getStyle('O' . $i + 7)->applyFromArray($filRed);
-                //     }
-                //     if (!Helpers::spanRomberg($data->romberg, true)) {
-                //         $style->getStyle('P' . $i + 7)->applyFromArray($filRed);
-                //     }
-                //     if (!Helpers::spanAlcoholTest($data->alcohol, true)) {
-                //         $style->getStyle('Q' . ($i + 7) . ':R' . ($i + 7))->applyFromArray($filRed);
-                //     }
+                // $exportData = collect();
+                $j = 1;
+                $row = $i + $j + 3;
+                foreach ($datas as $userId => $userData) {
+                    $userName = $userData['user_name'];
+                    // dd('A' . $row);
+                    $sheet->setCellValue('A' . $row, $j);
+                    $sheet->setCellValue('B' . $row,  $userData['user_name']);
+                    $sheet->setCellValue('C' . $row,  Carbon::parse($userData['userdata']->dob)->age);
+                    $sheet->setCellValue('D' . $row, "");
+                    // $pushData[] = "tb";
+                    // $pushData[] = "bb";
+                    // $pushData[] = "fat";
+                    // $pushData[] = "pinggang";
+                    // $pushData[] = "tkndrh";
+                    // $pushData[] = "gdp";
+                    // $pushData[] = "gd2";
+                    // $pushData[] = "kol";
+                    // $pushData[] = "as_ur";
+                    // $pushData[] = "skor";
+                    $columnIndex = 'M';
+                    $columnStart = 'N';
+                    $dateStart = Carbon::parse($this->filter['date_start']);
+                    $dateEnd = Carbon::parse($this->filter['date_end']);
+                    $kal_frek = 0;
+                    $kal_total = 0;
+                    for ($date = $dateStart; $date->lte($dateEnd); $date->addDay()) {
+                        $kal_val =  $userData['data'][$date->format('Y')][$date->format('m')][$date->format('d')][0]['kal_val'] ?? '';
+                        $sheet->setCellValue(++$columnIndex . $row,  $kal_val);
+                        !empty($kal_val) ? $kal_frek++ : '';
+                        !empty($kal_val) ? $kal_total += $kal_val : '';
+                    }
+                    ++$columnIndex;
+                    $sheet->setCellValue($columnIndex . $row, $kal_total);
+                    ++$columnIndex;
+                    $sheet->setCellValue($columnIndex . $row, $kal_frek);
 
-                //     $i++;
-                // }
+                    // Stetching
+                    $str_frek = 0;
+                    $dateStart = Carbon::parse($this->filter['date_start']);
+                    $dateEnd = Carbon::parse($this->filter['date_end']);
+
+                    for ($date = $dateStart; $date->lte($dateEnd); $date->addDay()) {
+                        $str_val =  $userData['data'][$date->format('Y')][$date->format('m')][$date->format('d')][0]['str_attch'] ?? '';
+
+                        $sheet->setCellValue(++$columnIndex . $row,  !empty($str_val) ? '1' : '');
+                        !empty($str_val) ? $str_frek++ : '';
+                    }
+                    ++$columnIndex;
+                    $sheet->setCellValue($columnIndex . $row, $str_frek);
+
+                    // Gym
+                    $gym_frek = 0;
+                    $dateStart = Carbon::parse($this->filter['date_start']);
+                    $dateEnd = Carbon::parse($this->filter['date_end']);
+
+                    for ($date = $dateStart; $date->lte($dateEnd); $date->addDay()) {
+                        $gym_val =  $userData['data'][$date->format('Y')][$date->format('m')][$date->format('d')][0]['gym_attch'] ?? '';
+
+                        $sheet->setCellValue(++$columnIndex . $row,  !empty($gym_val) ? '1' : '');
+                        !empty($gym_val) ? $gym_frek++ : '';
+                    }
+                    ++$columnIndex;
+                    $sheet->setCellValue($columnIndex . $row, $gym_frek);
+
+                    // MKN
+                    $mkn_frek = 0;
+                    $dateStart = Carbon::parse($this->filter['date_start']);
+                    $dateEnd = Carbon::parse($this->filter['date_end']);
+
+                    for ($date = $dateStart; $date->lte($dateEnd); $date->addDay()) {
+                        $mkn_val =  $userData['data'][$date->format('Y')][$date->format('m')][$date->format('d')][0]['mkn_attch'] ?? '';
+
+                        $sheet->setCellValue(++$columnIndex . $row,  !empty($mkn_val) ? '1' : '');
+                        !empty($mkn_val) ? $mkn_frek++ : '';
+                    }
+                    ++$columnIndex;
+                    $sheet->setCellValue($columnIndex . $row, $mkn_frek);
+
+
+                    // ++$columnIndex;
+                    // $sheet->setCellValue($columnIndex . $row, $kal_frek);
+
+
+                    $j++;
+                    $row++;
+                }
+                // dd($this->exportDatas);
+                // $this->total_data = $i - 1;
+                $row--;
+
+                $style = $event->sheet->getDelegate();
+                ++$columnIndex;
+                ++$columnIndex;
+                $sheet->mergeCells('A1:' . $columnIndex . '1');
+                $sheet->setCellValue('A1', 'SEBUSE');
+                $sheet->setCellValue('N6', 'EVIDENCE');
+                $style->getStyle('A6:' . $columnIndex . '8')->applyFromArray($centerStyle);
+                $style->getStyle('A6:' . $columnIndex . '8')->applyFromArray($headerStyle)->getAlignment()
+                    ->setWrapText(true)->setHorizontal('center')     // Rata tengah horizontal (opsional jika dibutuhkan)
+                    ->setVertical('center');
+                $style->getStyle('A1')->applyFromArray($centerStyle);
+                $style->getStyle('A1')->applyFromArray($boldStyle);
+                $style->getStyle('A6:' . $columnIndex .   $row)->applyFromArray($borderStyle);
+                // $style->getStyle('J8:' . $columnIndex . '' . ($this->total_data + 7))->applyFromArray($filGreen);
+                // $style->getStyle('I8:' . $columnIndex . '' . ($this->total_data + 7))->applyFromArray($centerStyle);
             },
         ];
     }
