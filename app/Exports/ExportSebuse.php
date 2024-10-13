@@ -232,10 +232,10 @@ class ExportSebuse implements WithStyles,  WithEvents, WithTitle, WithProperties
                 // dd($columnStart);
                 $dateStart = Carbon::parse($this->filter['date_start']);
                 $dateEnd = Carbon::parse($this->filter['date_end']);
-                $m = 0;
+                // $m = 0;
                 for ($date = $dateStart; $date->lte($dateEnd); $date->addDay()) {
-                    // $sheet->setCellValue(++$columnIndex . $i + 3, $date->format('d'));
-                    $sheet->setCellValue(++$columnIndex . $i + 3, $m++);
+                    $sheet->setCellValue(++$columnIndex . $i + 3, $date->format('d'));
+                    // $sheet->setCellValue(++$columnIndex . $i + 3, $m++);
                     $sheet->getColumnDimension($columnIndex)->setWidth($w[7]);
                 }
                 ++$columnIndex;
