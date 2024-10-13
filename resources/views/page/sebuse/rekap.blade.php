@@ -35,7 +35,7 @@
             <form id="formFilter">
                 <div class="col-lg-12 mt-2 mb-2">
                     <div class="row">
-                        <div class="col-lg-6">
+                        {{-- <div class="col-lg-6">
                             <div class="form-group row">
                                 <label for="date_start" class="col-sm-6 col-form-label">Dari Tanggal</label>
                                 <div class="col-sm-6">
@@ -58,7 +58,65 @@
                                     </div>
                                 </div>
                             </div>
+                        </div> --}}
+
+                        <!-- Pilihan Tahun -->
+                        <div class="col-lg-4">
+                            <div class="form-group row">
+                                <label for="year" class="col-sm-6 col-form-label">Tahun</label>
+                                <div class="col-sm-6">
+                                    <select id="year" name="year" class="form-control">
+                                        @for ($i = 2024; $i <= Carbon\Carbon::now()->year; $i++)
+                                            <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Pilihan Bulan -->
+                        <div class="col-lg-4">
+                            <div class="form-group row">
+                                <label for="month" class="col-sm-6 col-form-label">Bulan</label>
+                                <div class="col-sm-6">
+                                    <select id="month" name="month" class="form-control">
+                                        @foreach (range(1, 12) as $month)
+                                            <option value="{{ $month }}"
+                                                {{ $month == Carbon\Carbon::now()->month ? 'selected' : '' }}>
+                                                {{ DateTime::createFromFormat('!m', $month)->format('F') }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pilihan Minggu ke -->
+                        <div class="col-lg-4">
+                            <div class="form-group row">
+                                <label for="week" class="col-sm-6 col-form-label">Minggu ke</label>
+                                <div class="col-sm-6">
+                                    @php
+                                        // Mendapatkan minggu ke berapa saat ini dalam bulan
+                                        $currentWeek = Carbon\Carbon::now()->weekOfMonth;
+                                    @endphp
+
+                                    <select id="week" name="week" class="form-control">
+                                        <option value="1" {{ $currentWeek == 1 ? 'selected' : '' }}>Minggu ke-1
+                                        </option>
+                                        <option value="2" {{ $currentWeek == 2 ? 'selected' : '' }}>Minggu ke-2
+                                        </option>
+                                        <option value="3" {{ $currentWeek == 3 ? 'selected' : '' }}>Minggu ke-3
+                                        </option>
+                                        <option value="4" {{ $currentWeek == 4 ? 'selected' : '' }}>Minggu ke-4
+                                        </option>
+                                        <option value="5" {{ $currentWeek == 5 ? 'selected' : '' }}>Minggu ke-5
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-lg-6">
                             <div class="col-sm-6">
                                 <div class="input-group">
@@ -70,6 +128,7 @@
                     </div>
                 </div>
             </form>
+
         </div>
     </div>
     <div class="card">
@@ -195,9 +254,15 @@
                 'form': $('#formFilter'),
                 'start': $('#formFilter').find('#date_start'),
                 'end': $('#formFilter').find('#date_end'),
+                'year': $('#formFilter').find('#year'),
+                'month': $('#formFilter').find('#month'),
+                'week': $('#formFilter').find('#week'),
             }
             formFilter.start.on('change', reloadDataTable);
             formFilter.end.on('change', reloadDataTable);
+            formFilter.year.on('change', reloadDataTable);
+            formFilter.month.on('change', reloadDataTable);
+            formFilter.week.on('change', reloadDataTable);
 
             function reloadDataTable() {
                 DataTable.ajax.reload(null, false);

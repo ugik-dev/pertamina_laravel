@@ -103,29 +103,76 @@ class SebuseController extends Controller
     public function rekap(Request $request)
     {
         if ($request->ajax()) {
+            // $date_start = null;
+            // $date_end = null;
+            // foreach ($request->all() as $key => $param) {
+            //     if (isset($param['name'])) {
+            //         if ($param['name'] === 'date_start') {
+            //             $date_start = $param['value'];
+            //             $date_start = $date_start . ' 00:00:00';
+            //         } elseif ($param['name'] === 'date_end') {
+            //             $date_end = $param['value'];
+            //             $date_end = $date_end . ' 23:59:59';
+            //         }
+            //     }
+            // }
+            // // dd($date_end, $date_start);
+            // $query =  Sebuse::selectRaw('sebuses.*, a.name as user_name,a.qrcode as user_qrcode')
+            //     ->join('users as a', 'a.id', '=', 'sebuses.user_id');
+            // // ->join('field_works as f', 'a.field_work_id', '=', 'f.id')
+            // // ->join('users as b', 'b.id', '=', 'sebuses.doctor_id');
+            // if ($date_start == $date_end) {
+            //     $data = $query->whereDate('sebuses.created_at', $date_start)->latest()->get();
+            // } else {
+            //     $data = $query->whereBetween('sebuses.created_at', [$date_start, $date_end])->latest()->get();
+            // }
+
+
+            // new
             $date_start = null;
             $date_end = null;
+
             foreach ($request->all() as $key => $param) {
                 if (isset($param['name'])) {
-                    if ($param['name'] === 'date_start') {
-                        $date_start = $param['value'];
-                        $date_start = $date_start . ' 00:00:00';
-                    } elseif ($param['name'] === 'date_end') {
-                        $date_end = $param['value'];
-                        $date_end = $date_end . ' 23:59:59';
+                    if ($param['name'] === 'year') {
+                        $year = $param['value'];
+                    } elseif ($param['name'] === 'month') {
+                        $month = $param['value'];
+                    } elseif ($param['name'] === 'week') {
+                        $week = $param['value'];
                     }
                 }
             }
-            // dd($date_end, $date_start);
-            $query =  Sebuse::selectRaw('sebuses.*, a.name as user_name,a.qrcode as user_qrcode')
-                ->join('users as a', 'a.id', '=', 'sebuses.user_id');
-            // ->join('field_works as f', 'a.field_work_id', '=', 'f.id')
-            // ->join('users as b', 'b.id', '=', 'sebuses.doctor_id');
-            if ($date_start == $date_end) {
-                $data = $query->whereDate('sebuses.created_at', $date_start)->latest()->get();
-            } else {
-                $data = $query->whereBetween('sebuses.created_at', [$date_start, $date_end])->latest()->get();
+
+            // Hitung tanggal mulai dan akhir berdasarkan minggu yang dipilih
+            if (isset($year, $month, $week)) {
+                // Mendapatkan hari pertama di bulan dan tahun yang dipilih
+                $firstDayOfMonth = Carbon::createFromDate($year, $month, 1);
+
+                // Hitung tanggal mulai berdasarkan minggu yang dipilih
+                $date_start = $firstDayOfMonth->addWeeks($week - 1)->startOfWeek()->toDateTimeString();
+
+                // Hitung tanggal akhir dari minggu tersebut
+                $date_end = Carbon::createFromDate($year, $month, 1)
+                    ->addWeeks($week - 1)
+                    ->endOfWeek()
+                    ->toDateTimeString();
             }
+
+            // Debug untuk melihat tanggal yang dihitung
+            // dd($date_start, $date_end);
+
+            $query = Sebuse::selectRaw('sebuses.*, a.name as user_name, a.qrcode as user_qrcode')
+                ->join('users as a', 'a.id', '=', 'sebuses.user_id');
+
+            // Jika date_start dan date_end valid, filter berdasarkan range waktu
+            if ($date_start && $date_end) {
+                $data = $query->whereBetween('sebuses.created_at', [$date_start, $date_end])->latest()->get();
+            } else {
+                // Jika tidak ada filter, ambil semua data (sesuaikan logika ini jika perlu)
+                $data = $query->latest()->get();
+            }
+
             // dd($data);
             return DataTables::of($data)->addIndexColumn()
                 ->addColumn('datescan', function ($data) {
@@ -377,28 +424,87 @@ class SebuseController extends Controller
     public function export(Request $request)
     {
         $filter = $request->query(); // atau $request->all()
-        $filter['date_start']  = $filter['date_start']  . ' 00:00:00';
-        $filter['date_end']  = $filter['date_end']  . ' 23:59:59';
-        // Atau ambil parameter tertentu
-        // $date_start = null;
-        // $date_end = null;
-        // if (isset($param['name'])) {
-        //     if ($param['name'] === 'date_start') {
-        //         $date_start = $param['value'];
-        //     } elseif ($param['name'] === 'date_end') {
-        //         $date_end = $param['value'];
-        //     }
+        // dd($filter);
+        // echo "<prev>";
+        // print_r($filter);
+        // echo "</prev>";
+        // echo json_encode($filter);
+        // die();
+        // $filter['date_start']  = $filter['date_start']  . ' 00:00:00';
+        // $filter['date_end']  = $filter['date_end']  . ' 23:59:59';
+        // // Atau ambil parameter tertentu
+        // // $date_start = null;
+        // // $date_end = null;
+        // // if (isset($param['name'])) {
+        // //     if ($param['name'] === 'date_start') {
+        // //         $date_start = $param['value'];
+        // //     } elseif ($param['name'] === 'date_end') {
+        // //         $date_end = $param['value'];
+        // //     }
+        // // }
+        // // dd($date_end, $date_start);
+        // $query =  Sebuse::selectRaw('sebuses.*, a.name as user_name,a.qrcode as user_qrcode, b.name verif_name')
+        // ->join('users as a', 'a.id', '=', 'sebuses.user_id')
+        // ->leftJoin('users as b', 'b.id', '=', 'sebuses.verif_id')->orderBy("sebuses.created_at", "asc");
+        // if ($filter['date_start'] == $filter['date_end']) {
+        //     $data = $query->whereDate('sebuses.created_at', $filter['date_start'])->latest()->get();
+        // } else {
+        //     $data = $query->whereBetween('sebuses.created_at', [$filter['date_start'], $filter['date_end']])->latest()->get();
         // }
-        // dd($date_end, $date_start);
-        $filename = "dcu-rekap-" . $filter['date_start'] . '-sd-' . $filter['date_end'];
-        $query =  Sebuse::selectRaw('sebuses.*, a.name as user_name,a.qrcode as user_qrcode, b.name verif_name')
-            ->join('users as a', 'a.id', '=', 'sebuses.user_id')
-            ->leftJoin('users as b', 'b.id', '=', 'sebuses.verif_id')->orderBy("sebuses.created_at", "asc");
-        if ($filter['date_start'] == $filter['date_end']) {
-            $data = $query->whereDate('sebuses.created_at', $filter['date_start'])->latest()->get();
-        } else {
-            $data = $query->whereBetween('sebuses.created_at', [$filter['date_start'], $filter['date_end']])->latest()->get();
+
+        $date_start = null;
+        $date_end = null;
+
+        // foreach ($request->all() as $key => $param) {
+        // if (isset($filter['name'])) {
+        //     if ($filter['year'] === 'year') {
+        $year = $filter['year'];
+        // } elseif ($filter['month'] === 'month') {
+        $month = $filter['month'];
+        // } elseif ($filter['name'] === 'week') {
+        $week = $filter['week'];
+        // }
+        // }
+        // }
+
+
+        // Hitung tanggal mulai dan akhir berdasarkan minggu yang dipilih
+        if (isset($year, $month, $week)) {
+            // Mendapatkan hari pertama di bulan dan tahun yang dipilih
+            $firstDayOfMonth = Carbon::createFromDate($year, $month, 1);
+
+            // Hitung tanggal mulai berdasarkan minggu yang dipilih
+            $date_start = $firstDayOfMonth->addWeeks($week - 1)->startOfWeek()->toDateTimeString();
+
+            // Hitung tanggal akhir dari minggu tersebut
+            $date_end = Carbon::createFromDate($year, $month, 1)
+                ->addWeeks($week - 1)
+                ->endOfWeek()
+                ->toDateTimeString();
+
+            // dd($firstDayOfMonth, $date_start, $date_end);
         }
+        $filter['date_start'] = $date_start;
+        $filter['date_end'] = $date_end;
+
+        // Debug untuk melihat tanggal yang dihitung
+        // dd($date_start, $date_end);
+
+        $query = Sebuse::selectRaw('sebuses.*, a.name as user_name, a.qrcode as user_qrcode')
+            ->join('users as a', 'a.id', '=', 'sebuses.user_id');
+
+        // Jika date_start dan date_end valid, filter berdasarkan range waktu
+        if ($date_start && $date_end) {
+            $data = $query->whereBetween('sebuses.created_at', [$date_start, $date_end])->latest()->get();
+        } else {
+            // Jika tidak ada filter, ambil semua data (sesuaikan logika ini jika perlu)
+            $data = $query->latest()->get();
+        }
+
+
+
+
+        $filename = "dcu-rekap-" . $filter['date_start'] . '-sd-' . $filter['date_end'];
         $data =  Helpers::groupingSebuse($data);
         // dd($data);
         // $data = $query->get();

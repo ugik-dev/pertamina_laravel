@@ -86,9 +86,9 @@ class UsersSeeder extends Seeder
                 Sebuse::create([
                     'user_id' => $user->id,
                     'kal_val' => $faker->numberBetween(70, 160),
-                    'kal_attch' => $faker->randomElement(['upload/sebuse/kalori/1728421246_Putra_01-10-2024_20.42_signed.pdf', 'upload/sebuse/streching/1728421246_Putra_01-10-2024_20.42_signed.pdf', null]),
-                    'str_attch' => $faker->randomElement(['upload/sebuse/kalori/1728421246_Putra_01-10-2024_20.42_signed.pdf', 'upload/sebuse/streching/1728421246_Putra_01-10-2024_20.42_signed.pdf', null]),
-                    'gym_attch' => $faker->randomElement(['upload/sebuse/kalori/1728421246_Putra_01-10-2024_20.42_signed.pdf', 'upload/sebuse/streching/1728421246_Putra_01-10-2024_20.42_signed.pdf', null]),
+                    'kal_attch' => $faker->randomElement(['upload/sebuse/kalori/1728421246_Putra_01-10-2024_20.42_signed.pdf', 'upload/sebuse/streching/1728421246_Putra_01-10-2024_20.42_signed.pdf', null, null, null, null]),
+                    'str_attch' => $faker->randomElement(['upload/sebuse/kalori/1728421246_Putra_01-10-2024_20.42_signed.pdf', 'upload/sebuse/streching/1728421246_Putra_01-10-2024_20.42_signed.pdf', null, null, null]),
+                    'gym_attch' => $faker->randomElement(['upload/sebuse/kalori/1728421246_Putra_01-10-2024_20.42_signed.pdf', 'upload/sebuse/streching/1728421246_Putra_01-10-2024_20.42_signed.pdf', null, null, null]),
                     'created_at' => Carbon::create(2024, 10, 1 + $j), // Start from October 1, 2023
                     'updated_at' => Carbon::create(2024, 10, 1 + $j),
                 ]);

@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 
 
-class ExportSebuse implements WithStyles,  WithCustomStartCell, WithEvents, WithTitle, WithProperties
+class ExportSebuse implements WithStyles,  WithEvents, WithTitle, WithProperties
 {
     // FromCollection, 
     protected $data;
@@ -42,70 +42,6 @@ class ExportSebuse implements WithStyles,  WithCustomStartCell, WithEvents, With
             'lastModifiedBy' => 'SIM PERTAFIT - Telp: 0812-7974-8967, Email: ugik.dev@gmail.com',
         ];
     }
-
-    public function startCell(): string
-    {
-        return 'A9';
-    }
-
-    public function collection()
-    {
-        // dd("col");
-        // $datas = $this->data;
-        // $exportData = collect();
-        // $i = 1;
-        // foreach ($datas as $userId => $userData) {
-        //     $userName = $userData['user_name'];
-        //     $pushData = [];
-        //     $pushData[] = $i;
-        //     // Carbon::parse($data->created_at)->format('Y-m-d'),  // Tanggal
-        //     // Carbon::parse($data->created_at)->format('h:i'),    // Waktu
-        //     $pushData[] = $userData['user_name'];
-        //     // dd($userData['userdata']);
-        //     $pushData[] = Carbon::parse($userData['userdata']->dob)->age;
-        //     $pushData[] = "tb";
-        //     $pushData[] = "bb";
-        //     $pushData[] = "fat";
-        //     $pushData[] = "pinggang";
-        //     $pushData[] = "tkndrh";
-        //     $pushData[] = "gdp";
-        //     $pushData[] = "gd2";
-        //     $pushData[] = "kol";
-        //     $pushData[] = "as_ur";
-        //     $pushData[] = "skor";
-        //     $columnIndex = 'M';
-        //     $columnStart = 'N';
-        //     $dateStart = Carbon::parse($this->filter['date_start']);
-        //     $dateEnd = Carbon::parse($this->filter['date_end']);
-        //     $kal_frek = 0;
-        //     $kal_total = 0;
-        //     for ($date = $dateStart; $date->lte($dateEnd); $date->addDay()) {
-        //         $kal_val =  $userData['data'][$date->format('Y')][$date->format('m')][$date->format('d')][0]['kal_val'];
-        //         $pushData[] = $kal_val;
-        //         !empty($kal_val) ? $kal_frek++ : '';
-        //         !empty($kal_val) ? $kal_total += $kal_val : '';
-        //     }
-        //     $pushData[] = $kal_total;
-        //     $pushData[] = $kal_frek;
-
-
-        //     foreach ($userData['data'] as $year => $months) {
-        //         foreach ($months as $month => $days) {
-        //             foreach ($days as $day => $dailyData) {
-        //                 foreach ($dailyData as $data) {
-        //                 }
-        //             }
-        //         }
-        //     }
-        //     $exportData->push($pushData);
-        //     $i++;
-        // }
-        // $this->total_data = $i - 1;
-        // dd($this->exportDatas);
-        return $this->exportDatas;
-    }
-
-
 
     public function registerEvents(): array
     {
@@ -178,6 +114,33 @@ class ExportSebuse implements WithStyles,  WithCustomStartCell, WithEvents, With
                         'startColor' => ['argb' => '66ffcc']
                     ]
                 ];
+
+                $filSuccess = [
+                    'fill' => [
+                        'fillType'   => Fill::FILL_SOLID,
+                        'startColor' => ['argb' => '50ed3b']
+                    ]
+                ];
+
+                $filBlack = [
+                    'fill' => [
+                        'fillType'   => Fill::FILL_SOLID,
+                        'startColor' => ['argb' => '4b4d4a']
+                    ]
+                ];
+
+                $filDanger = [
+                    'fill' => [
+                        'fillType'   => Fill::FILL_SOLID,
+                        'startColor' => ['argb' => 'd12833']
+                    ]
+                ];
+                $filWarning = [
+                    'fill' => [
+                        'fillType'   => Fill::FILL_SOLID,
+                        'startColor' => ['argb' => 'e0db36']
+                    ]
+                ];
                 $sheet = $event->sheet;
                 $style = $event->sheet->getDelegate();
                 // $style->getStyle('A6:T7')->applyFromArray($centerStyle);
@@ -247,6 +210,7 @@ class ExportSebuse implements WithStyles,  WithCustomStartCell, WithEvents, With
                 $sheet->setCellValue('N' . $i + 2, 'KARDIO (KALORI)');
                 $columnIndex = 'M';
                 $columnStart = 'N';
+                // dd($this0<fi)
                 $dateStart = Carbon::parse($this->filter['date_start']);
                 $dateEnd = Carbon::parse($this->filter['date_end']);
                 for ($date = $dateStart; $date->lte($dateEnd); $date->addDay()) {
@@ -268,8 +232,10 @@ class ExportSebuse implements WithStyles,  WithCustomStartCell, WithEvents, With
                 // dd($columnStart);
                 $dateStart = Carbon::parse($this->filter['date_start']);
                 $dateEnd = Carbon::parse($this->filter['date_end']);
+                $m = 0;
                 for ($date = $dateStart; $date->lte($dateEnd); $date->addDay()) {
-                    $sheet->setCellValue(++$columnIndex . $i + 3, $date->format('d'));
+                    // $sheet->setCellValue(++$columnIndex . $i + 3, $date->format('d'));
+                    $sheet->setCellValue(++$columnIndex . $i + 3, $m++);
                     $sheet->getColumnDimension($columnIndex)->setWidth($w[7]);
                 }
                 ++$columnIndex;
@@ -368,6 +334,7 @@ class ExportSebuse implements WithStyles,  WithCustomStartCell, WithEvents, With
                 $row = $i + $j + 3;
                 foreach ($datas as $userId => $userData) {
                     $userName = $userData['user_name'];
+                    // dd($userName)
                     // dd('A' . $row);
                     $sheet->setCellValue('A' . $row, $j);
                     $sheet->setCellValue('B' . $row,  $userData['user_name']);
@@ -393,12 +360,23 @@ class ExportSebuse implements WithStyles,  WithCustomStartCell, WithEvents, With
                         $kal_val =  $userData['data'][$date->format('Y')][$date->format('m')][$date->format('d')][0]['kal_val'] ?? '';
                         $sheet->setCellValue(++$columnIndex . $row,  $kal_val);
                         !empty($kal_val) ? $kal_frek++ : '';
-                        !empty($kal_val) ? $kal_total += $kal_val : '';
+                        !empty($kal_val) ? $kal_total += $kal_val : 0;
                     }
                     ++$columnIndex;
                     $sheet->setCellValue($columnIndex . $row, $kal_total);
                     ++$columnIndex;
                     $sheet->setCellValue($columnIndex . $row, $kal_frek);
+                    if ($kal_total >= 600 && $kal_frek >= 3) {
+                        $style->getStyle($columnIndex . $row,)->applyFromArray($filSuccess);
+                    } else
+                    if ($kal_frek == 1) {
+                        $style->getStyle($columnIndex . $row,)->applyFromArray($filDanger);
+                    } else
+                    if ($kal_frek >= 2) {
+                        $style->getStyle($columnIndex . $row,)->applyFromArray($filWarning);
+                    } else {
+                        $style->getStyle($columnIndex . $row,)->applyFromArray($filBlack);
+                    }
 
                     // Stetching
                     $str_frek = 0;
@@ -412,6 +390,15 @@ class ExportSebuse implements WithStyles,  WithCustomStartCell, WithEvents, With
                         !empty($str_val) ? $str_frek++ : '';
                     }
                     ++$columnIndex;
+                    if ($str_frek == 0) {
+                        $style->getStyle($columnIndex . $row,)->applyFromArray($filBlack);
+                    }
+                    if ($str_frek == 1) {
+                        $style->getStyle($columnIndex . $row,)->applyFromArray($filWarning);
+                    }
+                    if ($str_frek >= 2) {
+                        $style->getStyle($columnIndex . $row,)->applyFromArray($filSuccess);
+                    }
                     $sheet->setCellValue($columnIndex . $row, $str_frek);
 
                     // Gym
@@ -426,6 +413,16 @@ class ExportSebuse implements WithStyles,  WithCustomStartCell, WithEvents, With
                         !empty($gym_val) ? $gym_frek++ : '';
                     }
                     ++$columnIndex;
+                    if ($gym_frek == 0) {
+                        $style->getStyle($columnIndex . $row,)->applyFromArray($filBlack);
+                    }
+                    if ($gym_frek == 1) {
+                        $style->getStyle($columnIndex . $row,)->applyFromArray($filWarning);
+                    }
+                    if ($gym_frek >= 2) {
+                        $style->getStyle($columnIndex . $row,)->applyFromArray($filSuccess);
+                    }
+
                     $sheet->setCellValue($columnIndex . $row, $gym_frek);
 
                     // MKN
@@ -440,6 +437,15 @@ class ExportSebuse implements WithStyles,  WithCustomStartCell, WithEvents, With
                         !empty($mkn_val) ? $mkn_frek++ : '';
                     }
                     ++$columnIndex;
+                    if ($mkn_frek == 0) {
+                        $style->getStyle($columnIndex . $row,)->applyFromArray($filBlack);
+                    }
+                    if ($mkn_frek == 1) {
+                        $style->getStyle($columnIndex . $row,)->applyFromArray($filWarning);
+                    }
+                    if ($mkn_frek >= 5) {
+                        $style->getStyle($columnIndex . $row,)->applyFromArray($filSuccess);
+                    }
                     $sheet->setCellValue($columnIndex . $row, $mkn_frek);
 
 
