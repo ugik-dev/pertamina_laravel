@@ -33,7 +33,7 @@ class BankController extends Controller
             $query =  Bank::with(['ref_bank', 'owner']);
             if (!empty($request->id)) $query->where('id', '=', $request->id);
             $res = $query->get()->toArray();
-            $data =   DataStructure::keyValueObj($res, 'id');
+            $data =   DataStructure::keyValueObj($res, 'id', NULL, TRUE);
 
             return $this->responseSuccess($data);
         } catch (Exception $ex) {
@@ -53,7 +53,7 @@ class BankController extends Controller
             ];
 
             $data = Bank::create($att);
-            $data = Bank::with('ref_bank')->find($data->id);
+            $data = Bank::with(['ref_bank', 'owner'])->find($data->id);
 
             // $request->validate([
             //     'file_attachment' => 'image|mimes:jpeg,png,jpg,gif,pdf|max:2048', // Add appropriate validation rules
@@ -76,7 +76,7 @@ class BankController extends Controller
     public function show(string $slug)
     {
         try {
-            $query =  Bank::with('ref_bank');
+            $query =  Bank::with(['ref_bank', 'owner']);
             $query->where('slug', '=', $slug);
             $res = $query->get()->first();
             return view('page.bank.show', ['dataContent' => $res]);
@@ -94,7 +94,7 @@ class BankController extends Controller
     public function update(Request $request)
     {
         try {
-            $data = Bank::with('ref_bank')->findOrFail($request->id);
+            $data = Bank::with(['ref_bank', 'owner'])->findOrFail($request->id);
             $att = [
                 'description' => $request->description,
                 'doc_date' => $request->doc_date,
@@ -115,6 +115,7 @@ class BankController extends Controller
                 $att['filename']  = $originalFilename;
             }
             $data->update($att);
+            $data = Bank::with(['ref_bank', 'owner'])->findOrFail($request->id);
             return  $this->responseSuccess($data);
         } catch (Exception $ex) {
             return  $this->ResponseError($ex->getMessage());
@@ -125,7 +126,7 @@ class BankController extends Controller
     public function delete(Request $request)
     {
         try {
-            $data = Bank::with('ref_bank')->findOrFail($request->id);
+            $data = Bank::findOrFail($request->id);
             $data->delete();
             return  $this->responseSuccess($data);
         } catch (Exception $ex) {

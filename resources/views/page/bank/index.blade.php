@@ -379,7 +379,7 @@
                     var btnFile =
                         `<a target="_blank" href="<?= url('storage/upload/bank/') ?>/${user['filename']}" title="Lihat Detail" class="btn btn-sm btn-text-secondary rounded-pill btn-icon ">${user['filename']}</a>`;
 
-                    renderData.push([user['id'], button, user['owner'] == null ?
+                    renderData.push([user['index'], button, user['owner'] == null ?
                         '' :
                         user['owner']['name'], user['description'], user['ref_bank'] == null ?
                         '' :
@@ -442,8 +442,9 @@
                                 swalError(data['message'], "Simpan Gagal !!");
                                 return;
                             }
-                            var user = data['data']
-                            dataContent[user['id']] = user;
+                            getAllContent()
+                            // var user = data['data']
+                            // dataContent[user['id']] = user;
                             swalBerhasil();
                             offCanvasEl.hide();
                             renderContent(dataContent);
@@ -474,9 +475,10 @@
                                 swalError(data['message'], "Simpan Gagal !!");
                                 return;
                             }
-                            delete dataContent[id];
+                            // delete dataContent[id];
                             swalBerhasil('Data berhasil di Hapus');
-                            renderContent(dataContent);
+                            getAllContent()
+                            // renderContent(dataContent);
                         },
                         error: function(e) {}
                     });

@@ -105,7 +105,7 @@ class DataStructure
         return $ret;
     }
 
-    public static  function keyValueObj($arr, $key, $value = NULL)
+    public static  function keyValueObj($arr, $key, $value = NULL, $rowindex = false)
     {
         $arr = collect($arr)->map(function ($x) {
             return (array) $x;
@@ -113,8 +113,11 @@ class DataStructure
 
         $ret = array();
         if ($arr == NULL) return $ret;
+
+        $i = 1;
         foreach ($arr as $a) {
             $ret[$a[$key]] = $value != NULL ? $a[$value] : $a;
+            if ($rowindex) $ret[$a[$key]]['index'] = $i++;
         }
         return $ret;
     }
