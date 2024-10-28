@@ -40,7 +40,7 @@ class UnitController extends Controller
             $query =  Unit::query();
             if (!empty($request->id)) $query->where('id', '=', $request->id);
             $res = $query->get()->toArray();
-            $data =   DataStructure::keyValueObj($res, 'id');
+            $data =   DataStructure::keyValueObj($res, 'id', NULL, TRUE);
             return $this->responseSuccess($data);
         } catch (Exception $ex) {
             return  $this->ResponseError($ex->getMessage());

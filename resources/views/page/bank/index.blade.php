@@ -377,7 +377,7 @@
                         '</div>' +
                         `<a target="_blank" href="<?= url('storage/upload/bank/') ?>/${user['filename']}" title="Lihat Detail" class="btn btn-sm btn-text-secondary rounded-pill btn-icon item-edit"><i class="mdi mdi-eye-outline" ></i></a>`;
                     var btnFile =
-                        `<a target="_blank" href="<?= url('storage/upload/bank/') ?>/${user['filename']}" title="Lihat Detail" class="btn btn-sm btn-text-secondary rounded-pill btn-icon ">${user['filename']}</a>`;
+                        `<a target="_blank" href="<?= url('storage/upload/bank/') ?>/${user['filename']}" title="Lihat Detail" class="btn btn-sm btn-text-secondary rounded-pill btn-icon ">Lihat file</a>`;
 
                     renderData.push([user['index'], button, user['owner'] == null ?
                         '' :

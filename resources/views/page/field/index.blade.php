@@ -104,7 +104,7 @@
             var FDataTable = $('#FDataTable').DataTable({
                 columnDefs: [],
                 order: [
-                    [2, 'desc']
+                    [0, 'asc']
                 ],
                 dom: '<"card-header flex-column flex-md-row"<"head-label text-center"><"dt-action-buttons text-end pt-3 pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
                 buttons: [{
@@ -325,7 +325,7 @@
                         `<li><a class="delete dropdown-item text-danger" data-id="${user['id']}" ><i class="mdi mdi-trash-can-outline"></i> Hapus </a></li>` +
                         '</ul>' +
                         '</div>';
-                    renderData.push([user['id'], button, user['name'], user['high_risk'] == 'Y' ? 'YA' :
+                    renderData.push([user['index'], button, user['name'], user['high_risk'] == 'Y' ? 'YA' :
                         '-',
 
                     ]);
@@ -376,8 +376,9 @@
                                 swalError(data['message'], "Simpan Gagal !!");
                                 return;
                             }
-                            var user = data['data']
-                            dataField[user['id']] = user;
+                            getAllField()
+                            // var user = data['data']
+                            // dataField[user['id']] = user;
                             swalBerhasil();
                             offCanvasEl.hide();
                             renderField(dataField);

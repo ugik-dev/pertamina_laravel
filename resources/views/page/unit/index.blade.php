@@ -137,7 +137,7 @@
             var FDataTable = $('#FDataTable').DataTable({
                 columnDefs: [],
                 order: [
-                    [2, 'desc']
+                    [0, 'asc']
                 ],
                 dom: '<"card-header flex-column flex-md-row"<"head-label text-center"><"dt-action-buttons text-end pt-3 pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
                 buttons: [{
@@ -362,7 +362,7 @@
                         '</ul>' +
                         '</div>' +
                         `<a href="<?= url('info-desa/sub-wilayah') ?>/${user['id']}" title="Lihat Detail" class="btn btn-sm btn-text-secondary rounded-pill btn-icon item-edit"><i class="mdi mdi-eye-outline" ></i></a>`;
-                    renderData.push([user['id'], button, capitalizeFirstLetter(user['category']), user[
+                    renderData.push([user['index'], button, capitalizeFirstLetter(user['category']), user[
                             'name'],
                         user['address'],
                         user['phone'], user['email']
@@ -418,8 +418,9 @@
                                 swalError(data['message'], "Simpan Gagal !!");
                                 return;
                             }
-                            var user = data['data']
-                            dataUnit[user['id']] = user;
+                            // var user = data['data']
+                            // dataUnit[user['id']] = user;
+                            getAllUnit()
                             swalBerhasil();
                             offCanvasEl.hide();
                             renderUnit(dataUnit);
