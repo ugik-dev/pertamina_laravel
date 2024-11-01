@@ -16,6 +16,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DrugController;
 use App\Http\Controllers\FaskesController;
 use App\Http\Controllers\FieldController;
+use App\Http\Controllers\GuarantorController;
 use App\Http\Controllers\LiveLocationController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PortalController;
@@ -72,6 +73,7 @@ Route::get('get-emergency', [EmergencyController::class, 'getData'])->name('get-
 Route::get('emergency/{id}', [EmergencyController::class, 'detail'])->name('detail-emergency');
 
 
+Route::get('read-doc/reff/{code}', [RujukanController::class, 'get_qr']);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('test-call', [RequestController::class, 'test_call'])->name('test_call');
@@ -114,6 +116,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('form', [RujukanController::class, 'form_fresh'])->name('form');
         Route::get('form/{id}', [RujukanController::class, 'form_edit'])->name('edit');
         Route::get('upload/{id}', [RujukanController::class, 'upload'])->name('upload');
+        Route::get('approve/{id}', [RujukanController::class, 'approve'])->name('approve');
         Route::post('form', [RujukanController::class, 'form_save_new_fresh'])->name('save');
         Route::post('form/{id}', [RujukanController::class, 'form_save_edit'])->name('save-edit');
         Route::post('upload/{id}', [RujukanController::class, 'upload_process'])->name('upload-process');
@@ -178,6 +181,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('manage-agent')->name('agent.')->group(function () {
         Route::get('', [UserController::class, 'index'])->name('index');
         Route::get('get', [UserController::class, 'get'])->name('get');
+        Route::get('get/{id}', [UserController::class, 'find'])->name('find');
         Route::post('', [UserController::class, 'create'])->name('create');
         Route::put('', [UserController::class, 'update'])->name('update');
         Route::delete('/', [UserController::class, 'delete'])->name('delete');
@@ -196,6 +200,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('', [CompanyController::class, 'create'])->name('create');
         Route::put('', [CompanyController::class, 'update'])->name('update');
         Route::delete('/', [CompanyController::class, 'delete'])->name('delete');
+    });
+    Route::prefix('manage-guarantor')->name('guarantor.')->group(function () {
+        Route::get('', [GuarantorController::class, 'index'])->name('index');
+        Route::get('get', [GuarantorController::class, 'get'])->name('get');
+        Route::post('', [GuarantorController::class, 'create'])->name('create');
+        Route::put('', [GuarantorController::class, 'update'])->name('update');
+        Route::delete('/', [GuarantorController::class, 'delete'])->name('delete');
     });
 
     Route::prefix('manage-field')->name('field.')->group(function () {

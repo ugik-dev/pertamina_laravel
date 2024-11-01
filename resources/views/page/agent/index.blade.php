@@ -58,7 +58,6 @@
                         <th>Kategori</th>
                         <th>Role</th>
                         <th>ID Pekerja</th>
-                        <th>Penjamin</th>
                         <th>Tgl Lahir</th>
                         <th>Telpon</th>
                         <th>Email</th>
@@ -120,27 +119,6 @@
                         <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
                         <input type="text" id="rm_number" class="form-control dt-full-name" name="rm_number"
                             aria-label="" aria-describedby="basicFullname2" />
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="guarantor_id">Penjamin:</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <select type="text" id="guarantor_id" class="form-control dt-full-name" name="guarantor_id"
-                            aria-label="" aria-describedby="basicFullname2">
-                            <option value=""> - </option>
-                            @foreach ($dataContent['refGuarantor'] as $guarantor)
-                                <option value="{{ $guarantor->id }}">{{ $guarantor->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="guarantor_number">No Penjamin:</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="guarantor_number" class="form-control dt-full-name"
-                            name="guarantor_number" aria-label="" aria-describedby="basicFullname2" />
                     </div>
                 </div>
                 <div class="col-sm-12">
@@ -210,6 +188,21 @@
                     </div>
                 </div>
                 <div class="col-sm-12">
+                    <table id="FDataTablePentami" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Penjamin</th>
+                                <th>Nomor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="guarantorFields">
+                        </tbody>
+                        <tfoot>
+                            <a class="btn btn-info" id="addGuarantor">Tambah Pentami</a>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="col-sm-12">
                     <label for="basicFullname">QRCode :</label>
                     <div class="input-group input-group-merge">
                         <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
@@ -266,10 +259,8 @@
                     <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
                 </div>
             </form>
-
         </div>
     </div>
-
 @endsection
 
 @push('scripts')
@@ -289,6 +280,8 @@
 
             const offCanvasEl = new bootstrap.Offcanvas($('#add-new-record'));
             const printCol = [2, 3, 4, 6, 7, 8, 9]
+            var guarantors = $('#guarantorFields')
+            var addGuarantor = $('#addGuarantor')
             var FDataTable = $('#FDataTable').DataTable({
                 columnDefs: [],
                 order: [
@@ -480,14 +473,47 @@
                 'qrcode': $('#form-user').find('#qrcode'),
                 'dob': $('#form-user').find('#dob'),
                 'rm_number': $('#form-user').find('#rm_number'),
-                'guarantor_number': $('#form-user').find('#guarantor_number'),
                 'empoyee_id': $('#form-user').find('#empoyee_id'),
                 'gender': $('#form-user').find('#gender'),
-                'guarantor_id': $('#form-user').find('#guarantor_id'),
-
-
             }
 
+            addGuarantor.on("click", () => {
+                fieldGuarantor();
+            })
+
+            iGuarantor = 1;
+            fieldGuarantor()
+
+            function fieldGuarantor(guar = false, number = '') {
+                htmlRender = `
+                    <tr id="guarantor_row_${iGuarantor}">
+                        <td>
+                        <select type="text"  class="form-control dt-full-name" name="guarantor_id[]"
+                            aria-label="" aria-describedby="basicFullname2">
+                            <option value=""> - </option>
+                            @foreach ($dataContent['refGuarantor'] as $guarantor)
+                                <option value="{{ $guarantor->id }}" ${guar == '{{ $guarantor->id }}' ? 'selected' : ''}>{{ $guarantor->name }}</option>
+                            @endforeach
+                        </select>
+                        </td>
+                        <td>
+                        <input type="text" class="form-control dt-full-name"
+                            name="guarantor_number[]" aria-label="" aria-describedby="basicFullname2" value="${number}"/>
+                        </td>
+                        <td>
+                             <a class="delGuarantor" data-id="${iGuarantor}"><i class="mdi mdi-trash-can-outline"></i></a>
+                        </td>
+                     </tr>`
+                guarantors.append(htmlRender)
+                iGuarantor++;
+            }
+
+            guarantors.on("click", ".delGuarantor", function() {
+                console.log("calDelete")
+                var id = $(this).data('id');
+                // Find the row by its ID and remove it
+                $("#guarantor_row_" + id).remove();
+            })
             UserForm.role_id.on("change", function() {
                 if (UserForm.role_id.val() == 5) {
                     console.log("disable pass")
@@ -603,7 +629,7 @@
                         user['company'] != null ? user['company']['name'] : "",
                         user['field_work'] != null ? user['field_work']['name'] : "",
                         user[
-                            'role_title'], user['empoyee_id'], user['guarantor_number'],
+                            'role_title'], user['empoyee_id'],
                         user[
                             'dob'],
                         user['phone'], user['email'],
@@ -615,6 +641,8 @@
 
             $('.create-new').on('click', function() {
                 UserForm.form.trigger('reset')
+                guarantors.html('')
+                fieldGuarantor();
                 // var $newOption4 = $("<option selected='selected'></option>").val('').text("--");
                 // UserForm.user_id.append($newOption4).trigger('change');
                 UserForm.updateBtn.attr('style', 'display: none !important');
@@ -626,32 +654,60 @@
             })
 
             FDataTable.on('click', '.edit', function() {
-                var currentData = dataUser[$(this).data('id')];
-                UserForm.form.trigger('reset')
-                UserForm.insertBtn.attr('style', 'display: none !important');
-                UserForm.updateBtn.attr('style', 'display: ""');
-                UserForm.password.prop('required', false);
-                offCanvasEl.show();
-                UserForm.span_cp.show();
-                UserForm.id.val(currentData['id']);
-                UserForm.name.val(currentData['name']);
-                UserForm.alamat.val(currentData['alamat']);
-                UserForm.unit_id.val(currentData['unit_id']).trigger("change");
-                UserForm.field_work_id.val(currentData['field_work_id']).trigger("change");
-                UserForm.company_id.val(currentData['company_id']).trigger("change");
-                UserForm.qrcode.val(currentData['qrcode']);
-                UserForm.role_id.val(currentData['role_id']);
-                UserForm.email.val(currentData['email']);
-                UserForm.username.val(currentData['username']);
-                UserForm.phone.val(currentData['phone']);
-                UserForm.role_id.trigger('change');
-                UserForm.phone.val(currentData['phone']);
-                UserForm.dob.val(currentData['dob']);
-                UserForm.rm_number.val(currentData['rm_number']);
-                UserForm.guarantor_number.val(currentData['guarantor_number']);
-                UserForm.empoyee_id.val(currentData['empoyee_id']);
-                UserForm.guarantor_id.val(currentData['guarantor_id']).trigger("change");
-                UserForm.gender.val(currentData['gender']).trigger("change");
+
+                var id = $(this).data('id');
+                $.ajax({
+                    url: `{{ url('manage-agent/get') }}/${id}`,
+                    'type': 'get',
+                    data: toolbar.form.serialize(),
+                    success: function(data) {
+                        console.log(data['data'])
+                        Swal.close();
+                        if (data['error']) {
+                            return;
+                        }
+                        currentData = data['data'];
+                        UserForm.form.trigger('reset')
+                        UserForm.insertBtn.attr('style', 'display: none !important');
+                        UserForm.updateBtn.attr('style', 'display: ""');
+                        UserForm.password.prop('required', false);
+                        offCanvasEl.show();
+                        UserForm.span_cp.show();
+                        UserForm.id.val(currentData['id']);
+                        UserForm.name.val(currentData['name']);
+                        UserForm.alamat.val(currentData['alamat']);
+                        UserForm.unit_id.val(currentData['unit_id']).trigger("change");
+                        UserForm.field_work_id.val(currentData['field_work_id']).trigger(
+                            "change");
+                        UserForm.company_id.val(currentData['company_id']).trigger("change");
+                        UserForm.qrcode.val(currentData['qrcode']);
+                        UserForm.role_id.val(currentData['role_id']);
+                        UserForm.email.val(currentData['email']);
+                        UserForm.username.val(currentData['username']);
+                        UserForm.phone.val(currentData['phone']);
+                        UserForm.role_id.trigger('change');
+                        UserForm.phone.val(currentData['phone']);
+                        UserForm.dob.val(currentData['dob']);
+                        UserForm.rm_number.val(currentData['rm_number']);
+                        UserForm.empoyee_id.val(currentData['empoyee_id']);
+                        UserForm.gender.val(currentData['gender']).trigger("change");
+                        // dataUser = data['data'];
+                        // renderUser(dataUser);
+
+                        guarantors.html('')
+                        if (currentData['pentami'].length > 0) {
+                            currentData['pentami'].forEach(pentami => {
+                                fieldGuarantor(pentami['guarantor_id'], pentami[
+                                    'number']);
+                            });
+                        } else {
+                            fieldGuarantor();
+                        }
+                    },
+                    error: function(e) {}
+                });
+
+
             });
 
             var userForm = document.getElementById('form-user');

@@ -88,6 +88,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Sebuse::class);
     }
+    public function pentami()
+    {
+        return $this->hasMany(UserGuarantor::class);
+    }
+    public function pentami2()
+    {
+        return $this->hasMany(UserGuarantor::class);
+    }
     public function mcu()
     {
         return $this->hasMany(Bank::class, 'user_id', 'id')->with('ref_bank')->where('ref_bank_id', 1);

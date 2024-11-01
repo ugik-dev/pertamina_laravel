@@ -26,6 +26,22 @@
                             @endif
                         </select>
                     </div>
+                    <div class="col-sm-12 mb-2">
+                        <label for="user_guarantor_id" class="form-label">Penjamin :</label>
+                        <select class="form-control" id="user_guarantor_id" name="user_guarantor_id">
+                            @if (!empty($dataForm->pasien))
+                                <option value="">Pilih Penjamin </option>
+                                @foreach ($dataForm->pasien->pentami as $pentami)
+                                    <option value="{{ $pentami->id }}"
+                                        {{ $pentami->id == $dataForm->user_guarantor_id ? 'selected' : '' }}>
+                                        {{ $pentami->guarantor->name }} || {{ $pentami->number }}
+                                    </option>
+                                @endforeach
+                                {{-- <option value="{{ $dataForm->pasien->id }}" selected>{{ $dataForm->pasien->name }}
+                                </option> --}}
+                            @endif
+                        </select>
+                    </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-2">

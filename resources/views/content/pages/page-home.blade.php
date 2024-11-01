@@ -100,7 +100,7 @@
                                     </div>
                                     <div class="card-info mt-4 pt-1 mt-lg-1 mt-xl-4">
                                         <h5 class="mb-2">External Workers</h5>
-                                        <p class="mb-lg-2 mb-xl-3">Total {{ $dataContent['external']->count() }}
+                                        <p class="mb-lg-2 mb-xl-3">Total {{ $dataContent['counterExternal']['total'] }}
                                             wokers </p>
                                     </div>
                                 </div>
@@ -143,31 +143,9 @@
                     <div class="card">
                         <div class="card-header d-flex align-items-center justify-content-between">
                             <div>
-                                <h5 class="card-title mb-0">Chart Screening</h5>
+                                <h5 class="card-title mb-0">Internal Chart Screening</h5>
                                 <small class="text-muted">Spending on various categories</small>
                             </div>
-                            {{-- <div class="dropdown d-none d-sm-flex">
-                            <button type="button" class="btn dropdown-toggle px-0" data-bs-toggle="dropdown"
-                                aria-expanded="false"><i class="mdi mdi-calendar-month-outline"></i></button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Today</a>
-                                </li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Yesterday</a>
-                                </li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Last 7
-                                        Days</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Last 30
-                                        Days</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Current
-                                        Month</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Last
-                                        Month</a>
-                                </li>
-                            </ul>
-                        </div> --}}
                         </div>
                         <div class="card-body">
                             <div id="donutChart"></div>
@@ -209,6 +187,55 @@
 
 
 
+        </div>
+
+        <div class="col-md-12 col-lg-12 mb-4">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header d-flex align-items-center justify-content-between">
+                            <div>
+                                <h5 class="card-title mb-0">External Chart Screening</h5>
+                                <small class="text-muted">Spending on various categories</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="donutChartEx"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-body card-datatable table-responsive">
+                            <table id="tableScreeningEx" class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>PT/PJP</th>
+                                        <th>Status</th>
+                                        <th>Waktu</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($dataContent['externalUser'] as $internal)
+                                        <tr>
+                                            <td>{{ $internal->name }}</td>
+                                            <td>{{ $internal->company->name }}</td>
+                                            {{-- <td>{{ $internal->field_work?->high_risk == 'Y' ? 'HIGH RISK' : '' }}</td> --}}
+                                            <td>{!! spanFitality($internal->screenings?->first() ? $internal->screenings?->first()->fitality : '') !!}
+                                            </td>
+                                            <td>{!! $internal->screenings?->first()
+                                                ? \Carbon\Carbon::parse($internal->screenings?->first()->created_at)->format('H:i')
+                                                : '-' !!}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         {{-- Berita Artikel --}}

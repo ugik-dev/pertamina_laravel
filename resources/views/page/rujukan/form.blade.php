@@ -252,33 +252,59 @@
             saveBtn.on('click', function() {
                 TindakanForm.form.submit();
             })
-            initSelect2("#user_id");
+            // initSelect2("#user_id");
             initSelect2("#doctor_id");
             initSelect2("#assist_id");
-            // $("#user_id").select2({
-            //     dropdownParent: $('#accordionInformasi-Umum'),
-            //     ajax: {
-            //         url: '<?= route('select2.user') ?>',
-            //         type: "get",
-            //         dataType: 'json',
-            //         delay: 250,
-            //         data: function(params) {
-            //             return {
-            //                 searchTerm: params.term // search term
-            //             };
-            //         },
-            //         processResults: function(response) {
-            //             return {
-            //                 results: response.results
-            //             };
-            //         },
-            //         cache: true
-            //     },
-            //     minimumInputLength: 2,
-            //     placeholder: 'Pilih User',
-            //     allowClear: true
-            // });
+            $('#user_id').select2({
+                ajax: {
+                    url: '<?= route('select2.user') ?>',
+                    type: "get",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function(data) {
+                        console.log("Select2 Response:", data);
 
+                        // Ensure correct format for Select2
+                        return {
+                            results: data.results.map(user => ({
+                                id: user.id,
+                                text: user.text,
+                                pentami: user
+                                    .pentami
+                            }))
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 0,
+                placeholder: 'Pilih User',
+                allowClear: true
+            });
+            $('#user_id').on('select2:select', function(e) {
+                let data = e.params.data;
+
+                // Clear existing options in Penjamin
+                $('#user_guarantor_id').empty();
+
+                // Add options from the selected user's pentami
+                if (data.pentami && data.pentami.length > 0) {
+                    $('#user_guarantor_id').append(
+                        `<option value="">Pilih Penjamin</option>`
+                    );
+                    data.pentami.forEach(item => {
+                        $('#user_guarantor_id').append(
+                            `<option value="${item.id}">${item.guarantor_name} | ${item.number}</option>`
+                        );
+                    });
+                } else {
+                    $('#user_guarantor_id').append('<option value="">Tidak ada penjamin tersedia</option>');
+                }
+            });
 
             TindakanForm.form.on('submit', function(event) {
                 event.preventDefault();

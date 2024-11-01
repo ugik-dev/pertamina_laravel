@@ -13,21 +13,27 @@ class DrugController extends Controller
     public function select2(Request $request)
     {
         try {
-            $query = Drug::select('id', 'name', 'satuan');
+            $query = Drug::select('id', 'nama_obat', 'kode_oss', 'zat_aktif_utama');
             if (!empty($request->id)) {
                 $query->where('id', $request->id);
             }
             if (!empty($request->searchTerm)) {
-                $query->where('name', 'like', '%' . $request->searchTerm . '%');
+                // $query->where('name', 'like', '%' . $request->searchTerm . '%');
+                $query->where(function ($q) use ($request) {
+                    $q->where('nama_obat', 'like', '%' . $request->searchTerm . '%')
+                        ->orWhere('kelas', 'like', '%' . $request->searchTerm . '%')
+                        ->orWhere('sub_kelas', 'like', '%' . $request->searchTerm . '%')
+                        ->orWhere('pabrik', 'like', '%' . $request->searchTerm . '%')
+                        ->orWhere('zat_aktif_utama', 'like', '%' . $request->searchTerm . '%');
+                });
             }
             $users = $query->limit(20)->get();
 
             $data = $users->map(function ($user) {
                 return [
                     'id' => $user->id,
-                    'text' => $user->name,
-                    'name' => $user->name,
-                    'satuan' => $user->satuan // Ini yang akan ditampilkan di dropdown Select2
+                    'text' => $user->nama_obat . '|' . $user->kode_oss . "|" . $user->zat_aktif_utama,
+                    'name' => $user->nama_obat,
                 ];
             });
 

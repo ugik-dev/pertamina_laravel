@@ -24,6 +24,12 @@ class Refferal extends Model
         'relation_desc',
         'no_poli',
         'file_tte',
+        'user_guarantor_id',
+        'sign_id',
+        'sign_name',
+        'sign_time',
+        'qr_doc',
+        // 'doc_path',
         // 'nama_pemanggil',
         // 'phone_pemanggil',
         // 'nama_pasien',
@@ -104,6 +110,11 @@ class Refferal extends Model
     public function pasien()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function guarantor()
+    {
+        return $this->belongsTo(UserGuarantor::class, 'user_guarantor_id');
     }
 
     public function doctor()

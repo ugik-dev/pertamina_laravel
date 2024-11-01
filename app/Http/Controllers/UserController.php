@@ -8,6 +8,7 @@ use App\Models\Field;
 use App\Models\Guarantor;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\UserGuarantor;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -29,40 +30,50 @@ class UserController extends Controller
     public function select2(Request $request)
     {
         try {
-            // Query dengan relasi yang dibutuhkan
-            $query = User::select('id', 'name');
-            // Jika ada parameter 'id', ambil berdasarkan id
+            // Query with the necessary relationships
+            $query = User::select('id', 'name')->with('pentami.guarantor');
+
+            // Filter by 'id' if provided
             if (!empty($request->id)) {
                 $query->where('id', $request->id);
             }
 
-            // Jika ada parameter 'term' (biasanya untuk pencarian), filter berdasarkan term
+            // Filter by 'term' (search term) if provided
             if (!empty($request->searchTerm)) {
                 $query->where('name', 'like', '%' . $request->searchTerm . '%');
             }
 
-            // Ambil hasil query
-            $users = $query->get();
+            // Limit the results and execute the query
+            $users = $query->limit(20)->get();
 
-            // Format data untuk Select2
+            // Format data for Select2
             $data = $users->map(function ($user) {
                 return [
                     'id' => $user->id,
-                    'text' => $user->name // Ini yang akan ditampilkan di dropdown Select2
+                    'text' => $user->name,
+                    'pentami' => $user->pentami2->map(function ($userGuarantor) {
+                        return [
+                            'id' => $userGuarantor->id,
+                            'guarantor_id' => $userGuarantor->guarantor_id,
+                            'guarantor_name' => $userGuarantor->guarantor->name, // Retrieve guarantor name
+                            'number' => $userGuarantor->number,
+                        ];
+                    })
                 ];
             });
 
-            // Mengembalikan response dalam format JSON sesuai dengan kebutuhan Select2
+            // Return JSON response in the format needed by Select2
             return response()->json([
                 'results' => $data
             ]);
         } catch (Exception $ex) {
-            // Kembalikan error jika terjadi exception
+            // Return error if an exception occurs
             return response()->json([
                 'error' => $ex->getMessage()
             ], 500);
         }
     }
+
 
 
     public function get(Request $request)
@@ -72,6 +83,18 @@ class UserController extends Controller
             if (!empty($request->id)) $query->where('id', '=', $request->id);
             $res = $query->get()->toArray();
             $data =   DataStructure::keyValueObj($res, 'id');
+            return $this->responseSuccess($data);
+        } catch (Exception $ex) {
+            return  $this->ResponseError($ex->getMessage());
+        }
+    }
+
+
+
+    public function find(Request $request, $id)
+    {
+        try {
+            $data =  User::withRole()->with(['unit', 'field_work', 'company', 'pentami'])->findOrFail($id);
             return $this->responseSuccess($data);
         } catch (Exception $ex) {
             return  $this->ResponseError($ex->getMessage());
@@ -95,13 +118,23 @@ class UserController extends Controller
                 'email' => $request->email,
                 'dob' => $request->dob,
                 'rm_number' => $request->rm_number,
-                'guarantor_number' => $request->guarantor_number,
+                // 'guarantor_number' => $request->guarantor_number,
                 'empoyee_id' => $request->empoyee_id,
                 'gender' => $request->gender,
-                'guarantor_id' => $request->guarantor_id,
+                // 'guarantor_id' => $request->guarantor_id,
                 'password' => Hash::make($request->password),
             ];
+
             $data = User::create($att);
+            foreach ($request->guarantor_id as $key => $guard) {
+                if (!empty($request->guarantor_number[$key]) && !empty($request->guarantor_id[$key])) {
+                    UserGuarantor::create([
+                        'user_id' => $data->id,
+                        'guarantor_id' => $request->guarantor_id[$key],
+                        'number' => $request->guarantor_number[$key]
+                    ]);
+                }
+            }
             $data = User::withRole()->with(['unit', 'field_work'])->find($data->id);
 
             return  $this->responseSuccess($data);
@@ -128,15 +161,34 @@ class UserController extends Controller
                 'dob' => $request->dob,
                 'rm_number' => $request->rm_number,
                 'company_id' => $request->company_id,
-                'guarantor_number' => $request->guarantor_number,
+                // 'guarantor_number' => $request->guarantor_number,
                 'empoyee_id' => $request->empoyee_id,
                 'gender' => $request->gender,
-                'guarantor_id' => $request->guarantor_id,
+                // 'guarantor_id' => $request->guarantor_id,
             ]);
             if (!empty($request->password))
                 $data->update([
                     'password' => Hash::make($request->password),
                 ]);
+
+            $arrGuarantor = [];
+            if ($request->guarantor_id)
+                foreach ($request->guarantor_id as $key => $guard) {
+                    if (!empty($request->guarantor_number[$key]) && !empty($request->guarantor_id[$key])) {
+
+                        $userG = UserGuarantor::updateOrCreate(
+                            [
+                                'user_id' => $data->id,
+                                'guarantor_id' => $request->guarantor_id[$key],
+                            ],
+                            ['number' => $request->guarantor_number[$key]]
+                        );
+                        $arrGuarantor[] = $userG->id;
+                    }
+                }
+
+            UserGuarantor::where('user_id', $data->id)->whereNotIn('id', $arrGuarantor)->delete();
+            // dd($arrGuarantor);
             $data = User::withRole()->with(['unit', 'field_work'])->findOrFail($request->id);
 
             return  $this->responseSuccess($data);

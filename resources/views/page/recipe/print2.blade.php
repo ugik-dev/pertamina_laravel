@@ -299,7 +299,7 @@
                     <table style="width: 100%; padding-top : 0px; margin-top : 0px">
                         @foreach ($dataForm->drugs as $drug)
                             <tr>
-                                <td style="width: 80%">{{ $drug->drug->name }} {{ $drug->drug_qyt }}
+                                <td style="width: 80%">{{ $drug->drug->nama_obat }} {{ $drug->drug_qyt }}
                                     {{ $drug->drug->satuan }}</td>
                                 <td style="width: 20%; text-align:right">No {{ intToRoman($drug->drug_number) }}</td>
                             </tr>

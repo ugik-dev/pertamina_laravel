@@ -132,6 +132,11 @@
                     </a>
                 </li>
                 <li class="menu-item">
+                    <a href="{{ route('guarantor.index') }}" class="menu-link">
+                        <div>Pentami</div>
+                    </a>
+                </li>
+                <li class="menu-item">
                     <a href="{{ route('drug.index') }}" class="menu-link">
                         <div>Obat</div>
                     </a>

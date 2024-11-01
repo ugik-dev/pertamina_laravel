@@ -14,7 +14,7 @@
     <li class="nav-item">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#keluhan_utama">
             <i class="mdi mdi-reload me-1"></i>
-            <span class="align-middle">Rujukan</span>
+            <span class="align-middle">Receipe</span>
         </button>
     </li>
     {{-- <li class="nav-item">

@@ -2,16 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\Logo\Logo;
 use App\Models\Form;
 use App\Models\LoginSession;
 use App\Models\Refferal;
 use App\Models\RequestCall;
 use App\Models\RequestCallLog;
 use App\Models\User;
+use Endroid\QrCode\Encoding\Encoding;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Illuminate\Support\Facades\Response;
+
 
 class RujukanController extends Controller
 {
@@ -39,7 +50,40 @@ class RujukanController extends Controller
         return view('page.rujukan.form', $compact);
     }
 
+    public function get_qr($code, Request $request)
+    {
+        try {
+            // Mencari data berdasarkan kolom 'qr_doc'
+            $data = Refferal::where('qr_doc', $code)->firstOrFail();
 
+            // Menyusun path untuk file PDF
+            $filePath = storage_path("app/document/rujukan/rujukan_" . $data->id . '.pdf');
+
+            // Memeriksa apakah file PDF ada
+            if (!file_exists($filePath)) {
+                return response()->json(['error' => 'File tidak ditemukan.' . $filePath], 404);
+            }
+
+            // Mengembalikan file PDF dengan header yang sesuai
+            return response()->file($filePath, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename=document.pdf',
+            ]);
+        } catch (Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()], 500);
+        }
+        // $data = Refferal::where('qr_doc', $code)->firstOrFail();
+        // return Response::make(storage_path("document/rujukan/rujukan_" . $data->id . '.pdf'), 200, [
+        //     'Content-Type' => 'application/pdf',
+        //     'Content-Disposition' => 'inline; filename=document.pdf',
+        // ]);
+        // dd($data);
+        // dd($data->doctor);
+        // $data_all = Form::with('user')->find($id);
+        // $form_url = route('rujukan.save-edit', ['id' => $data->id,]);
+        // $compact = ['dataContent' => $data, 'form_url' => $form_url, 'dataForm' => $data];
+        // return view('page.rujukan.form', $compact);
+    }
     public function upload($id, Request $request)
     {
         $data = Refferal::findOrFail($id);
@@ -48,6 +92,71 @@ class RujukanController extends Controller
         $compact = ['dataContent' => $data, 'form_url' => $form_url, 'dataForm' => $data];
         return view('page.rujukan.upload', $compact);
     }
+
+    public function approve($id, Request $request)
+    {
+        try {
+            $data = Refferal::findOrFail($id);
+            $user = Auth::user();
+            if ($data->doctor_id == $user->id && empty($data->sign_iq)) {
+                //generate Qrcode and save to local document/rujukan_qr
+                do {
+                    $uniqueCode = Str::random(16);
+                } while (Refferal::where('qr_doc', $uniqueCode)->exists());
+                $url = url('read-doc/reff/' . $uniqueCode); // Pastikan 'read_document' adalah route yang valid
+                $qrCode = new QrCode($url,  new Encoding('UTF-8'),   ErrorCorrectionLevel::High, 300, 10); // Atur ukuran QR code di sini
+
+                $logoPath = public_path('assets/img/logo-w-name.jpg');
+                $logo = new Logo($logoPath, 100, 100, true); // Sesuaikan ukuran logo
+
+                $writer = new PngWriter();
+                $result = $writer->write($qrCode, $logo);
+                $base64 = base64_encode($result->getString());
+                $data->sign_id = $user->id;
+                $data->sign_name =  $user->name; // Menggunakan nama dokter yang sedang login
+                $data->sign_time = now(); // Menyimpan waktu saat ini
+                $data->qr_doc = $uniqueCode; // Simpan path QR Code jika diperlukan
+                $data->save();
+
+                $data_all = Refferal::findOrFail($id);
+                $compact = [
+                    'dataForm' => $data_all,
+                    'qrcode' => 'data:image/png;base64,' . $base64
+                ];
+
+                Pdf::setOption([
+                    'dpi' => 150,
+                    'defaultFont' => 'sans-serif',
+                    'margin_top' => 2,    // Set top margin in millimeters
+                    'margin_right' => 2,  // Set right margin in millimeters
+                    'margin_bottom' => 2, // Set bottom margin in millimeters
+                    'margin_left' => 2,
+                ]);
+
+                $pdf = PDF::loadView('page.rujukan.print2', $compact, [
+                    'dpi' => 150,
+                    'defaultFont' => 'sans-serif',
+                    'margin_top' => 2,
+                    'margin_right' => 2,
+                    'margin_bottom' => 2,
+                    'margin_left' => 2,
+                ]);
+                $pdf->setPaper([0, 0, 596, 935], 'portrait');
+                $filename = 'rujukan_' . $id . '.pdf';
+                $filePath = 'document/rujukan/' . $filename;
+                Storage::disk('local')->put($filePath, $pdf->output());
+                return  $this->responseSuccess("Data berhasil di approve");
+            } else {
+                throw new \Exception("Anda tidak berhak melakukan aksi ini atau data sudah diapprove");
+            }
+        } catch (Exception $ex) {
+            return  $this->ResponseError($ex->getMessage());
+        }
+        // $form_url = route('rujukan.upload-process', ['id' => $data->id,]);
+        // $compact = ['dataContent' => $data, 'form_url' => $form_url, 'dataForm' => $data];
+        // return view('page.rujukan.upload', $compact);
+    }
+
 
     public function form_edit_fresh($id)
     {
@@ -113,12 +222,6 @@ class RujukanController extends Controller
                 $data->file_tte = $filename;
                 $data->save();
             }
-            // }
-
-
-
-
-
             return $this->responseSuccess($id);
         } catch (Exception $ex) {
             return  $this->ResponseError($ex->getMessage());
@@ -131,7 +234,6 @@ class RujukanController extends Controller
             if ($id) {
                 $data = Refferal::findOrFail($id);
             }
-
             $formData = $request->except(['_token', 'gambar']);
 
 
@@ -194,6 +296,12 @@ class RujukanController extends Controller
                     return $data->doctor->name ?? '';
                 })->addColumn('assist_name', function ($data) {
                     return  $data->assist->name ?? '';
+                })->addColumn('span_approval', function ($data) {
+                    if (!empty($data->qr_doc)) {
+                        return '<a target="_blank" href="' . url('read-doc/reff/' . $data->qr_doc) . '" class="dropdown-item"><i class="mdi mdi-printer"></i> Approved </a>';
+                    } else {
+                        return "";
+                    }
                 })->addColumn('span_time', function ($data) {
                     return \Carbon\Carbon::parse($data->created_at)->format('Y-m-d h:i');
                 })->addColumn('aksi', function ($data) {
@@ -202,6 +310,12 @@ class RujukanController extends Controller
                     <i class="mdi mdi-dots-vertical"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end m-0">';
+
+                    // Print Draft button
+                    if (Auth::user()->id == $data->doctor_id && empty($data->sign_id))
+                        $aksi .= '<li><a  class="approveBtn dropdown-item" data-id="' . $data->id . '"><i class="mdi mdi-check" ></i> Approve</a></li>';
+                    if (!empty($data->qr_doc))
+                        $aksi .= '<li><a target="_blank" href="' . url('read-doc/reff/' . $data->qr_doc) . '" class="dropdown-item"><i class="mdi mdi-printer"></i> Lihat Doc Approve</a></li>';
 
                     // Print Draft button
                     $aksi .= '<li><a href="' . route('rujukan.open', $data->id) . '" class="dropdown-item"><i class="mdi mdi-printer"></i> Print Draft</a></li>';
@@ -224,7 +338,7 @@ class RujukanController extends Controller
                     $aksi .= '</ul></div>';
 
                     return $aksi;
-                })->rawColumns(['aksi'])->make(true);
+                })->rawColumns(['aksi', 'span_approval'])->make(true);
         }
         return view('page.rujukan.index', compact('request'));
     }

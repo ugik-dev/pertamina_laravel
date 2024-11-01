@@ -22,6 +22,7 @@
                 <th>Dokter</th>
                 <th>Assist</th>
                 <th>Tujuan</th>
+                <th>Approval</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -67,27 +68,33 @@
                     url: "{{ route('rujukan.index') }}"
                 },
                 columns: [{
-                    data: "DT_RowIndex",
-                    name: "DT_RowIndex"
-                }, {
-                    data: "span_time",
-                    name: "span_time"
-                }, {
-                    data: "pasien_name",
-                    name: "pasien_name"
-                }, {
-                    data: "doctor_name",
-                    name: "doctor_name"
-                }, {
-                    data: "assist_name",
-                    name: "assist_name"
-                }, {
-                    data: "tujuan",
-                    name: "tujuan"
-                }, {
-                    data: "aksi",
-                    name: "aksi"
-                }, ]
+                        data: "DT_RowIndex",
+                        name: "DT_RowIndex"
+                    }, {
+                        data: "span_time",
+                        name: "span_time"
+                    }, {
+                        data: "pasien_name",
+                        name: "pasien_name"
+                    }, {
+                        data: "doctor_name",
+                        name: "doctor_name"
+                    }, {
+                        data: "assist_name",
+                        name: "assist_name"
+                    }, {
+                        data: "tujuan",
+                        name: "tujuan"
+                    },
+                    {
+                        data: "span_approval",
+                        name: "span_approval"
+                    },
+                    {
+                        data: "aksi",
+                        name: "aksi"
+                    },
+                ]
             });
             Datatable.on("click", '.delBtn', function(ev) {
                 event.preventDefault();
@@ -115,6 +122,35 @@
                         error: function(e) {}
                     });
                 });
+            })
+            Datatable.on("click", '.approveBtn', function(ev) {
+                event.preventDefault();
+                var id = $(this).data('id');
+                var token = $("[name='_token']").val();
+                Swal.fire(SwalOpt('Konfirmasi approv ?', 'Data ini akan diapprov dan di tanda tangan!', ))
+                    .then((result) => {
+                        if (!result.isConfirmed) {
+                            return;
+                        }
+                        swalLoading();
+                        $.ajax({
+                            url: "<?= url('rujukan/approve/') ?>/" + id,
+                            'type': 'get',
+                            data: {
+                                '_token': token,
+                                'id': id
+                            },
+                            success: function(data) {
+                                if (data['error']) {
+                                    swalError(data['message'], "Approv Gagal !!");
+                                    return;
+                                }
+                                Datatable.ajax.reload(null, false);
+                                swalBerhasil('Approval Berhasil!');
+                            },
+                            error: function(e) {}
+                        });
+                    });
             })
             var currenPickOff = null;
             Pusher.logToConsole = true;

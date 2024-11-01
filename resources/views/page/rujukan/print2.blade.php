@@ -121,7 +121,7 @@
             }
 
             .fill-remaining {
-                height: 700px;
+                height: 600px;
             }
 
             .break-5 {
@@ -162,7 +162,7 @@
             }
 
             .table-row {
-                margin-bottom: 10px;
+                margin-bottom: 20px;
             }
 
             .container {
@@ -255,6 +255,20 @@
                                 {{ $dataForm->pasien->gender == 'L' ? 'Laki-laki' : ($dataForm->pasien->gender == 'P' ? 'Perempuan' : '') }}
                             </td>
                         </tr>
+                        <tr class="no-border">
+                            <td class="no-border">Penjamin</td>
+                            <td class="no-border">:</td>
+                            <td class="no-border">
+                                {{ $dataForm->guarantor?->guarantor->name }}
+                            </td>
+                        </tr>
+                        <tr class="no-border">
+                            <td class="no-border">No. Penjamin</td>
+                            <td class="no-border">:</td>
+                            <td class="no-border">
+                                {{ $dataForm->guarantor?->number }}
+                            </td>
+                        </tr>
                     </table>
                 </td>
                 <td colspan="2" rowspan="1" class="text-center" width="500px"
@@ -327,8 +341,12 @@
             </tr>
             <tr class="signature-row" style="border-top: 1px;">
                 <td colspan="4" class="signature text-center" style="border-top: 1px; padding-left:400px">
-                    <div>Tanda tangan dokter pengirim:</div>
-                    <br><br><br><br><br>
+                    <div>Tanda tangan dokter pengirim: </div>
+                    @if (!empty($qrcode))
+                        <img style="width: 150px;" src="{{ $qrcode }}" />
+                    @else
+                        <br><br><br><br><br>
+                    @endif
                     <div>{{ $dataForm->doctor->name }}</div>
                 </td>
             </tr>
