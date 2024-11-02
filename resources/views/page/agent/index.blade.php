@@ -198,7 +198,7 @@
                         <tbody id="guarantorFields">
                         </tbody>
                         <tfoot>
-                            <a class="btn btn-info" id="addGuarantor">Tambah Pentami</a>
+                            <a class="btn btn-info" id="addGuarantor">Tambah Penjamin</a>
                         </tfoot>
                     </table>
                 </div>

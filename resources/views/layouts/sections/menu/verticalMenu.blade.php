@@ -133,7 +133,7 @@
                 </li>
                 <li class="menu-item">
                     <a href="{{ route('guarantor.index') }}" class="menu-link">
-                        <div>Pentami</div>
+                        <div>Jenis Penjamin</div>
                     </a>
                 </li>
                 <li class="menu-item">

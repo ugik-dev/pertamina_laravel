@@ -29,7 +29,7 @@
 
 @section('content')
     <h4 class="py-3 mb-4">
-        <span class="text-muted fw-light">Manage /</span> PENTAMI
+        <span class="text-muted fw-light">Manage /</span> Penjamin
     </h4>
     @csrf
     <div class="card">
@@ -48,7 +48,7 @@
     <!-- Modal to add new record -->
     <div class="offcanvas offcanvas-end" id="add-new-record" style="width : 700px !important">
         <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title" id="exampleModalLabel">Form PENTAMI</h5>
+            <h5 class="offcanvas-title" id="exampleModalLabel">Form Penjamin</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body flex-grow-1">
@@ -56,7 +56,7 @@
                 @csrf
                 <input type="text" id="id" class="" name="id" hidden />
                 <div class="col-sm-12">
-                    <label for="basicFullname">Nama PENTAMI :</label>
+                    <label for="basicFullname">Nama Penjamin :</label>
                     <div class="input-group input-group-merge">
                         <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
                         <input type="text" id="name" class="form-control dt-full-name" name="name" placeholder=""
