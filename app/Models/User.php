@@ -40,7 +40,8 @@ class User extends Authenticatable
         'empoyee_id',
         'gender',
         'guarantor_id',
-
+        'tanggungan_id',
+        'tanggungan_st',
     ];
     protected $keyLength = 191;
     /**
@@ -87,6 +88,15 @@ class User extends Authenticatable
     public function sebuses()
     {
         return $this->hasMany(Sebuse::class);
+    }
+    public function tanggungan()
+    {
+        return $this->hasMany(User::class, 'tanggungan_id');
+    }
+
+    public function tanggungan_dari()
+    {
+        return $this->belongsTo(User::class, 'tanggungan_id', 'id');
     }
     public function pentami()
     {

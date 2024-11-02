@@ -2,11 +2,11 @@
     <div class="d-flex mb-3 gap-3">
         <div class="avatar">
             <span class="avatar-initial bg-label-primary rounded">
-                <i class="mdi mdi-reload mdi-24px"></i>
+                <i class="mdi mdi-note-text mdi-24px"></i>
             </span>
         </div>
         <div>
-            <h5 class="mb-0"><span class="align-middle">Recipe</span></h5>
+            <h5 class="mb-0"><span class="align-middle">Formulir Resep</span></h5>
         </div>
     </div>
     <div id="accordionKeluhan_utama" class="accordion">

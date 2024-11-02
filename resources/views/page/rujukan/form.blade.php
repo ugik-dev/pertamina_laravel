@@ -33,7 +33,7 @@
             Form
         @endif
         <a class="btn btn-primary float-end ms-2"
-            href='{{ !empty($id) ? route('detail-rujukan', $dataContent->id) : (!empty($dataForm->request_call_id) ? route('detail-rujukan', $dataForm->request_call_id) : route('rekap.tindakan')) }}';>
+            href='{{ !empty($id) ? route('detail-rujukan', $dataContent->id) : (!empty($dataForm->request_call_id) ? route('detail-rujukan', $dataForm->request_call_id) : route('rujukan.index')) }}';>
             <i class="mdi mdi-keyboard-backspace me-2"></i>
             Kembali</a>
 
@@ -254,7 +254,7 @@
             })
             // initSelect2("#user_id");
             initSelect2("#doctor_id");
-            initSelect2("#assist_id");
+            // initSelect2("#assist_id");
             $('#user_id').select2({
                 ajax: {
                     url: '<?= route('select2.user') ?>',
@@ -274,8 +274,6 @@
                             results: data.results.map(user => ({
                                 id: user.id,
                                 text: user.text,
-                                pentami: user
-                                    .pentami
                             }))
                         };
                     },
@@ -287,23 +285,48 @@
             });
             $('#user_id').on('select2:select', function(e) {
                 let data = e.params.data;
-
-                // Clear existing options in Penjamin
+                console.log('data', data)
                 $('#user_guarantor_id').empty();
+                $.ajax({
+                    url: `{{ url('select2/guarantor/') }}/${data['id']}`,
+                    'type': 'get',
+                    success: function(data) {
+                        console.log(data['results'])
+                        Swal.close();
+                        if (data['error']) {
+                            return;
+                        }
+                        if (data.results && data.results.length > 0) {
+                            $('#user_guarantor_id').append(
+                                `<option value="">Pilih Penjamin</option>`
+                            );
+                            data.results.forEach(item => {
+                                $('#user_guarantor_id').append(
+                                    `<option value="${item.id}">${item.text} </option>`
+                                );
+                            });
+                        } else {
+                            $('#user_guarantor_id').append(
+                                '<option value="">Tidak ada penjamin tersedia</option>');
+                        }
+
+                    },
+                    error: function(e) {}
+                });
 
                 // Add options from the selected user's pentami
-                if (data.pentami && data.pentami.length > 0) {
-                    $('#user_guarantor_id').append(
-                        `<option value="">Pilih Penjamin</option>`
-                    );
-                    data.pentami.forEach(item => {
-                        $('#user_guarantor_id').append(
-                            `<option value="${item.id}">${item.guarantor_name} | ${item.number}</option>`
-                        );
-                    });
-                } else {
-                    $('#user_guarantor_id').append('<option value="">Tidak ada penjamin tersedia</option>');
-                }
+                // if (data.pentami && data.pentami.length > 0) {
+                //     $('#user_guarantor_id').append(
+                //         `<option value="">Pilih Penjamin</option>`
+                //     );
+                //     data.pentami.forEach(item => {
+                //         $('#user_guarantor_id').append(
+                //             `<option value="${item.id}">${item.guarantor_name} | ${item.number}</option>`
+                //         );
+                //     });
+                // } else {
+                //     $('#user_guarantor_id').append('<option value="">Tidak ada penjamin tersedia</option>');
+                // }
             });
 
             TindakanForm.form.on('submit', function(event) {

@@ -355,7 +355,7 @@
             })
             initSelect2("#user_id");
             initSelect2("#doctor_id");
-            initSelect2("#assist_id");
+            // initSelect2("#assist_id");
             // $("#user_id").select2({
             //     dropdownParent: $('#accordionInformasi-Umum'),
             //     ajax: {

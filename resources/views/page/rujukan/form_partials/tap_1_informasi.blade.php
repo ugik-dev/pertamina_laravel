@@ -28,17 +28,28 @@
                     </div>
                     <div class="col-sm-12 mb-2">
                         <label for="user_guarantor_id" class="form-label">Penjamin :</label>
+                        {{-- @dd($dataForm->pasien->tanggungan_dari) --}}
                         <select class="form-control" id="user_guarantor_id" name="user_guarantor_id">
-                            @if (!empty($dataForm->pasien))
+                            <option value="">Pilih Penjamin </option>
+
+                            @if (!empty($dataForm->pasien->pentami[0]))
                                 <option value="">Pilih Penjamin </option>
                                 @foreach ($dataForm->pasien->pentami as $pentami)
                                     <option value="{{ $pentami->id }}"
                                         {{ $pentami->id == $dataForm->user_guarantor_id ? 'selected' : '' }}>
-                                        {{ $pentami->guarantor->name }} || {{ $pentami->number }}
+                                        {{ $pentami->pemilik->name }} | {{ $pentami->guarantor->name }} |
+                                        {{ $pentami->number }}
                                     </option>
                                 @endforeach
-                                {{-- <option value="{{ $dataForm->pasien->id }}" selected>{{ $dataForm->pasien->name }}
-                                </option> --}}
+                            @elseif(!empty($dataForm->pasien->tanggungan_dari->pentami))
+                                @foreach ($dataForm->pasien->tanggungan_dari->pentami as $pentami)
+                                    <option value="{{ $pentami->id }}"
+                                        {{ $pentami->id == $dataForm->user_guarantor_id ? 'selected' : '' }}>
+                                        {{ $dataForm->pasien->tanggungan_dari->name }} |
+                                        {{ $pentami->guarantor->name }}
+                                        | {{ $pentami->number }}
+                                    </option>
+                                @endforeach
                             @endif
                         </select>
                     </div>
@@ -54,6 +65,17 @@
                             </select>
                         </div>
                         <div class="col-md-6 mb-2">
+                            <label for="format" class="form-label">Jenis :</label>
+                            <select class="form-control" id="format" name="format">
+                                <option value="1"
+                                    {{ !empty($dataForm->format) ? ($dataForm->format == 1 ? 'selected' : '') : 'selected' }}>
+                                    General</option>
+                                <option value="2"
+                                    {{ !empty($dataForm->format) ? ($dataForm->format == 2 ? 'selected' : '') : '' }}>
+                                    Rujukan Gigi </option>
+                            </select>
+                        </div>
+                        {{-- <div class="col-md-6 mb-2">
                             <label for="assist_id" class="form-label">Asisten :</label>
                             <select class="form-control" id="assist_id" name="assist_id">
                                 @if (!empty($dataForm->assist))
@@ -61,7 +83,7 @@
                                     </option>
                                 @endif
                             </select>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-2">

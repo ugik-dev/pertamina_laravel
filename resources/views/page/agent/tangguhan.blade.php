@@ -40,7 +40,6 @@
 @endsection
 
 @section('content')
-
     <h4 class="py-3 mb-4">
         <span class="text-muted fw-light">Manage /</span> User
     </h4>
@@ -70,7 +69,7 @@
     <!-- Modal to add new record -->
     <div class="offcanvas offcanvas-end" id="add-new-record" style="width : 700px !important">
         <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title" id="exampleModalLabel">Form User</h5>
+            <h5 class="offcanvas-title" id="exampleModalLabel">Form Tangguhan</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body flex-grow-1">
@@ -83,14 +82,6 @@
                         <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
                         <input type="text" id="name" class="form-control dt-full-name" name="name" placeholder=""
                             aria-label="" aria-describedby="basicFullname2" required />
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="empoyee_id">No Pekerja :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="empoyee_id" class="form-control dt-full-name" name="empoyee_id"
-                            aria-label="" aria-describedby="basicFullname2" />
                     </div>
                 </div>
                 <div class="col-sm-12">
@@ -123,151 +114,17 @@
                     </div>
                 </div>
                 <div class="col-sm-12">
-                    <label for="basicSalary">PT/PJP :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicSalary2" class="input-group-text"><i class='mdi mdi-account-outline'></i></span>
-                        <div class="form-floating form-floating-outline">
-                            <select id="company_id" name="company_id" class="form-control" required>
-                                <option value="">--</option>
-                                @foreach ($dataContent['refCompany'] as $company)
-                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicSalary">Lokasi Kerja :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicSalary2" class="input-group-text"><i class='mdi mdi-account-outline'></i></span>
-                        <div class="form-floating form-floating-outline">
-                            <select id="unit_id" name="unit_id" class="form-control" required>
-                                <option value="">--</option>
-                                @foreach ($dataContent['refUnit'] as $unit)
-                                    <option value="{{ $unit->id }}">{{ $unit->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicSalary">Kategori Kerja :</label>
+                    <label for="basicSalary">Hubungan :</label>
                     <div class="input-group input-group-merge">
                         <span id="basicSalary2" class="input-group-text"><i class='mdi mdi-account-outline'></i></span>
                         <div class="form-floating form-floating-outline">
                             <select id="field_work_id" name="field_work_id" class="form-control" required>
                                 <option value="">--</option>
-                                @foreach ($dataContent['refField'] as $field)
-                                    <option value="{{ $field->id }}">{{ $field->name }}</option>
-                                @endforeach
+                                <option value="1">Istri</option>
+                                <option value="2">Suami</option>
+                                <option value="3">Anak</option>
                             </select>
                         </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicFullname">Alamat :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="alamat" class="form-control dt-full-name" name="alamat"
-                            placeholder="" aria-label="" aria-describedby="basicFullname2" />
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicFullname">Telepon :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="phone" class="form-control dt-full-name" name="phone"
-                            placeholder="" aria-label="" aria-describedby="basicFullname2" />
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicFullname">Email :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="email" class="form-control dt-full-name" name="email"
-                            placeholder="" aria-label="" aria-describedby="basicFullname2" />
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <table id="FDataTablePentami" class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Penjamin</th>
-                                <th>Nomor</th>
-                            </tr>
-                        </thead>
-                        <tbody id="guarantorFields">
-                        </tbody>
-                        <tfoot>
-                            <a class="btn btn-info" id="addGuarantor">Tambah Penjamin</a>
-                        </tfoot>
-                    </table>
-                </div>
-                <div class="col-sm-12">
-                    <table id="FDataTableTanggungan" class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Nama</th>
-                                <th>Tgl Lahir</th>
-                                <th>Jenis Kelamin</th>
-                                <th>Status</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody id="tanggunganFields">
-                        </tbody>
-                        <tfoot>
-                            <a class="btn btn-info" id="addTanggungan">Tambah Tanggungan</a>
-                        </tfoot>
-                    </table>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicFullname">QRCode :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="qrcode" class="form-control dt-full-name" name="qrcode"
-                            placeholder="" aria-label="" aria-describedby="basicFullname2" required readonly />
-                    </div>
-                </div>
-                <div class="col-sm-12 row mt-2 mb-2">
-                    <div class="col-sm-4"> <a class="btn btn-info text-white" id="create_qr">Scan QR</a></div>
-                    <div class="col-sm-7">
-                        <div id="reader" class="mr-3 ml-3 w-80" style="margin:0 auto;"></div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicSalary">Role :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicSalary2" class="input-group-text"><i class='mdi mdi-account-outline'></i></span>
-                        <div class="form-floating form-floating-outline">
-                            <select id="role_id" name="role_id" class="form-control" required>
-                                <option value="">--</option>
-                                @foreach ($dataContent['refRole'] as $rd)
-                                    <option value="{{ $rd->id }}">{{ $rd->title }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <label for="basicFullname">Username :</label>
-                    <div class="input-group input-group-merge">
-                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="text" id="username" class="form-control dt-full-name" pattern="[a-z0-9]+"
-                            name="username" placeholder="" aria-label="" aria-describedby="basicFullname2" required />
-                        <div class="invalid-feedback">
-                            Masukkan username hanya menggunakan huruf kecil dan angka, tanpa spasi dan karakter spesial
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-12">
-                    <label for="basicFullname">Password <small id="span_cp">*kosongkan jika tidak
-                            diganti</small>:</label>
-                    <div class="input-group input-group-merge">
-                        <span class="input-group-text"><i class="mdi mdi-file"></i></span>
-                        <input type="password" id="password" class="form-control" name="password" placeholder=""
-                            required />
                     </div>
                 </div>
                 <div class="col-sm-12">
@@ -301,8 +158,6 @@
             const printCol = [2, 3, 4, 6, 7, 8, 9]
             var guarantors = $('#guarantorFields')
             var addGuarantor = $('#addGuarantor')
-            var tanggungans = $('#tanggunganFields')
-            var addTanggungan = $('#addTanggungan')
             var FDataTable = $('#FDataTable').DataTable({
                 columnDefs: [],
                 order: [
@@ -484,7 +339,6 @@
                 'field_work_id': $('#form-user').find('#field_work_id'),
                 'alamat': $('#form-user').find('#alamat'),
                 'password': $('#form-user').find('#password'),
-                'span_cp': $('#form-user').find('#span_cp'),
                 'phone': $('#form-user').find('#phone'),
                 'email': $('#form-user').find('#email'),
                 'long': $('#form-user').find('#long'),
@@ -502,157 +356,6 @@
                 fieldGuarantor();
             })
 
-            iGuarantor = 1;
-            fieldGuarantor()
-
-            function fieldGuarantor(guar = false, number = '') {
-                htmlRender = `
-                    <tr id="guarantor_row_${iGuarantor}">
-                        <td>
-                        <select type="text"  class="form-control dt-full-name" name="guarantor_id[]"
-                            aria-label="" aria-describedby="basicFullname2">
-                            <option value=""> - </option>
-                            @foreach ($dataContent['refGuarantor'] as $guarantor)
-                                <option value="{{ $guarantor->id }}" ${guar == '{{ $guarantor->id }}' ? 'selected' : ''}>{{ $guarantor->name }}</option>
-                            @endforeach
-                        </select>
-                        </td>
-                        <td>
-                        <input type="text" class="form-control dt-full-name"
-                            name="guarantor_number[]" aria-label="" aria-describedby="basicFullname2" value="${number}"/>
-                        </td>
-                        <td>
-                             <a class="delGuarantor" data-id="${iGuarantor}"><i class="mdi mdi-trash-can-outline"></i></a>
-                        </td>
-                     </tr>`
-                guarantors.append(htmlRender)
-                iGuarantor++;
-            }
-
-            guarantors.on("click", ".delGuarantor", function() {
-                console.log("calDelete")
-                var id = $(this).data('id');
-                // Find the row by its ID and remove it
-                $("#guarantor_row_" + id).remove();
-            })
-
-            // start tanggungan
-            addTanggungan.on("click", () => {
-                fieldTanggungan();
-            })
-
-            iTanggungan = 1;
-            fieldTanggungan()
-
-            function fieldTanggungan(id = '', name = '', dob = '', jk = '', st = '') {
-                htmlRender = `
-                    <tr id="tanggungan_row_${iTanggungan}">
-                        <td>
-                             <input type="text" class="form-control"
-                            name="tanggungan_cur_id[]" aria-label="" aria-describedby="basicFullname2" value="${id}"/>
-                             <input type="text" class="form-control"
-                            name="tanggungan_name[]" aria-label="" aria-describedby="basicFullname2" value="${name}"/>
-                        </td>
-                         <td>
-                             <input type="date" class="form-control"
-                            name="tanggungan_dob[]" aria-label="" aria-describedby="basicFullname2" value="${dob}"/>
-                        </td>
-                        <td>
-                        <select type="text"  class="form-control dt-full-name" name="tanggungan_jk[]"
-                            aria-label="" aria-describedby="basicFullname2">
-                            <option value="L" ${jk == 'L' ? 'selected':''}> Laki-laki </option>
-                            <option value="P" ${jk == 'P' ? 'selected':''}> Perempuan </option>
-                        </select>
-                        </td>
-                        <td>
-                        <select type="text"  class="form-control dt-full-name" name="tanggungan_st[]"
-                            aria-label="" aria-describedby="basicFullname2">
-                            <option value=""> - </option>
-                            <option value="1" ${st == '1' ? 'selected':''}> Suami </option>
-                            <option value="2" ${st == '2' ? 'selected':''}> Istri </option>
-                            <option value="3" ${st == '3' ? 'selected':''}> Anak </option>
-                        </select>
-                        </td>
-                        <td>
-                             <a class="delTanggungan" data-id="${iTanggungan}"><i class="mdi mdi-trash-can-outline"></i></a>
-                        </td>
-                     </tr>`
-                tanggungans.append(htmlRender)
-                iTanggungan++;
-            }
-
-            tanggungans.on("click", ".delTanggungan", function() {
-                console.log("calDelete")
-                var id = $(this).data('id');
-                // Find the row by its ID and remove it
-                $("#tanggungan_row_" + id).remove();
-            })
-
-            // end tanggungan
-
-            UserForm.role_id.on("change", function() {
-                if (UserForm.role_id.val() == 5) {
-                    console.log("disable pass")
-                    UserForm.password.prop('required', false);
-                    UserForm.password.prop('disabled', true);
-                    UserForm.username.prop('required', false);
-                    UserForm.username.prop('disabled', true);
-                } else {
-                    if (UserForm.updateBtn.is(':visible')) {
-                        UserForm.password.prop('required', false);
-                        console.log('Update button is visible');
-                    } else if (UserForm.insertBtn.is(':visible')) {
-                        UserForm.password.prop('required', true);
-                    }
-                    UserForm.password.prop('disabled', false);
-                    UserForm.username.prop('required', true);
-                    UserForm.username.prop('disabled', false);
-                }
-            })
-
-            function onScanSuccess(decodedText, decodedResult) {
-                console.log(`Code matched = ${decodedText}`, decodedResult);
-                console.log(decodedText)
-                UserForm.qrcode.val(decodedText)
-                console.log("try destroy");
-                html5QrcodeScanner.clear().then(() => {
-                    console.error("Success to clear QR code scanner");
-                }).catch(error => {
-                    console.error("Failed to clear QR code scanner:", error);
-                });
-
-                // scanProcess(decodedText)
-            }
-            // scanProcess('d3286f12-a0ab-45a7-aba9-11b7e15f4723')
-
-            function scanProcess(decodedResult) {
-                // swalLoading();
-                // UserForm.qrcode.val(decodedResult)
-
-
-            }
-
-            function onScanFailure(error) {
-
-            }
-
-
-            UserForm.create_qr.on("click", function() {
-                html5QrcodeScanner = new Html5QrcodeScanner(
-                    "reader", {
-                        fps: 10,
-                        qrbox: {
-                            width: 250,
-                            height: 250
-                        }
-                    },
-                    /* verbose= */
-                    false);
-                html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-            })
-
-
-
             var dataUser = {}
 
             swalLoading();
@@ -665,7 +368,7 @@
 
             function getAllUser() {
                 return $.ajax({
-                    url: `{{ route('agent.get') }}`,
+                    url: `{{ route('tangguhan.get') }}`,
                     'type': 'get',
                     data: toolbar.form.serialize(),
                     success: function(data) {
@@ -688,7 +391,6 @@
                     return;
                 }
                 var i = 0;
-
                 var renderData = [];
                 Object.values(data).forEach((user) => {
                     var button =
@@ -700,40 +402,25 @@
                         '</ul>' +
                         '</div>' +
                         `<a href="<?= url('info-desa/sub-wilayah') ?>/${user['id']}" title="Lihat Detail" class="btn btn-sm btn-text-secondary rounded-pill btn-icon item-edit"><i class="mdi mdi-eye-outline" ></i></a>`;
-                    renderData.push([user['id'], button, user['name'],
-                        user['unit']['name'],
-                        user['company'] != null ? user['company']['name'] : "",
-                        user['field_work'] != null ? user['field_work']['name'] : "",
-                        user[
-                            'role_title'], user['empoyee_id'],
-                        user[
-                            'dob'],
-                        user['phone'], user['email'],
-
-                    ]);
+                    renderData.push([user['id'], button, user['name'], data['dob']]);
                 });
                 FDataTable.clear().rows.add(renderData).draw('full-hold');
             }
 
             $('.create-new').on('click', function() {
                 UserForm.form.trigger('reset')
-                guarantors.html('')
-                fieldGuarantor();
                 // var $newOption4 = $("<option selected='selected'></option>").val('').text("--");
                 // UserForm.user_id.append($newOption4).trigger('change');
                 UserForm.updateBtn.attr('style', 'display: none !important');
                 UserForm.span_cp.hide();
                 UserForm.insertBtn.attr('style', 'display: ""');
-                UserForm.password.prop('required', true);
-                UserForm.role_id.trigger('change');
                 offCanvasEl.show();
             })
 
             FDataTable.on('click', '.edit', function() {
-
                 var id = $(this).data('id');
                 $.ajax({
-                    url: `{{ url('manage-agent/get') }}/${id}`,
+                    url: `{{ url('manage-tangguhan/get') }}/${id}`,
                     'type': 'get',
                     data: toolbar.form.serialize(),
                     success: function(data) {
@@ -748,58 +435,18 @@
                         UserForm.updateBtn.attr('style', 'display: ""');
                         UserForm.password.prop('required', false);
                         offCanvasEl.show();
-                        UserForm.span_cp.show();
                         UserForm.id.val(currentData['id']);
                         UserForm.name.val(currentData['name']);
-                        UserForm.alamat.val(currentData['alamat']);
-                        UserForm.unit_id.val(currentData['unit_id']).trigger("change");
-                        UserForm.field_work_id.val(currentData['field_work_id']).trigger(
-                            "change");
-                        UserForm.company_id.val(currentData['company_id']).trigger("change");
-                        UserForm.qrcode.val(currentData['qrcode']);
-                        UserForm.role_id.val(currentData['role_id']);
-                        UserForm.email.val(currentData['email']);
-                        UserForm.username.val(currentData['username']);
-                        UserForm.phone.val(currentData['phone']);
-                        UserForm.role_id.trigger('change');
                         UserForm.phone.val(currentData['phone']);
                         UserForm.dob.val(currentData['dob']);
                         UserForm.rm_number.val(currentData['rm_number']);
-                        UserForm.empoyee_id.val(currentData['empoyee_id']);
                         UserForm.gender.val(currentData['gender']).trigger("change");
-                        // dataUser = data['data'];
-                        // renderUser(dataUser);
-
-                        guarantors.html('')
-                        if (currentData['pentami'].length > 0) {
-                            currentData['pentami'].forEach(pentami => {
-                                fieldGuarantor(pentami['guarantor_id'], pentami[
-                                    'number']);
-                            });
-                        } else {
-                            fieldGuarantor();
-                        }
-
-                        tanggungans.html('')
-                        if (currentData['tanggungan'].length > 0) {
-                            currentData['tanggungan'].forEach(tang => {
-                                fieldTanggungan(tang['id'],
-                                    tang['name'], tang['dob'],
-                                    tang['gender'], tang['tanggungan_st']
-                                );
-                            });
-                        } else {}
-
 
                     },
                     error: function(e) {}
                 });
-
-
             });
-
             var userForm = document.getElementById('form-user');
-
 
             function validasi_form(event) {
                 if (!userForm.checkValidity()) {
@@ -820,10 +467,10 @@
                     return
                 };
                 if (UserForm.insertBtn.is(":visible")) {
-                    url = '{{ route('agent.create') }}';
+                    url = '{{ route('tangguhan.create') }}';
                     metode = 'POST';
                 } else {
-                    url = '{{ route('agent.update') }}';
+                    url = '{{ route('tangguhan.update') }}';
                     metode = 'PUT';
                 }
                 Swal.fire(SwalOpt()).then((result) => {
@@ -861,7 +508,7 @@
                         return;
                     }
                     $.ajax({
-                        url: "<?= route('agent.delete') ?>/",
+                        url: "<?= route('tangguhan.delete') ?>/",
                         'type': 'DELETE',
                         data: {
                             '_token': token,

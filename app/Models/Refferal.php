@@ -29,7 +29,7 @@ class Refferal extends Model
         'sign_name',
         'sign_time',
         'qr_doc',
-        // 'doc_path',
+        'format',
         // 'nama_pemanggil',
         // 'phone_pemanggil',
         // 'nama_pasien',

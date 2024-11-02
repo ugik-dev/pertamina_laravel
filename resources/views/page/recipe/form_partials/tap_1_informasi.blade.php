@@ -37,7 +37,7 @@
                                 @endif
                             </select>
                         </div>
-                        <div class="col-md-6 mb-2">
+                        {{-- <div class="col-md-6 mb-2">
                             <label for="assist_id" class="form-label">Asisten :</label>
                             <select class="form-control" id="assist_id" name="assist_id">
                                 @if (!empty($dataForm->assist))
@@ -45,7 +45,7 @@
                                     </option>
                                 @endif
                             </select>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-2">

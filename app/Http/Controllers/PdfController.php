@@ -81,7 +81,13 @@ class PdfController extends Controller
             'margin_left' => 2,
         ]);
 
-        $pdf = PDF::loadView('page.rujukan.print2', $compact, [
+        if ($data_all->format == 2) {
+            $view = 'page.rujukan.print_gigi';
+        } else {
+            $view = 'page.rujukan.print2';
+        }
+        // dd($data_all->format);
+        $pdf = PDF::loadView($view, $compact, [
             'dpi' => 150,
             'defaultFont' => 'sans-serif',
             'margin_top' => 2,
@@ -90,12 +96,12 @@ class PdfController extends Controller
             'margin_left' => 2,
         ]);
         $pdf->setPaper([0, 0, 596, 935], 'portrait');
-        $filePath = 'pdf/rujukan_' . $id . '.pdf';
-        $filename = 'rujukan_' . $id . '.pdf';
+        // $filePath = 'pdf/rujukan_' . $id . '.pdf';
+        // $filename = 'rujukan_' . $id . '.pdf';
 
-        // Save the PDF to the 'public' disk in 'upload/rujukan' directory
-        $filePath = 'document/rujukan/' . $filename;
-        Storage::disk('local')->put($filePath, $pdf->output());
+        // // Save the PDF to the 'public' disk in 'upload/rujukan' directory
+        // $filePath = 'document/rujukan/' . $filename;
+        // Storage::disk('local')->put($filePath, $pdf->output());
 
 
         return Response::make($pdf->output(), 200, [

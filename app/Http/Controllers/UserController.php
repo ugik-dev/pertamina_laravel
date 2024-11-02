@@ -19,7 +19,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $dataContent =  [
-            'refRole' => Role::get(),
+            'refRole' => Role::where('id', '<>', 6)->get(),
             'refUnit' => Unit::get(),
             'refField' => Field::get(),
             'refCompany' => Company::get(),
@@ -30,9 +30,7 @@ class UserController extends Controller
     public function select2(Request $request)
     {
         try {
-            // Query with the necessary relationships
-            $query = User::select('id', 'name')->with('pentami.guarantor');
-
+            $query = User::select('id', 'name');
             // Filter by 'id' if provided
             if (!empty($request->id)) {
                 $query->where('id', $request->id);
@@ -51,14 +49,37 @@ class UserController extends Controller
                 return [
                     'id' => $user->id,
                     'text' => $user->name,
-                    'pentami' => $user->pentami2->map(function ($userGuarantor) {
-                        return [
-                            'id' => $userGuarantor->id,
-                            'guarantor_id' => $userGuarantor->guarantor_id,
-                            'guarantor_name' => $userGuarantor->guarantor->name, // Retrieve guarantor name
-                            'number' => $userGuarantor->number,
-                        ];
-                    })
+                ];
+            });
+
+            // Return JSON response in the format needed by Select2
+            return response()->json([
+                'results' => $data
+            ]);
+        } catch (Exception $ex) {
+            // Return error if an exception occurs
+            return response()->json([
+                'error' => $ex->getMessage()
+            ], 500);
+        }
+    }
+
+
+    public function select2_guarantor($user_id, Request $request)
+    {
+        try {
+            $user = User::find($user_id);
+            // dd($user);
+            $query = UserGuarantor::where('user_id', $user->id)->orWhere('user_id', $user->tanggungan_id);
+            $guarantors = $query->limit(20)->get();
+            // dd($guarantors);
+
+            // Format data for Select2
+            $data = $guarantors->map(function ($guarantor) {
+                return [
+                    'id' => $guarantor->id,
+                    'text' =>  $guarantor->pemilik->name . ' | ' . $guarantor->guarantor->name . ' | ' .
+                        $guarantor->number,
                 ];
             });
 
@@ -79,7 +100,7 @@ class UserController extends Controller
     public function get(Request $request)
     {
         try {
-            $query =  User::withRole()->with(['unit', 'field_work', 'company']);
+            $query =  User::withRole()->with(['unit', 'field_work', 'company'])->where('role_id', '<>', 6);
             if (!empty($request->id)) $query->where('id', '=', $request->id);
             $res = $query->get()->toArray();
             $data =   DataStructure::keyValueObj($res, 'id');
@@ -94,7 +115,7 @@ class UserController extends Controller
     public function find(Request $request, $id)
     {
         try {
-            $data =  User::withRole()->with(['unit', 'field_work', 'company', 'pentami'])->findOrFail($id);
+            $data =  User::withRole()->with(['unit', 'field_work', 'company', 'pentami', 'tanggungan'])->findOrFail($id);
             return $this->responseSuccess($data);
         } catch (Exception $ex) {
             return  $this->ResponseError($ex->getMessage());
@@ -126,15 +147,29 @@ class UserController extends Controller
             ];
 
             $data = User::create($att);
-            foreach ($request->guarantor_id as $key => $guard) {
-                if (!empty($request->guarantor_number[$key]) && !empty($request->guarantor_id[$key])) {
-                    UserGuarantor::create([
-                        'user_id' => $data->id,
-                        'guarantor_id' => $request->guarantor_id[$key],
-                        'number' => $request->guarantor_number[$key]
-                    ]);
+            if ($request->guarantor_id)
+                foreach ($request->guarantor_id as $key => $guard) {
+                    if (!empty($request->guarantor_number[$key]) && !empty($request->guarantor_id[$key])) {
+                        UserGuarantor::create([
+                            'user_id' => $data->id,
+                            'guarantor_id' => $request->guarantor_id[$key],
+                            'number' => $request->guarantor_number[$key]
+                        ]);
+                    }
                 }
-            }
+            if ($request->tanggungan_name)
+                foreach ($request->tanggungan_name as $key => $tannguhan) {
+                    if (!empty($request->tanggungan_name[$key]) && !empty($request->tanggungan_st[$key])) {
+                        User::create([
+                            'tanggungan_id' => $data->id,
+                            'tanggungan_st' => $request->tanggungan_st[$key],
+                            'name' => $request->tanggungan_name[$key],
+                            'dob' => $request->tanggungan_dob[$key],
+                            'gender' => $request->tanggungan_jk[$key],
+                            'role_id' => 6
+                        ]);
+                    }
+                }
             $data = User::withRole()->with(['unit', 'field_work'])->find($data->id);
 
             return  $this->responseSuccess($data);
@@ -161,10 +196,8 @@ class UserController extends Controller
                 'dob' => $request->dob,
                 'rm_number' => $request->rm_number,
                 'company_id' => $request->company_id,
-                // 'guarantor_number' => $request->guarantor_number,
                 'empoyee_id' => $request->empoyee_id,
                 'gender' => $request->gender,
-                // 'guarantor_id' => $request->guarantor_id,
             ]);
             if (!empty($request->password))
                 $data->update([
@@ -175,7 +208,6 @@ class UserController extends Controller
             if ($request->guarantor_id)
                 foreach ($request->guarantor_id as $key => $guard) {
                     if (!empty($request->guarantor_number[$key]) && !empty($request->guarantor_id[$key])) {
-
                         $userG = UserGuarantor::updateOrCreate(
                             [
                                 'user_id' => $data->id,
@@ -189,6 +221,41 @@ class UserController extends Controller
 
             UserGuarantor::where('user_id', $data->id)->whereNotIn('id', $arrGuarantor)->delete();
             // dd($arrGuarantor);
+
+            // tanggungan
+            $arrTanggungan = [];
+            if ($request->tanggungan_name)
+                foreach ($request->tanggungan_name as $key => $tannguhan) {
+                    if (!empty($request->tanggungan_name[$key]) && !empty($request->tanggungan_st[$key])) {
+                        if (empty($request->tanggungan_cur_id[$key])) {
+                            // dd("m");
+                            $userT = User::create(
+                                [
+                                    'tanggungan_id' => $data->id,
+                                    'tanggungan_st' => $request->tanggungan_st[$key],
+                                    'name' => $request->tanggungan_name[$key],
+                                    'dob' => $request->tanggungan_dob[$key],
+                                    'gender' => $request->tanggungan_jk[$key],
+                                    'role_id' => 6
+                                ]
+                            );
+                            $arrTanggungan[] = $userT->id;
+                        } else {
+                            User::where('id', $request->tanggungan_cur_id[$key])
+                                ->update([
+                                    'tanggungan_st' => $request->tanggungan_st[$key],
+                                    'name' => $request->tanggungan_name[$key],
+                                    'dob' => $request->tanggungan_dob[$key],
+                                    'gender' => $request->tanggungan_jk[$key],
+                                ]);
+                            $arrTanggungan[] = $request->tanggungan_cur_id[$key];
+                        }
+                        // dd($arrTanggungan);
+                    }
+                }
+            User::where('tanggungan_id', $data->id)->whereNotIn('id', $arrTanggungan)->delete();
+
+
             $data = User::withRole()->with(['unit', 'field_work'])->findOrFail($request->id);
 
             return  $this->responseSuccess($data);

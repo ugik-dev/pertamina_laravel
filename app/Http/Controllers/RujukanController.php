@@ -132,8 +132,12 @@ class RujukanController extends Controller
                     'margin_bottom' => 2, // Set bottom margin in millimeters
                     'margin_left' => 2,
                 ]);
-
-                $pdf = PDF::loadView('page.rujukan.print2', $compact, [
+                if ($data_all->format == 2) {
+                    $view = 'page.rujukan.print_gigi';
+                } else {
+                    $view = 'page.rujukan.print2';
+                }
+                $pdf = PDF::loadView($view, $compact, [
                     'dpi' => 150,
                     'defaultFont' => 'sans-serif',
                     'margin_top' => 2,

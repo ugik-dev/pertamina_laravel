@@ -108,6 +108,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('select2')->name('select2.')->group(function () {
         Route::get('user', [UserController::class, 'select2'])->name('user');
+        Route::get('guarantor/{user_id}', [UserController::class, 'select2_guarantor'])->name('guarantor');
         Route::get('drug', [DrugController::class, 'select2'])->name('drug');
     });
 

@@ -18,4 +18,9 @@ class UserGuarantor extends Model
     {
         return $this->belongsTo(Guarantor::class, 'guarantor_id');
     }
+
+    public function pemilik()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

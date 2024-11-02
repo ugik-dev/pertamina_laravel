@@ -235,7 +235,10 @@
                             <td class="no-border">I/A dari</td>
                             <td class="no-border">:</td>
                             <td class="no-border">
-                                {{ $dataForm->ia_dari ?? '.................................................' }}
+                                @if ($dataForm->guarantor->pemilik->id != $dataForm->pasien->id)
+                                    {{ $dataForm->guarantor->pemilik->name }}
+                                @endif
+                                {{-- {{ $dataForm->ia_dari ?? '.................................................' }} --}}
                             </td>
                         </tr>
                         <tr class="no-border">
@@ -366,7 +369,11 @@
                         <tr class="no-border">
                             <td class="no-border">I/A dari</td>
                             <td class="no-border">:</td>
-                            <td class="no-border"> .................................................</td>
+                            <td class="no-border">
+                                @if ($dataForm->guarantor->pemilik->id != $dataForm->pasien->id)
+                                    {{ $dataForm->guarantor->pemilik->name }}
+                                @endif
+                            </td>
                         </tr>
                         <tr class="no-border">
                             <td class="no-border">Tgl. Lahir</td>
