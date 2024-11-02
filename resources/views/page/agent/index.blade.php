@@ -548,7 +548,7 @@
                 htmlRender = `
                     <tr id="tanggungan_row_${iTanggungan}">
                         <td>
-                             <input type="text" class="form-control"
+                             <input type="hidden" class="form-control"
                             name="tanggungan_cur_id[]" aria-label="" aria-describedby="basicFullname2" value="${id}"/>
                              <input type="text" class="form-control"
                             name="tanggungan_name[]" aria-label="" aria-describedby="basicFullname2" value="${name}"/>

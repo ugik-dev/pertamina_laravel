@@ -17,33 +17,36 @@ class DashboardController extends Controller
         $internalUser = User::select('id', 'name')->with('unit')
             ->whereHas('unit', function ($query) {
                 $query->where('category', 'internal');
-            })->where('role_id', '<>', 6)
+            })
             ->get();
         $internalUserEx = User::select('id', 'name')->with('unit')
             ->whereHas('unit', function ($query) {
                 $query->where('category', 'external');
-            })->where('role_id', '<>', 6)
-            ->get();
+            })->get();
 
         $results = User::with([
             'field_work',
-            'unit' => function ($query) {
-                $query->where('category', 'internal');
-            },
+            'unit',
             'screenings' => function ($query) {
                 // $query->whereDate('created_at', '2024-09-06')
                 $query->whereDate('created_at', Carbon::today())
                     ->orderBy('created_at', 'desc');
             }
-        ])->where('role_id', '<>', 6)->get();
+        ])->whereHas('unit', function ($query) {
+            $query->where('category', 'internal');
+        })->get();
 
-        $resultsExternal = User::whereHas('unit', function ($query) {
+        $resultsExternal =  User::with([
+            'field_work',
+            'unit',
+            'screenings' => function ($query) {
+                // $query->whereDate('created_at', '2024-09-06')
+                $query->whereDate('created_at', Carbon::today())
+                    ->orderBy('created_at', 'desc');
+            }
+        ])->whereHas('unit', function ($query) {
             $query->where('category', 'external');
-        })->with(['field_work', 'unit', 'screenings' => function ($query) {
-            // $query->whereDate('created_at', '2024-09-06')
-            $query->whereDate('created_at', Carbon::today())
-                ->orderBy('created_at', 'desc');
-        }])->where('role_id', '<>', 6)->get();
+        })->get();
 
         // $external  = User::whereHas('unit', function ($query) {
         //     $query->where('category', 'external');
