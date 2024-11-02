@@ -20,6 +20,7 @@ use App\Http\Controllers\GuarantorController;
 use App\Http\Controllers\LiveLocationController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PortalController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\RekapController;
 use App\Http\Controllers\RujukanController;
@@ -78,7 +79,11 @@ Route::get('read-doc/reff/{code}', [RujukanController::class, 'get_qr']);
 Route::middleware(['auth'])->group(function () {
     Route::get('test-call', [RequestController::class, 'test_call'])->name('test_call');
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('', [ProfileController::class, 'index'])->name('index');
+        Route::get('change-password', [ProfileController::class, 'change_password'])->name('change-password');
+        Route::post('change-password', [ProfileController::class, 'change_password_process'])->name('change-password-process');
+    });
     Route::get('screening', [ScreeningController::class, 'index'])->name('screening');
     Route::get('screening/scan/{code}', [ScreeningController::class, 'scan_process'])->name('scan_get');
 

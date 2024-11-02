@@ -25,7 +25,7 @@ class LoginBasic extends Controller
   {
     $credentials = $request->only('username', 'password');
     $user = User::select('users.*', 'roles.title as title_role')
-      ->join('roles', 'users.role_id', '=', 'roles.id')
+      ->join('roles', 'users.role_id', '=', 'roles.id')->whereNotIn('role_id', [5, 6])
       ->where('users.username', $credentials['username'])
       ->first();
     if ($user && Hash::check($credentials['password'], $user->password)) {
@@ -33,7 +33,7 @@ class LoginBasic extends Controller
       return $this->responseSuccess(['success', 'data' => Auth::user()]);
     }
 
-    $user = User::where('username', $credentials['username'])->first();
+    $user = User::where('username', $credentials['username'])->whereNotIn('role_id', [5, 6])->first();
 
     if (!$user) {
       return  $this->responseError("Username tidak ditemukan");

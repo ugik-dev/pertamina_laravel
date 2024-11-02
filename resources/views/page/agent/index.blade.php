@@ -509,7 +509,7 @@
                 htmlRender = `
                     <tr id="guarantor_row_${iGuarantor}">
                         <td>
-                        <select type="text"  class="form-control dt-full-name" name="guarantor_id[]"
+                        <select type="text"  class="form-control-plaintext dt-full-name" name="guarantor_id[]"
                             aria-label="" aria-describedby="basicFullname2">
                             <option value=""> - </option>
                             @foreach ($dataContent['refGuarantor'] as $guarantor)
@@ -518,7 +518,7 @@
                         </select>
                         </td>
                         <td>
-                        <input type="text" class="form-control dt-full-name"
+                        <input type="text" class="form-control-plaintext dt-full-name"
                             name="guarantor_number[]" aria-label="" aria-describedby="basicFullname2" value="${number}"/>
                         </td>
                         <td>
@@ -550,22 +550,22 @@
                         <td>
                              <input type="hidden" class="form-control"
                             name="tanggungan_cur_id[]" aria-label="" aria-describedby="basicFullname2" value="${id}"/>
-                             <input type="text" class="form-control"
+                             <input type="text" class="form-control-plaintext"
                             name="tanggungan_name[]" aria-label="" aria-describedby="basicFullname2" value="${name}"/>
                         </td>
                          <td>
-                             <input type="date" class="form-control"
+                             <input type="date" class="form-control-plaintext"
                             name="tanggungan_dob[]" aria-label="" aria-describedby="basicFullname2" value="${dob}"/>
                         </td>
                         <td>
-                        <select type="text"  class="form-control dt-full-name" name="tanggungan_jk[]"
+                        <select type="text"  class="form-control-plaintext dt-full-name" name="tanggungan_jk[]"
                             aria-label="" aria-describedby="basicFullname2">
                             <option value="L" ${jk == 'L' ? 'selected':''}> Laki-laki </option>
                             <option value="P" ${jk == 'P' ? 'selected':''}> Perempuan </option>
                         </select>
                         </td>
                         <td>
-                        <select type="text"  class="form-control dt-full-name" name="tanggungan_st[]"
+                        <select type="text"  class="form-control-plaintext dt-full-name" name="tanggungan_st[]"
                             aria-label="" aria-describedby="basicFullname2">
                             <option value=""> - </option>
                             <option value="1" ${st == '1' ? 'selected':''}> Suami </option>

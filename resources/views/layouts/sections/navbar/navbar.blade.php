@@ -111,11 +111,17 @@
                     <div class="dropdown-divider"></div>
                 </li>
                 @if (Auth::check())
-                    <li>
+                    {{-- <li>
                         <a class="dropdown-item"
                             href="{{ Route::has('profile.show') ? route('profile.show') : 'javascript:void(0);' }}">
                             <i class="mdi mdi-account-outline me-2"></i>
                             <span class="align-middle">My Profile</span>
+                        </a>
+                    </li> --}}
+                    <li>
+                        <a class="dropdown-item" href="{{ route('profile.change-password') }}">
+                            <i class="mdi mdi-lock-outline me-2"></i>
+                            <span class="align-middle">Ganti Password</span>
                         </a>
                     </li>
                 @endif
