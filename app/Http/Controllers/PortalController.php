@@ -59,39 +59,58 @@ class PortalController extends Controller
     public function home()
     {
         $pageConfigs = ['myLayout' => 'horizontal'];
-        $internalUser = User::select('id', 'name')->with('unit')
-            ->whereHas('unit', function ($query) {
+        $internalUser = User::select('id', 'name')->with(['unit', 'company'])
+            // ->whereHas('unit', function ($query) {
+            //     $query->where('category', 'internal');
+            // })
+            ->whereHas('company', function ($query) {
                 $query->where('category', 'internal');
             })
             ->get();
-        $internalUserEx = User::select('id', 'name')->with('unit')
-            ->whereHas('unit', function ($query) {
+        $internalUserEx = User::select('id', 'name')->with(['unit', 'company'])
+            // ->whereHas('unit', function ($query) {
+            //     $query->where('category', 'external');
+            // })
+            ->whereHas('company', function ($query) {
                 $query->where('category', 'external');
-            })->get();
+            })
+            ->get();
 
         $results = User::with([
             'field_work',
             'unit',
+            'company',
             'screenings' => function ($query) {
                 // $query->whereDate('created_at', '2024-09-06')
                 $query->whereDate('created_at', Carbon::today())
                     ->orderBy('created_at', 'desc');
             }
-        ])->whereHas('unit', function ($query) {
-            $query->where('category', 'internal');
-        })->get();
+        ])
+            // ->whereHas('unit', function ($query) {
+            //     $query->where('category', 'internal');
+            // })
+            ->whereHas('company', function ($query) {
+                $query->where('category', 'internal');
+            })
+            ->get();
 
         $resultsExternal =  User::with([
             'field_work',
             'unit',
+            'company',
             'screenings' => function ($query) {
                 // $query->whereDate('created_at', '2024-09-06')
                 $query->whereDate('created_at', Carbon::today())
                     ->orderBy('created_at', 'desc');
             }
-        ])->whereHas('unit', function ($query) {
-            $query->where('category', 'external');
-        })->get();
+        ])
+            // ->whereHas('unit', function ($query) {
+            //     $query->where('category', 'external');
+            // })
+            ->whereHas('company', function ($query) {
+                $query->where('category', 'external');
+            })
+            ->get();
 
         // $external  = User::whereHas('unit', function ($query) {
         //     $query->where('category', 'external');
