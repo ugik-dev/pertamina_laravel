@@ -270,32 +270,11 @@
                     </table>
                     <table class="no-border" style="margin-left: 20px">
                         <tr>
-                            <td style="width: 160px">Nama</td>
+                            <td style="width: 160px">Nama Pasien</td>
                             <td>:</td>
                             <td>{{ $dataForm->pasien->name }}</td>
                         </tr>
-                        <tr>
-                            <td style="width: 150px">Status Hubungan</td>
-                            <td>:</td>
-                            <td>
-                                @switch($dataForm->pasien->tanggungan_st)
-                                    @case(1)
-                                        Suami
-                                    @break
 
-                                    @case(2)
-                                        Istri
-                                    @break
-
-                                    @case(3)
-                                        Anak
-                                    @break
-
-                                    @default
-                                        Tidak Diketahui
-                                @endswitch
-                            <td>
-                        </tr>
                         <tr>
                             <td>Tgl. Lahir</td>
                             <td>:</td>
@@ -316,6 +295,28 @@
                             <td>
                                 {{ $dataForm->pasien->gender == 'L' ? 'Laki-laki' : ($dataForm->pasien->gender == 'P' ? 'Perempuan' : '') }}
                             </td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>:</td>
+                            <td>
+                                @switch($dataForm->pasien->tanggungan_st)
+                                    @case(1)
+                                        Suami
+                                    @break
+
+                                    @case(2)
+                                        Istri
+                                    @break
+
+                                    @case(3)
+                                        Anak
+                                    @break
+
+                                    @default
+                                        Pekerja
+                                @endswitch
+                            <td>
                         </tr>
                     </table>
                     <table class="no-border">

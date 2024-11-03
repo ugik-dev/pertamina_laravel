@@ -42,7 +42,8 @@ class RujukanController extends Controller
 
     public function form_edit($id, Request $request)
     {
-        $data = Refferal::findOrFail($id);
+        // $data = Refferal::whereIsNotNul('sign_id')->findOrFail($id);
+        $data = Refferal::whereNull('sign_id')->findOrFail($id);
         // dd($data->doctor);
         // $data_all = Form::with('user')->find($id);
         $form_url = route('rujukan.save-edit', ['id' => $data->id,]);
@@ -98,7 +99,7 @@ class RujukanController extends Controller
         try {
             $data = Refferal::findOrFail($id);
             $user = Auth::user();
-            if ($data->doctor_id == $user->id && empty($data->sign_iq)) {
+            if ($data->doctor_id == $user->id && empty($data->sign_id)) {
                 //generate Qrcode and save to local document/rujukan_qr
                 do {
                     $uniqueCode = Str::random(16);
@@ -236,7 +237,8 @@ class RujukanController extends Controller
     {
         try {
             if ($id) {
-                $data = Refferal::findOrFail($id);
+                // $data = Refferal::findOrFail($id);
+                $data = Refferal::whereNull('sign_id')->findOrFail($id);
             }
             $formData = $request->except(['_token', 'gambar']);
 
@@ -318,17 +320,21 @@ class RujukanController extends Controller
                     // Print Draft button
                     if (Auth::user()->id == $data->doctor_id && empty($data->sign_id))
                         $aksi .= '<li><a  class="approveBtn dropdown-item" data-id="' . $data->id . '"><i class="mdi mdi-check" ></i> Approve</a></li>';
-                    if (!empty($data->qr_doc))
+
+                    if (!empty($data->qr_doc)) {
                         $aksi .= '<li><a target="_blank" href="' . url('read-doc/reff/' . $data->qr_doc) . '" class="dropdown-item"><i class="mdi mdi-printer"></i> Lihat Doc Approve</a></li>';
+                    } else {
+                        // Edit button
+                        $aksi .= '<li><a href="' . route('rujukan.edit', $data->id) . '" class="dropdown-item"><i class="mdi mdi-pencil-outline"></i> Edit</a></li>';
+                        $aksi .= '<li><button href="javascript:;" data-id="' . $data->id . '" class="delete delBtn dropdown-item text-danger"><i class="mdi mdi-trash-can-outline"></i> Hapus</button></li>';
+                    }
 
                     // Print Draft button
                     $aksi .= '<li><a href="' . route('rujukan.open', $data->id) . '" class="dropdown-item"><i class="mdi mdi-printer"></i> Print Draft</a></li>';
 
-                    // Edit button
-                    $aksi .= '<li><a href="' . route('rujukan.edit', $data->id) . '" class="dropdown-item"><i class="mdi mdi-pencil-outline"></i> Edit</a></li>';
-
                     // Upload button
                     $aksi .= '<li><a href="' . route('rujukan.upload', $data->id) . '" class="dropdown-item"><i class="mdi mdi-cloud-upload"></i> Upload</a></li>';
+
 
                     // Check if file_tte is not null before showing TTE button
                     if (!is_null($data->file_tte)) {
@@ -336,7 +342,6 @@ class RujukanController extends Controller
                     }
 
                     // Delete button
-                    $aksi .= '<li><button href="javascript:;" data-id="' . $data->id . '" class="delete delBtn dropdown-item text-danger"><i class="mdi mdi-trash-can-outline"></i> Hapus</button></li>';
 
                     // Close dropdown structure
                     $aksi .= '</ul></div>';
@@ -393,7 +398,7 @@ class RujukanController extends Controller
     public function destroy(Request $request)
     {
         try {
-            $data = Refferal::findOrFail($request->id);
+            $data = Refferal::whereNull('sign_id')->findOrFail($request->id);
             $data->delete();
             return  $this->responseSuccess($data);
         } catch (Exception $ex) {
