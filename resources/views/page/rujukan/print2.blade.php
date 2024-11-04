@@ -139,7 +139,7 @@
 
             /* Menyesuaikan tinggi untuk baris tanda tangan */
             .signature-row td {
-                height: auto;
+                height: 130px;
                 margin-bottom: 30px !important;
                 padding-bottom: 30px !important
             }
@@ -312,10 +312,11 @@
                     <br>{{ $dataForm->relation_desc ?? 'Pekerja' }}
                 </td>
                 <td>Pekerjaan:
-                    <br>{{ $dataForm->pasien->company->name }} - {{ $dataForm->pasien->unit->name }}
+                    <br>{{ $dataForm->guarantor->pemilik->company->name }} -
+                    {{ $dataForm->guarantor->pemilik->unit->name }}
                 </td>
                 <td>No. Pekerja
-                    <br>{{ $dataForm->pasien->empoyee_id }}
+                    <br>{{ $dataForm->guarantor->pemilik->empoyee_id }}
                 </td>
                 <td>Golongan
                 </td>
@@ -441,7 +442,8 @@
                     <br>{{ $dataForm->pasien->empoyee_id }}
                 </td>
                 <td>Pekerjaan:
-                    <br>{{ $dataForm->pasien->company->name }} - {{ $dataForm->pasien->unit->name }}
+                    <br>{{ $dataForm->guarantor->pemilik->company->name }} -
+                    {{ $dataForm->guarantor->pemilik->unit->name }}
                 </td>
                 <td>Golongan:
                 </td>
