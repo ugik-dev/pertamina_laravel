@@ -287,12 +287,13 @@
                     <table>
                         <tr>
                             <td>Dr. : </td>
-                            <td style="border-bottom: #000000 2px solid">{{ $dataForm->doctor->name }}
+                            <td style="border-bottom: #000000 2px solid; text-align: center">
+                                {{ $dataForm->doctor->name }}
                             </td>
                         </tr>
                         <tr>
                             <td> </td>
-                            <td>SIP : {{ $dataForm->doctor->sip }}
+                            <td style="font-size: 14px; text-align: center">SIP:{{ $dataForm->doctor->sip }}
                             </td>
                         </tr>
                     </table>
