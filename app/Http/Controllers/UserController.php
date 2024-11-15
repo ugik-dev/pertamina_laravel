@@ -139,6 +139,7 @@ class UserController extends Controller
                 'email' => $request->email,
                 'dob' => $request->dob,
                 'rm_number' => $request->rm_number,
+                'sip' => $request->sip,
                 // 'guarantor_number' => $request->guarantor_number,
                 'empoyee_id' => $request->empoyee_id,
                 'gender' => $request->gender,
@@ -198,6 +199,7 @@ class UserController extends Controller
                 'company_id' => $request->company_id,
                 'empoyee_id' => $request->empoyee_id,
                 'gender' => $request->gender,
+                'sip' => $request->sip,
             ]);
             if (!empty($request->password))
                 $data->update([

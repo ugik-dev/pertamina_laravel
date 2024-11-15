@@ -249,6 +249,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-sm-12" id="sip_layout">
+                    <label for="basicFullname">Nomor SIP :</label>
+                    <div class="input-group input-group-merge">
+                        <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
+                        <input type="text" id="sip" class="form-control dt-full-name" name="sip"
+                            placeholder="" aria-label="" aria-describedby="basicFullname2" />
+                        <div class="invalid-feedback">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-sm-12">
                     <label for="basicFullname">Username :</label>
                     <div class="input-group input-group-merge">
@@ -496,6 +507,8 @@
                 'rm_number': $('#form-user').find('#rm_number'),
                 'empoyee_id': $('#form-user').find('#empoyee_id'),
                 'gender': $('#form-user').find('#gender'),
+                'sip': $('#form-user').find('#sip'),
+                'sip_layout': $('#form-user').find('#sip_layout'),
             }
 
             addGuarantor.on("click", () => {
@@ -591,6 +604,11 @@
             // end tanggungan
 
             UserForm.role_id.on("change", function() {
+                if (UserForm.role_id.val() == 3) {
+                    UserForm.sip_layout.show()
+                } else {
+                    UserForm.sip_layout.hide()
+                }
                 if (UserForm.role_id.val() == 5) {
                     console.log("disable pass")
                     UserForm.password.prop('required', false);
@@ -757,7 +775,8 @@
                             "change");
                         UserForm.company_id.val(currentData['company_id']).trigger("change");
                         UserForm.qrcode.val(currentData['qrcode']);
-                        UserForm.role_id.val(currentData['role_id']);
+                        UserForm.role_id.val(currentData['role_id']).trigger("change");
+                        UserForm.sip.val(currentData['sip']);
                         UserForm.email.val(currentData['email']);
                         UserForm.username.val(currentData['username']);
                         UserForm.phone.val(currentData['phone']);

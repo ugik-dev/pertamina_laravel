@@ -259,7 +259,7 @@
                     <table class="no-border" style="width: 100%">
                         <tr>
                             <td style="vertical-align: center;">
-                                <img style="width: 140px;" src="{{ public_path('assets/img/logo2.png') }}" />
+                                <img style="width: 220px;" src="{{ public_path('assets/img/pertamina-sbs.png') }}" />
                             </td>
                             <td style="vertical-align: top; text-align: right"> <!-- Gunakan vertical-align: top -->
                                 <p style="margin-right:20px; margin-top: 1px;"><b>No.
@@ -283,8 +283,21 @@
             </tr>
             <tr>
 
-                <td colspan="2" style="font-weight: bold; font-size:12;">Dr. : {{ $dataForm->doctor->name }}
+                <td colspan="2" style="font-weight: bold; font-size:12;">
+                    <table>
+                        <tr>
+                            <td>Dr. : </td>
+                            <td style="border-bottom: #000000 2px solid">{{ $dataForm->doctor->name }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> </td>
+                            <td>SIP : {{ $dataForm->doctor->sip }}
+                            </td>
+                        </tr>
+                    </table>
                 </td>
+
             </tr>
             <tr>
                 <td colspan="2" style="padding-bottom: 0px ; margin-bottom: 0px">

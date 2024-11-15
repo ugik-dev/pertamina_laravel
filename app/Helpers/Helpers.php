@@ -167,15 +167,17 @@ class Helpers
   public static function spanSpo2($val, $cek = false)
   {
     // Spo2 di bawah 95% dianggap berbahaya
-    if ($val < 95) {
-      if ($cek)
-        return false;
-      return "<span class='text-danger'>" . $val . "%</span>";
-    } else {
-      if ($cek)
-        return true;
-      return "<span class='text-success'>" . $val . "%</span>";
-    }
+    if (!empty($val))
+      if ($val < 95) {
+        if ($cek)
+          return false;
+        return "<span class='text-danger'>" . $val . "%</span>";
+      } else {
+        if ($cek)
+          return true;
+        return "<span class='text-success'>" . $val . "%</span>";
+      }
+    else return '';
   }
 
   public static function spanRomberg($val, $cek = false)
@@ -190,7 +192,7 @@ class Helpers
         return false;  // Positif
       return "<span class='text-danger'>Positif</span>";
     } else {
-      return "<span class='text-warning'>Tidak valid</span>";
+      return "<span class='text-warning'>-</span>";
     }
   }
 
@@ -206,7 +208,7 @@ class Helpers
         return false;  // Positif
       return "<span class='text-danger'>Positif</span>";
     } else {
-      return "<span class='text-warning'>Tidak valid</span>";
+      return "<span class='text-warning'>-</span>";
     }
   }
 

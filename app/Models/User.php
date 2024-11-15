@@ -42,6 +42,7 @@ class User extends Authenticatable
         'guarantor_id',
         'tanggungan_id',
         'tanggungan_st',
+        'sip',
     ];
     protected $keyLength = 191;
     /**

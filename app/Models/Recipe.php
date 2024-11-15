@@ -35,7 +35,7 @@ class Recipe extends Model
 
     public function doctor()
     {
-        return $this->belongsTo(User::class, 'doctor_id')->select('name', 'id');
+        return $this->belongsTo(User::class, 'doctor_id')->select('name', 'sip', 'id');
     }
 
     public function assist()

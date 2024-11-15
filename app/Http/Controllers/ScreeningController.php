@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\ExportDCU;
 use App\Helpers\Helpers;
 use App\Models\Form;
+use Illuminate\Support\Facades\DB;
 use App\Models\LoginSession;
 use App\Models\RequestCall;
 use App\Models\RequestCallLog;
@@ -61,18 +62,43 @@ class ScreeningController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data =  Screening::selectRaw('screenings.*, a.name as user_name,a.qrcode as user_qrcode, b.name doctor_name, f.high_risk')
-                ->join('users as a', 'a.id', '=', 'screenings.user_id')
-                ->join('field_works as f', 'a.field_work_id', '=', 'f.id')
-                ->join('users as b', 'b.id', '=', 'screenings.doctor_id')
-                ->whereDate('screenings.created_at', Carbon::today())
-                // ->whereDate('screenings.created_at', "2024-09-06")
-                // ->latest()->get();
-                ->limit(100)->get();
+            $date = $request->input('filter.screening_date')
+                ? Carbon::parse($request->input('filter.screening_date'))->format('Y-m-d')
+                : Carbon::today()->format('Y-m-d');
+            $status = $request->input('filter.screening_status');
+            // $query =  Screening::selectRaw('screenings.*, a.name as user_name,a.qrcode as user_qrcode, b.name doctor_name, f.high_risk')
+            //     ->join('users as a', 'a.id', '=', 'screenings.user_id')
+            //     ->join('field_works as f', 'a.field_work_id', '=', 'f.id')
+            //     ->join('users as b', 'b.id', '=', 'screenings.doctor_id')
+            //     ->whereDate('screenings.created_at', $date);
+            $query = DB::table('users as a') // Mulai dari tabel users
+                ->selectRaw('screenings.*, a.name as user_name, a.qrcode as user_qrcode, b.name as doctor_name, f.high_risk')
+                ->leftJoin('screenings', function ($join) use ($date) {
+                    $join->on('screenings.user_id', '=', 'a.id')
+                        ->whereDate('screenings.created_at', $date);
+                })
+                ->leftJoin('field_works as f', 'a.field_work_id', '=', 'f.id')
+                ->leftJoin('users as b', 'b.id', '=', 'screenings.doctor_id');
+
+            if (!empty($status)) {
+                if ($status == 'fit') {
+                    $query->where("fitality", "=", "Y");
+                } else if ($status == 'unfit') {
+                    $query->where("fitality", "=", "N");
+                } else if ($status == 'hasScreening') {
+                    $query->whereNotNull("screenings.id");
+                } elseif ($status == 'notScreening') {
+                    $query->whereNull("screenings.id");
+                }
+            }
+            // ->whereDate('screenings.created_at', "2024-09-06")
+            // ->latest()->get();
+            // ->get();
+            $data = $query->get();
             // dd($data);
             return DataTables::of($data)->addIndexColumn()
                 ->addColumn('timescan', function ($data) {
-                    return \Carbon\Carbon::parse($data->created_at)->format('H:i');
+                    return $data->id ?  \Carbon\Carbon::parse($data->created_at)->format('H:i') : '-';
                 })->addColumn('sistole_span', function ($data) {
                     return Helpers::spanSistole($data->sistole);
                 })->addColumn('diastole_span', function ($data) {
@@ -90,7 +116,7 @@ class ScreeningController extends Controller
                 })->addColumn('alcohol_span', function ($data) {
                     return Helpers::spanAlcoholTest($data->alcohol);
                 })->addColumn('result_span', function ($data) {
-                    return $data->fitality == 'Y' ? "<span class='text-success'>FIT</span>" : "<span class='text-danger'>UNFIT</span>";
+                    return $data->fitality == 'Y' ? "<span class='text-success'>FIT</span>" : ($data->fitality == 'N' ?  "<span class='text-danger'>UNFIT</span>" : '-');
                 })->addColumn('high_risk_span', function ($data) {
                     return Helpers::spanRisk($data->high_risk);
                 })->addColumn('aksi', function ($data) {

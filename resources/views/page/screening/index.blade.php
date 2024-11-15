@@ -72,6 +72,47 @@
         <script src="{{ mix('js/app.js') }}"></script>
     </div>
     <div class="card">
+        <form id="formFilter">
+            <div class="col-lg-12 mt-2 mb-2 mr-2 ml-2">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group row">
+                            <label for="date_start" class="col-sm-6 col-form-label">Tanggal</label>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input id="screening_date" name="screening_date" type="date"
+                                        value="{{ Carbon\Carbon::now()->format('Y-m-d') }}" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group row">
+                            <label for="date_start" class="col-sm-6 col-form-label">Status</label>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <select id="screening_status" class="form-control" name="screening_status">
+                                        <option>Semua</option>
+                                        <option value="hasScreening">Sudah Screening</option>
+                                        <option value="notScreening">Belum Screening</option>
+                                        <option value="fit">Fit</option>
+                                        <option value="unfit">Tidak Vit</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- <div class="col-lg-3">
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <button id="exportExcel" class="btn btn-success"><i
+                                        class="mdi mdi-file-excel-outline me-1"></i>Excel</button>
+                            </div>
+                        </div>
+                    </div> --}}
+                </div>
+            </div>
+        </form>
         <div class="card-datatable table-responsive pt-0">
             <table id="datatable" class="table table-bordered">
                 <thead>
@@ -316,6 +357,12 @@
     {{-- <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script> --}}
     <script>
         $(document).ready(function() {
+
+            var formFilter = {
+                'form': $('#formFilter'),
+                'screening_date': $('#formFilter').find('#screening_date'),
+                'screening_status': $('#formFilter').find('#screening_status'),
+            }
             var ScreeningForm = {
                 'form': $('#form-screening'),
                 'insertBtn': $('#form-screening').find('#insertBtn'),
@@ -396,7 +443,12 @@
                 /* verbose= */
                 false);
             html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-
+            formFilter.screening_date.on("change", function() {
+                DataTable.ajax.reload(null, false)
+            })
+            formFilter.screening_status.on("change", function() {
+                DataTable.ajax.reload(null, false)
+            })
 
             var DataTable = $('#datatable').DataTable({
                 processing: true,
@@ -509,9 +561,16 @@
                     },
 
                 ],
-                order: [0, 'desc'],
+                order: [1, 'desc'],
                 ajax: {
-                    url: "{{ route('screening.index') }}"
+                    url: "{{ route('screening.index') }}",
+                    data: function(d) {
+                        var filterData = {};
+                        $('#formFilter').serializeArray().forEach(function(item) {
+                            filterData[item.name] = item.value; // Convert to key-value pair
+                        });
+                        d.filter = filterData;
+                    }
                 },
                 columns: [{
                         data: "DT_RowIndex",
