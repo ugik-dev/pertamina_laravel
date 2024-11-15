@@ -277,7 +277,8 @@
                 <td colspan="2" rowspan="1" class="text-center" width="500px"
                     style="font-size: 12; border-bottom: 0px ">
                     <div style=" padding-top:20px !important">
-                        <img style="width: 200px; " src="{{ public_path('assets/img/logo2.png') }}" />
+                        {{-- <img style="width: 200px; " src="{{ public_path('assets/img/logo2.png') }}" /> --}}
+                        <img style="width: 250px; " src="{{ public_path('assets/img/pertamina-sbs.png') }}" />
                     </div>
                     <div style=" padding-top:20px !important">
                         <span style="font-weight: bold; font-size:15;">KLINIK
@@ -398,7 +399,7 @@
                 <td colspan="2" rowspan="1" class="text-center" width="500px"
                     style="font-size: 12; border-bottom: 0px ">
                     <div style=" padding-top:20px !important">
-                        <img style="width: 200px; " src="{{ public_path('assets/img/logo2.png') }}" />
+                        <img style="width: 250px; " src="{{ public_path('assets/img/pertamina-sbs.png') }}" />
                     </div>
                     <div style=" padding-top:20px !important">
                         <span style="font-weight: bold; font-size:15;">KLINIK
