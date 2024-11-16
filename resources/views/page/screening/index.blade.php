@@ -66,14 +66,19 @@
         }
     </style>
     <h1>Screening</h1>
-    <div class="container mt-5">
-        <h1 class="text-center">Scan QR Code</h1>
-        <div id="reader" style="width:500px; margin:0 auto;"></div>
-        <script src="{{ mix('js/app.js') }}"></script>
+    <div class="card mb-2">
+        <div class="card-body">
+
+            <div class="container mt-5">
+                <h1 class="text-center">Scan QR Code</h1>
+                <div id="reader" style="width:500px; margin:0 auto;"></div>
+                <script src="{{ mix('js/app.js') }}"></script>
+            </div>
+        </div>
     </div>
-    <div class="card">
-        <form id="formFilter">
-            <div class="col-lg-12 mt-2 mb-2 mr-2 ml-2">
+    <div class="card mb-2">
+        <div class="card-body">
+            <form id="formFilter">
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="form-group row">
@@ -96,23 +101,26 @@
                                         <option value="hasScreening">Sudah Screening</option>
                                         <option value="notScreening">Belum Screening</option>
                                         <option value="fit">Fit</option>
-                                        <option value="unfit">Tidak Vit</option>
+                                        <option value="unfit">Unfit</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                     </div>
                     {{-- <div class="col-lg-3">
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <button id="exportExcel" class="btn btn-success"><i
-                                        class="mdi mdi-file-excel-outline me-1"></i>Excel</button>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <button id="exportExcel" class="btn btn-success"><i
+                                            class="mdi mdi-file-excel-outline me-1"></i>Excel</button>
+                                </div>
                             </div>
-                        </div>
-                    </div> --}}
+                        </div> --}}
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
+    </div>
+    <div class="card">
+
         <div class="card-datatable table-responsive pt-0">
             <table id="datatable" class="table table-bordered">
                 <thead>

@@ -283,17 +283,19 @@
             </tr>
             <tr>
 
-                <td colspan="2" style="font-weight: bold; font-size:12;">
+                <td colspan="2" style="font-size: 13px;">
                     <table>
-                        <tr>
+                        <tr style="height: 10px;">
                             <td>Dr. : </td>
-                            <td style="border-bottom: #000000 2px solid; text-align: center">
+                            <td
+                                style="height: 10px;font-weight: bold; font-size: 15px; border-bottom: #000000 2px solid; text-align: center">
                                 {{ $dataForm->doctor->name }}
                             </td>
                         </tr>
-                        <tr>
+                        <tr style="">
                             <td> </td>
-                            <td style="font-size: 14px; text-align: center">SIP:{{ $dataForm->doctor->sip }}
+                            <td style=" font-weight: bold ; font-size: 13px; text-align: center">
+                                SIP:{{ $dataForm->doctor->sip }}
                             </td>
                         </tr>
                     </table>
