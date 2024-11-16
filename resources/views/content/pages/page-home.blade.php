@@ -49,10 +49,12 @@
                             </div>
                             <div class="col-md-6 text-center text-md-end order-1 order-md-2">
                                 <div class="card-body pb-0 px-0 px-md-4 ps-0">
-                                    {{-- <img src="{{ asset('assets/img/illustrations/illustration-john-' . $configData['style'] . '.png') }}" --}}
-                                    <img src="{{ asset('assets/img/splash1.png') }}" height="180" alt="View Profile"
+                                    {{-- <img src="{{ asset('assets/img/illustrations/illustration-john-' . $configData['style'] . '.png') }}"
                                         data-app-light-img="illustrations/illustration-john-light.png"
-                                        data-app-dark-img="illustrations/illustration-john-dark.png">
+                                        data-app-dark-img="illustrations/illustration-john-dark.png"> --}}
+                                    <img src="{{ asset('assets/img/splash1.png') }}" height="180" alt="View Profile"
+                                        data-app-light-img="illustrations/splash1.png"
+                                        data-app-dark-img="illustrations/splash1.png">
                                 </div>
                             </div>
                         </div>
