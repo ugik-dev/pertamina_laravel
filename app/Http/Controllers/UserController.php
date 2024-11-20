@@ -145,6 +145,7 @@ class UserController extends Controller
                 'gender' => $request->gender,
                 // 'guarantor_id' => $request->guarantor_id,
                 'password' => Hash::make($request->password),
+                'pola' => $request->pola
             ];
 
             $data = User::create($att);
@@ -200,6 +201,7 @@ class UserController extends Controller
                 'empoyee_id' => $request->empoyee_id,
                 'gender' => $request->gender,
                 'sip' => $request->sip,
+                'pola' => $request->pola
             ]);
             if (!empty($request->password))
                 $data->update([
@@ -258,7 +260,7 @@ class UserController extends Controller
             User::where('tanggungan_id', $data->id)->whereNotIn('id', $arrTanggungan)->delete();
 
 
-            $data = User::withRole()->with(['unit', 'field_work'])->findOrFail($request->id);
+            $data = User::withRole()->with(['unit', 'field_work', 'company', 'pentami', 'tanggungan'])->findOrFail($request->id);
 
             return  $this->responseSuccess($data);
         } catch (Exception $ex) {

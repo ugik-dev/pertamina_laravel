@@ -43,6 +43,7 @@ class User extends Authenticatable
         'tanggungan_id',
         'tanggungan_st',
         'sip',
+        'pola'
     ];
     protected $keyLength = 191;
     /**

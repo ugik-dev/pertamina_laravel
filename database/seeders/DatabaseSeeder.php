@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ReferanceSeeder::class);
         $this->call(UsersSeeder::class);
         // $this->call(DrugDumySeeder::class);
-        // $this->call(ScreeningDumySeeder::class);
+        $this->call(ScreeningDumySeeder::class);
         // $this->call(LiveLocationSeeder::class);
         // $this->call(DumyCallSeeder::class);
     }

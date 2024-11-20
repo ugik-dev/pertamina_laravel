@@ -39,7 +39,8 @@ class ScreeningDumySeeder extends Seeder
                 'alcohol_level' => $faker->optional()->numberBetween(0, 100),
                 // 'anamnesis' => $faker->optional()->text,
                 // 'description' => $faker->optional()->text,
-                'created_at' => now()->subDays($faker->numberBetween(0, 5)), // Random dalam 5 hari terakhir
+                // 'created_at' => now()->subDays($faker->numberBetween(0, 5)), // Random dalam 5 hari terakhir
+                'created_at' => now(),
                 'updated_at' => now(),
             ];
 
@@ -52,8 +53,8 @@ class ScreeningDumySeeder extends Seeder
         }
 
         // Insert any remaining records
-        if (!empty($screenings)) {
-            DB::table('screenings')->insert($screenings);
-        }
+        // if (!empty($screenings)) {
+        // DB::table('screenings')->insert($screenings);
+        // }
     }
 }

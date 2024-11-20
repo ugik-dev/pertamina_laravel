@@ -56,6 +56,7 @@
                         <th>Nama</th>
                         <th>Lokasi</th>
                         <th>PT/PJP</th>
+                        <th>Pola Kerja</th>
                         <th>Kategori</th>
                         <th>Role</th>
                         <th>ID Pekerja</th>
@@ -233,6 +234,19 @@
                     <div class="col-sm-4"> <a class="btn btn-info text-white" id="create_qr">Scan QR</a></div>
                     <div class="col-sm-7">
                         <div id="reader" class="mr-3 ml-3 w-80" style="margin:0 auto;"></div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <label for="basicSalary">Pola Kerja :</label>
+                    <div class="input-group input-group-merge">
+                        <span id="basicSalary2" class="input-group-text"><i class='mdi mdi-account-outline'></i></span>
+                        <div class="form-floating form-floating-outline">
+                            <select id="pola" name="pola" class="form-control" required>
+                                <option value="">--</option>
+                                <option value="Shift">Shift</option>
+                                <option value="Harian">Harian</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-12">
@@ -509,6 +523,7 @@
                 'gender': $('#form-user').find('#gender'),
                 'sip': $('#form-user').find('#sip'),
                 'sip_layout': $('#form-user').find('#sip_layout'),
+                'pola': $('#form-user').find('#pola'),
             }
 
             addGuarantor.on("click", () => {
@@ -719,8 +734,9 @@
                         '</div>' +
                         `<a href="<?= url('info-desa/sub-wilayah') ?>/${user['id']}" title="Lihat Detail" class="btn btn-sm btn-text-secondary rounded-pill btn-icon item-edit"><i class="mdi mdi-eye-outline" ></i></a>`;
                     renderData.push([user['id'], button, user['name'],
-                        user['unit']['name'],
+                        user['unit'] != null ? user['unit']['name'] : "",
                         user['company'] != null ? user['company']['name'] : "",
+                        user['pola'] != null ? user['pola'] : "",
                         user['field_work'] != null ? user['field_work']['name'] : "",
                         user[
                             'role_title'], user['empoyee_id'],
@@ -786,6 +802,7 @@
                         UserForm.rm_number.val(currentData['rm_number']);
                         UserForm.empoyee_id.val(currentData['empoyee_id']);
                         UserForm.gender.val(currentData['gender']).trigger("change");
+                        UserForm.pola.val(currentData['pola']).trigger("change");
                         // dataUser = data['data'];
                         // renderUser(dataUser);
 

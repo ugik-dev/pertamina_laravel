@@ -42,7 +42,7 @@ class UsersSeeder extends Seeder
 
 
         $role = Role::where('name', 'staf')->firstOrFail();
-        for ($i = 0; $i < 15; $i++) {
+        for ($i = 0; $i < 34; $i++) {
             $username = $faker->userName;
             $username = strtolower($username);
             $username = preg_replace('/[^a-z0-9]/', '', $username);
