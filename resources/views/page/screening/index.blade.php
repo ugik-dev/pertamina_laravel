@@ -130,6 +130,8 @@
                         <th>Time</th>
                         <th>Action</th>
                         <th>Nama</th>
+                        <th>PT/PJP</th>
+                        <th>Pola</th>
                         <th>Result</th>
                         <th>Fisik</th>
                         <th>Sistole</th>
@@ -448,7 +450,6 @@
                         height: 250
                     }
                 },
-                /* verbose= */
                 false);
             html5QrcodeScanner.render(onScanSuccess, onScanFailure);
             formFilter.screening_date.on("change", function() {
@@ -475,7 +476,9 @@
                                 text: '<i class="mdi mdi-file-excel-outline me-1"></i>Excel',
                                 className: 'dropdown-item',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                                        16, 17
+                                    ],
                                 },
                                 action: function(e, dt, button, config) {
                                     var self = this;
@@ -592,8 +595,13 @@
                     }, {
                         data: "user_name",
                         name: "user_name"
-                    },
-                    {
+                    }, {
+                        data: "company_name",
+                        name: "company_name"
+                    }, {
+                        data: "pola",
+                        name: "pola"
+                    }, {
                         data: "result_span",
                         name: "result_span"
                     }, {

@@ -72,12 +72,13 @@ class ScreeningController extends Controller
             //     ->join('users as b', 'b.id', '=', 'screenings.doctor_id')
             //     ->whereDate('screenings.created_at', $date);
             $query = DB::table('users as a') // Mulai dari tabel users
-                ->selectRaw('screenings.*, a.name as user_name, a.qrcode as user_qrcode, b.name as doctor_name, f.high_risk')
+                ->selectRaw('screenings.*,c.name as company_name,a.pola, a.name as user_name, a.qrcode as user_qrcode, b.name as doctor_name, f.high_risk')
                 ->leftJoin('screenings', function ($join) use ($date) {
                     $join->on('screenings.user_id', '=', 'a.id')
                         ->whereDate('screenings.created_at', $date);
                 })
                 ->leftJoin('field_works as f', 'a.field_work_id', '=', 'f.id')
+                ->leftJoin('companies as c', 'a.company_id', '=', 'c.id')
                 ->leftJoin('users as b', 'b.id', '=', 'screenings.doctor_id');
 
             if (!empty($status)) {
