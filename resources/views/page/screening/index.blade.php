@@ -483,11 +483,28 @@
                                 },
                                 action: function(e, dt, button, config) {
                                     var self = this;
+                                    var filterData = {};
+                                    $('#formFilter').serializeArray().forEach(function(item) {
+                                        filterData[item.name] = item
+                                            .value; // Konversi ke key-value pair
+                                    });
                                     $.ajax({
                                         url: "{{ route('screening.index') }}",
                                         data: {
+                                            filter: filterData,
                                             length: -1
                                         },
+                                        // method: "GET",
+                                        // data: function(d) {
+                                        //     var filterData = {};
+                                        //     $('#formFilter').serializeArray()
+                                        //         .forEach(function(item) {
+                                        //             filterData[item.name] = item
+                                        //                 .value; // Convert to key-value pair
+                                        //         });
+                                        //     d.filter = filterData;
+                                        //     d.length = -1;
+                                        // },
                                         success: function(json) {
                                             var oldData = dt.rows().data();
                                             dt.clear().rows.add(json.data).draw();
