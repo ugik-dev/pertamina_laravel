@@ -131,6 +131,7 @@
                         <th>Action</th>
                         <th>Nama</th>
                         <th>PT/PJP</th>
+                        <th>Category</th>
                         <th>Pola</th>
                         <th>Result</th>
                         <th>Fisik</th>
@@ -477,7 +478,7 @@
                                 className: 'dropdown-item',
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-                                        16, 17
+                                        16, 17, 18
                                     ],
                                 },
                                 action: function(e, dt, button, config) {
@@ -598,6 +599,9 @@
                     }, {
                         data: "company_name",
                         name: "company_name"
+                    }, {
+                        data: "company_category",
+                        name: "company_category"
                     }, {
                         data: "pola",
                         name: "pola"
