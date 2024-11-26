@@ -9,6 +9,8 @@ class Drug extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'name',
+        'satuan',
         'kode_oss',
         'kelas',
         'sub_kelas',

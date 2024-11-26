@@ -81,9 +81,25 @@ class DrugController extends Controller
     {
         try {
             $att = [
-                'name' => $request->name,
-                'satuan' => $request->satuan,
-
+                'name' => $request->nama_obat,
+                'satuan' => $request->dosis,
+                'kode_oss' => $request->kode_oss,
+                'kelas' => $request->kelas,
+                'sub_kelas' => $request->sub_kelas,
+                'nama_obat' => $request->nama_obat,
+                'pabrik' => $request->pabrik,
+                'pbf' => $request->pbf,
+                'zat_aktif_utama' => $request->zat_aktif_utama,
+                'zat_aktif_lain' => $request->zat_aktif_lain,
+                'sediaan' => $request->sediaan,
+                'isi_perkemasan' => $request->isi_perkemasan,
+                'dosis' => $request->dosis,
+                'hna_per_kemasan' => $request->hna_per_kemasan,
+                'hna_satuan' => $request->hna_satuan,
+                'disc' => $request->disc,
+                'harga_beli_satuan' => $request->harga_beli_satuan,
+                'harga_beli_kemasan' => $request->harga_beli_kemasan,
+                'golongan' => $request->golongan,
             ];
             $data = Drug::create($att);
             $data = Drug::find($data->id);
@@ -111,8 +127,25 @@ class DrugController extends Controller
             $data = Drug::findOrFail($request->id);
 
             $data->update([
-                'name' => $request->name,
-                'satuan' => $request->satuan,
+                'name' => $request->nama_obat,
+                'satuan' => $request->dosis,
+                'kode_oss' => $request->kode_oss,
+                'kelas' => $request->kelas,
+                'sub_kelas' => $request->sub_kelas,
+                'nama_obat' => $request->nama_obat,
+                'pabrik' => $request->pabrik,
+                'pbf' => $request->pbf,
+                'zat_aktif_utama' => $request->zat_aktif_utama,
+                'zat_aktif_lain' => $request->zat_aktif_lain,
+                'sediaan' => $request->sediaan,
+                'isi_perkemasan' => $request->isi_perkemasan,
+                'dosis' => $request->dosis,
+                'hna_per_kemasan' => $request->hna_per_kemasan,
+                'hna_satuan' => $request->hna_satuan,
+                'disc' => $request->disc,
+                'harga_beli_satuan' => $request->harga_beli_satuan,
+                'harga_beli_kemasan' => $request->harga_beli_kemasan,
+                'golongan' => $request->golongan,
             ]);
 
             return  $this->responseSuccess($data);

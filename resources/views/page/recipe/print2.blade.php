@@ -233,7 +233,7 @@
         $bulanSekarang = Carbon::now()->month;
         $bulan = $bulanSekarang - $bulanLahir;
         $tahun = $umur;
-        $formattedTanggalLahir = $tanggalLahir>format('d F Y');
+        $formattedTanggalLahir = $tanggalLahir->format('d F Y');
 
         if ($bulan < 0) {
             $bulan += 12;

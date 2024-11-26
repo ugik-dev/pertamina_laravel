@@ -244,7 +244,7 @@
                         <tr class="no-border">
                             <td class="no-border">Tgl. Lahir</td>
                             <td class="no-border">:</td>
-                            <td>{{ $formattedTanggalDikirim }}</td>
+                            <td>{{ $tanggalLahir->format('d F Y') }}</td>
                         </tr>
                         <tr class="no-border">
                             <td class="no-border">Umur</td>
@@ -380,7 +380,7 @@
                         <tr class="no-border">
                             <td class="no-border">Tgl. Lahir</td>
                             <td class="no-border">:</td>
-                            <td>{{ $formattedTanggalDikirim }}</td>
+                            <td>{{ $tanggalLahir->format('d F Y') }}</td>
                         </tr>
                         <tr class="no-border">
                             <td class="no-border">Umur</td>
