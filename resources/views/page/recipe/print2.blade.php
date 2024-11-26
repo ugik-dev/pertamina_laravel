@@ -233,6 +233,7 @@
         $bulanSekarang = Carbon::now()->month;
         $bulan = $bulanSekarang - $bulanLahir;
         $tahun = $umur;
+        $formattedTanggalLahir = $tanggalLahir>format('d F Y');
 
         if ($bulan < 0) {
             $bulan += 12;
@@ -348,7 +349,7 @@
                         <tr>
                             <td>Tgl. Lahir - L/P</td>
                             <td>:</td>
-                            <td>{{ $formattedTanggalDikirim }} -
+                            <td>{{ $formattedTanggalLahir }} -
                                 {{ $dataForm->pasien->gender == 'L' ? 'Laki-laki' : ($dataForm->pasien->gender == 'P' ? 'Perempuan' : '') }}
                             </td>
                         </tr>
