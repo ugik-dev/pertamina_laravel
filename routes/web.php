@@ -18,6 +18,7 @@ use App\Http\Controllers\FaskesController;
 use App\Http\Controllers\FieldController;
 use App\Http\Controllers\GuarantorController;
 use App\Http\Controllers\LiveLocationController;
+use App\Http\Controllers\MCUController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\ProfileController;
@@ -26,6 +27,7 @@ use App\Http\Controllers\RekapController;
 use App\Http\Controllers\RujukanController;
 use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\SebuseController;
+use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\TindakanController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
@@ -89,7 +91,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('scanner', [ScreeningController::class, 'scanner'])->name('scanner');
 
-    Route::prefix('screening')->name('screening.')->group(function () {
+    Route::prefix('screening')->name('screening.')->middleware('can:is_doctor')->group(function () {
         Route::get('', [ScreeningController::class, 'index'])->name('index');
         Route::get('export', [ScreeningController::class, 'export'])->name('export');
         Route::get('rekap', [ScreeningController::class, 'rekap'])->name('rekap');
@@ -98,6 +100,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('scan/{code}', [ScreeningController::class, 'scan_process'])->name('scan_get');
         Route::post('', [ScreeningController::class, 'create'])->name('create');
         Route::put('', [ScreeningController::class, 'update'])->name('update');
+    });
+
+    Route::prefix('security')->name('security-app.')->middleware('can:is_security')->group(function () {
+        Route::get('', [SecurityController::class, 'index'])->name('index');
+        Route::get('checkin/{code}', [SecurityController::class, 'checkin'])->name('checkin');
+        Route::get('checkout/{code}', [SecurityController::class, 'checkout'])->name('checkout');
+        // Route::put('', [SecurityController::class, 'update'])->name('update');
     });
 
     Route::prefix('sebuse')->name('sebuse.')->group(function () {
@@ -184,7 +193,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/getData/{id_wil}', [FaskesController::class, 'getData'])->name('get-data');
     });
 
-    Route::prefix('manage-agent')->name('agent.')->group(function () {
+    Route::prefix('manage-agent')->name('agent.')->middleware('can:crud_users')->group(function () {
         Route::get('', [UserController::class, 'index'])->name('index');
         Route::get('get', [UserController::class, 'get'])->name('get');
         Route::get('get/{id}', [UserController::class, 'find'])->name('find');
@@ -257,5 +266,17 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/update', [BankController::class, 'update'])->name('update');
         Route::delete('/', [BankController::class, 'delete'])->name('delete');
         Route::get('/getData/{id_wil}', [BankController::class, 'getData'])->name('get-data');
+    });
+
+    Route::prefix('mcu')->name('mcu.')->group(function () {
+        Route::get('', [MCUController::class, 'index'])->name('index');
+        Route::get('get', [MCUController::class, 'get'])->name('get');
+        Route::post('', [MCUController::class, 'create'])->name('create');
+        Route::post('/update', [MCUController::class, 'update'])->name('update');
+        Route::delete('/', [MCUController::class, 'delete'])->name('delete');
+        Route::get('/{id}', [MCUController::class, 'detail'])->name('detail');
+        Route::get('fetch_detail/{id}', [MCUController::class, 'fetch_detail'])->name('fetch_detail');
+
+        // Route::get('/getData/{id_wil}', [MCUController::class, 'getData'])->name('get-data');
     });
 });

@@ -133,19 +133,10 @@
                         <th>PT/PJP</th>
                         <th>Category</th>
                         <th>Pola</th>
-                        <th>Result</th>
-                        <th>Fisik</th>
-                        <th>Sistole</th>
-                        <th>Diasistole</th>
-                        <th>HR</th>
-                        <th>Suhu</th>
-                        <th>RR</th>
-                        <th>SPO2</th>
-                        <th>Romberg Test</th>
-                        <th>Alcohol Test</th>
-                        <th>Alcohol Level</th>
-                        <th>Anamnesis</th>
-                        <th>Ket</th>
+                        <th>DCU</th>
+                        <th>CHECK-IN</th>
+                        <th>CHECK-OUT</th>
+                        <th>Keterangan</th>
                     </tr>
                 </thead>
             </table>
@@ -164,193 +155,14 @@
                     </div>
                     <div class="modal-body">
                         @csrf
-                        <input type="text" id="id" class="" name="id" hidden />
-                        <input type="text" id="qrcode" class="" name="qrcode" hidden />
-                        <div class="row">
-                            <div class="col-lg-6 mb-2">
-                                <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">Name</label>
-                                    <div class="col-sm-10">
-                                        <input id="name" name="name" class="form-control" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <div class="form-group row">
-                                    <label for="unit" class="col-sm-2 col-form-label">Unit</label>
-                                    <div class="col-sm-10">
-                                        <input id="unit" name="unit" class="form-control" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="col-lg-6 mb-2">
-                                <div class="form-group row">
-                                    <label for="sistole" class="col-sm-2 col-form-label">Sistole</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group">
-                                            <input id="sistole" name="sistole" class="form-control" required>
-                                            <span class="input-group-text">mmHg</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="diastole" class="col-sm-2 col-form-label">Diastole</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group">
-                                            <input id="diastole" name="diastole" class="form-control" required>
-                                            <span class="input-group-text">mmHg</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="hr" class="col-sm-2 col-form-label">HR</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group">
-                                            <input id="hr" name="hr" class="form-control" required>
-                                            <span class="input-group-text">bpm</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="temp" class="col-sm-2 col-form-label">Suhu</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group">
-                                            <input id="temp" name="temp" class="form-control" required>
-                                            <span class="input-group-text">&deg;C</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 mb-2">
-
-                                <div class="form-group row">
-                                    <label for="rr" class="col-sm-2 col-form-label">RR</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group">
-                                            <input id="rr" name="rr" class="form-control" required>
-                                            <span class="input-group-text">-</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="spo2" class="col-sm-2 col-form-label">SPO2</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group">
-                                            <input id="spo2" name="spo2" class="form-control">
-                                            <span class="input-group-text">-</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="fisik" class="col-sm-2 col-form-label">Fisik</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group">
-                                            <select class="form-control" name="fisik" id="fisik">
-                                                <option value="baik">Baik</option>
-                                                <option value="umum">Umum</option>
-                                                <option value="buruk">Buruk</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="col-lg-4">
-                                <div class="form-group row">
-                                    <label for="romberg" class="col-sm-4 col-form-label">Romberg Test</label>
-                                    <div class="col-sm-6">
-                                        <div class="input-group switches-stacked">
-                                            <div class=" ">
-                                                <label class="switch switch-success me-1">
-                                                    <input type="radio" class="switch-input" id="rombergN"
-                                                        name="romberg" value="N">
-                                                    <span class="switch-toggle-slider">
-                                                        <span class="switch-on"></span>
-                                                        <span class="switch-off"></span>
-                                                    </span>
-                                                    <span class="switch-label">Negatif</span>
-                                                </label>
-                                                <label class="switch switch-danger">
-                                                    <input type="radio" id="rombergY" class="switch-input"
-                                                        name="romberg" value="Y">
-                                                    <span class="switch-toggle-slider">
-                                                        <span class="switch-on"></span>
-                                                        <span class="switch-off"></span>
-                                                    </span>
-                                                    <span class="switch-label">Positif</span>
-                                                </label>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group row">
-                                    <label for="alcohol" class="col-sm-4 col-form-label">Alcohol Test</label>
-                                    <div class="col-sm-6">
-                                        <div class="input-group switches-stacked">
-                                            <div class=" ">
-                                                <label class="switch switch-success me-1">
-                                                    <input type="radio" class="switch-input" id="alcoholN"
-                                                        name="alcohol" value="N">
-                                                    <span class="switch-toggle-slider">
-                                                        <span class="switch-on"></span>
-                                                        <span class="switch-off"></span>
-                                                    </span>
-                                                    <span class="switch-label">Negatif</span>
-                                                </label>
-                                                <label class="switch switch-danger">
-                                                    <input type="radio" id="alcoholY" class="switch-input"
-                                                        name="alcohol" value="Y">
-                                                    <span class="switch-toggle-slider">
-                                                        <span class="switch-on"></span>
-                                                        <span class="switch-off"></span>
-                                                    </span>
-                                                    <span class="switch-label">Positif</span>
-                                                </label>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group row">
-                                    <label for="alcohol_level" class="col-sm-6 col-form-label">Alcohol Level</label>
-                                    <div class="col-sm-6">
-                                        <div class="input-group">
-                                            <input id="alcohol_level" name="alcohol_level" class="form-control">
-                                            <span class="input-group-text">-</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="anemnesis" class="col-sm-2 col-form-label">Anamnesis</label>
-                                <div class="col-sm-10">
-                                    <div class="input-group">
-                                        <textarea id="anamnesis" name="anamnesis" class="form-control"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="description" class="col-sm-2 col-form-label">Keterangan</label>
-                                <div class="col-sm-10">
-                                    <div class="input-group">
-                                        <textarea id="description" name="description" class="form-control"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <input type="text" id="id" class="" name="id" />
+                        <input type="text" id="qrcode" class="" name="qrcode" />
                     </div>
-                    {{-- <button type="button" id="pickOffBtn" class="btn btn-xl btn-warning" data-dismiss="modal">Pickof</button> --}}
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="insertBtn"
-                            data-metod="ins">Tambah</button>
-                        <button type="submit" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="updateBtn"
-                            data-act="upd">Simpan Perubahan</button>
+                        <button type="button" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="checkinBtn"
+                            data-action="checkin">Masuk</button>
+                        <button type="button" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="checkoutBtn"
+                            data-action="checkout">Keluar</button>
                         <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
@@ -376,8 +188,8 @@
             }
             var ScreeningForm = {
                 'form': $('#form-screening'),
-                'insertBtn': $('#form-screening').find('#insertBtn'),
-                'updateBtn': $('#form-screening').find('#updateBtn'),
+                'checkinBtn': $('#form-screening').find('#checkinBtn'),
+                'checkoutBtn': $('#form-screening').find('#checkoutBtn'),
                 'id': $('#form-screening').find('#id'),
                 'user_id': $('#form-screening').find('#user_id'),
                 'name': $('#form-screening').find('#name'),
@@ -407,32 +219,61 @@
                 }, 5000);
             }
             // scanProcess('d3286f12-a0ab-45a7-aba9-11b7e15f4723')
-            // scanProcess('HELLO WORLD')
+            // scanProcess('HELLO WORLD');
 
             function scanProcess(decodedResult) {
                 swalLoading();
-                url = '{{ url('screening/scan') }}/' + decodedResult;
+                url = '{{ url('scanner/checker/') }}/' + decodedResult;
                 $.ajax({
                     url: url,
                     'type': 'GET',
                     success: function(data) {
                         ScreeningForm.form.trigger("reset")
+                        let user = null;
+                        let warning = true;
+                        let message = '';
                         if (data['error']) {
-                            swalError(data['message'], "Simpan Gagal !!");
-                            return;
+                            warning = true;
+                            message = data['message']
+                        } else if (data['data']['screening']['fitality'] != 'Y') {
+                            warning = true;
+                            message = "Kondisi fitality dalam keadaan tidak baik!!"
+                            user = data["data"]
+                        } else {
+                            $('#emergencyModal').modal('show');
+                            user = data["data"]
                         }
-                        Swal.close();
-                        // swalBerhasil();
-                        $('#emergencyModal').modal('show');
-                        user = data["data"]
-                        console.log(user['name'])
-                        ScreeningForm.insertBtn.attr('style', 'display: ""');
-                        ScreeningForm.insertBtn.attr('style', 'display: ""');
-                        console.log(ScreeningForm.insertBtn)
+                        if (warning) {
+                            Swal.fire({
+                                title: "Warning !!",
+                                text: message,
+                                icon: "warning",
+                                // showDenyButton: false,
+                                // showCancelButton: false,
+                                // confirmButtonText: "Paksa Masuk",
+                                // denyButtonText: `Batalkan`
+                                allowOutsideClick: false,
+                                showCancelButton: true,
+                                confirmButtonText: 'Paksa Masuk !!',
+                                showLoaderOnConfirm: true,
+                                customClass: {
+                                    confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
+                                    cancelButton: 'btn btn-outline-danger waves-effect'
+                                }
+                            }).then((value) => {
+                                if (value.isConfirmed) {
+                                    $('#emergencyModal').modal('show');
+                                }
+                                ScreeningForm.checkinBtn.attr('style', 'display: ""');
+                                ScreeningForm.checkinBtn.attr('style', 'display: ""');
+                                ScreeningForm.name.val(user['name'])
+                                ScreeningForm.qrcode.val(decodedResult)
+                            });
+                        }
+                        // console.log(user['name'])
+                        // console.log(ScreeningForm.checkinBtn)
 
-                        ScreeningForm.updateBtn.attr('style', 'display: none !important');
-                        ScreeningForm.name.val(user['name'])
-                        ScreeningForm.qrcode.val(decodedResult)
+                        // ScreeningForm.checkoutBtn.attr('style', 'display: none !important');
                     },
                     error: function(e) {}
                 });
@@ -490,7 +331,7 @@
                                             .value; // Konversi ke key-value pair
                                     });
                                     $.ajax({
-                                        url: "{{ route('screening.index') }}",
+                                        url: "{{ route('security-app.index') }}",
                                         data: {
                                             filter: filterData,
                                             length: -1
@@ -574,7 +415,7 @@
                                 action: function(e, dt, button, config) {
                                     var self = this;
                                     $.ajax({
-                                        url: "{{ route('screening.index') }}",
+                                        url: "{{ route('security-app.index') }}",
                                         data: {
                                             length: -1
                                         },
@@ -595,7 +436,7 @@
                 ],
                 order: [1, 'desc'],
                 ajax: {
-                    url: "{{ route('screening.index') }}",
+                    url: "{{ route('security-app.index') }}",
                     data: function(d) {
                         var filterData = {};
                         $('#formFilter').serializeArray().forEach(function(item) {
@@ -608,8 +449,8 @@
                         data: "DT_RowIndex",
                         name: "DT_RowIndex"
                     }, {
-                        data: "timescan",
-                        name: "timescan"
+                        data: "span_checkin_time",
+                        name: "span_checkin_time"
                     }, {
                         data: "aksi",
                         name: "aksi"
@@ -626,50 +467,18 @@
                         data: "pola",
                         name: "pola"
                     }, {
-                        data: "result_span",
-                        name: "result_span"
+                        data: "dcu",
+                        name: "dcu"
                     }, {
-                        data: "fisik",
-                        name: "fisik"
+                        data: "span_checkin_time",
+                        name: "span_checkin_time"
                     }, {
-                        data: "sistole_span",
-                        name: "sistole_span"
+                        data: "span_checkout_time",
+                        name: "span_checkout_time"
                     },
                     {
-                        data: "diastole_span",
-                        name: "diastole_span"
-                    }, {
-                        data: "hr_span",
-                        name: "hr_span"
-                    }, {
-                        data: "temp_span",
-                        name: "temp_span"
-                    }, {
-                        data: "rr_span",
-                        name: "rr"
-                    }, {
-                        data: "spo2_span",
-                        name: "spo2"
-                    },
-                    {
-                        data: "romberg_span",
-                        name: "romberg"
-                    },
-                    {
-                        data: "alcohol_span",
-                        name: "alcohol"
-                    },
-                    {
-                        data: "alcohol_level",
-                        name: "alcohol_level"
-                    },
-                    {
-                        data: "anamnesis",
-                        name: "anamnesis"
-                    },
-                    {
-                        data: "description",
-                        name: "description"
+                        data: "working_duration",
+                        name: "working_duration"
                     }
                     // {
                     //     data: "high_risk_span",
@@ -808,44 +617,46 @@
                     return true;
                 }
             }
-            ScreeningForm.form.on('submit', function(event) {
+            ScreeningForm.checkinBtn.on('click', function(event) {
                 event.preventDefault();
-                // if (!validasi_form(event)) {
-                //     return
-                // };
-                if (ScreeningForm.insertBtn.is(":visible")) {
-                    url = '{{ route('screening.create') }}';
-                    metode = 'POST';
-                } else {
-                    url = '{{ route('screening.update') }}';
-                    metode = 'PUT';
-                }
-                Swal.fire(SwalOpt()).then((result) => {
-                    if (!result.isConfirmed) {
-                        return;
-                    }
-                    swalLoading();
-                    $.ajax({
-                        url: url,
-                        'type': metode,
-                        data: ScreeningForm.form.serialize(),
-                        success: function(data) {
-                            if (data['error']) {
-                                swalError(data['message'], "Simpan Gagal !!");
-                                return;
-                            }
-                            swalBerhasil();
-                            $('#emergencyModal').modal('hide');
-                            DataTable.ajax.reload(null, false)
-                        },
-                        error: function(e) {}
-                    });
-                });
-            });
+                submitInOut('checkin', ScreeningForm.qrcode.val())
+            })
 
-            // newData({
-            //     'idRequest': 1
-            // })
+            ScreeningForm.checkoutBtn.on('click', function(event) {
+                event.preventDefault();
+                submitInOut('checkout', ScreeningForm.qrcode.val())
+            })
+
+            function submitInOut(action, qrcode) {
+                if (action === 'checkin') {
+                    url = '{{ url('security/checkin') }}/' + qrcode
+                } else if (action === 'checkout') {
+                    url = '{{ url('security/checkout') }}/' + qrcode
+                } else return;
+
+                console.log(url);
+                // Swal.fire(SwalOpt()).then((result) => {
+                //     if (!result.isConfirmed) {
+                //         return;
+                //     }
+                swalLoading();
+                $.ajax({
+                    url: url,
+                    'type': 'GET',
+                    // data: ScreeningForm.form.serialize(),
+                    success: function(data) {
+                        if (data['error']) {
+                            swalError(data['message'], "Simpan Gagal !!");
+                            return;
+                        }
+                        swalBerhasil();
+                        $('#emergencyModal').modal('hide');
+                        DataTable.ajax.reload(null, false)
+                    },
+                    error: function(e) {}
+                });
+                // });
+            }
         });
     </script>
 @endpush

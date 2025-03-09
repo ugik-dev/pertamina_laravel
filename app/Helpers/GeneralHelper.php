@@ -17,6 +17,27 @@ if (!function_exists('spanFitality')) {
     }
 }
 
+if (!function_exists('toSnakeCase')) {
+    function toSnakeCase($string)
+    {
+        return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', str_replace(' ', '_', $string)));
+    }
+}
+
+if (!function_exists('getParamMCU')) {
+    function getParamMCU()
+    {
+        $record =  ["Nama", "Nopek", "No RM", "Tempat Lahir", "Tanggal Lahir", "Lokasi", "TahunMCU", "TglMCU", "Jenis Kelamin", "Status Perkawinan", "Alamat", "UraianSingkatPekerjaan", "Hazard\/RisikoLingkunganKerja", "KeluhanUmum", "Kesadaran", "Status Mentalis", "Status Psikologis (SRQ29)", "KeluhanberhubungandenganPekerjaan", "RiwayatPenyakitDahulu", "RiwayatPenyakitKeluarga", "Riwayat Kecelakaan", "Riwayat Alergi", "Riwayat Vaksinasi", "Riwayat Obs\/Gyn", "Riwayat Operasi", "Diet", "Konsumsi Buah\/Sayur", "OlahRaga", "Merokok", "Kopi", "Alkohol", "ObatRutin", "TDSistole", "TDDiastole", "Nadi", "Irama Nadi", "Pernafasan", "Suhu Badan", "TB", "BB", "LP (Lingkar Pinggang)", "BMI", "StatusGizi", "AVOD", "AVOS", "ADD(Koreksi Visus)", "Tekanan Bola Mata", "Funduscopy", "Buta Warna", "Kepala", "Leher", "Mulut", "Tonsil", "Pharynx", "Jantung", "ParuParu", "Abdomen", "Hepar", "Lien", "Ginjal", "Extremitas", "ReflekFisiologis", "ReflekPatologis", "Kulit", "Haemorhoid", "Tulang Belakang", "LainLain", "Kesimpulan", "EKG", "PapSmear", "TreadmillTest", "StatusKebugaran", "TargetNadiOlahraga", "Test Rockport", "Napfa", "Spirometri", "Audiometri", "Mammografi", "USGAbdomen", "BiologicalMonitoring", "ToraksFoto", "Mata", "THT", "D", "M", "F", "AdviceGimul", "HB", "Leukosit", "Eritrosit", "Hematokrit", "Trombosit", "LED", "Basofil", "Eosinofil", "Batang", "Segmen", "Limfosit", "Monosit", "HapusanDarah", "WarnaUrine", "Berat Jenis", "PH Urine", "Protein", "Nitrit", "ReduksiN", "ReduksiPP", "Aseton Urin", "Bilirubin", "Urobilinogen", "Leukosit Esterase", "SelEpithel", "LeukositUrine", "EritrositUrine", "Silinder", "Bakteri", "Jamur", "Kristal", "Konsistensi", "WarnaFaeces", "Lendir", "DarahNanah", "EritrositFaeces", "LeukositFaeces", "AmubaProtozoa", "Kista", "SisaPencernaan", "TelorCacing", "Kultur Faeces", "GulaDarahPuasa", "GulaDarah2jamPP", "Hba1c", "KolesterolTotal", "Trigliserida", "HDL", "LDL", "Rasio TC\/HDL", "Ureum", "Kreatinin", "AsamUrat", "SGOT", "SGPT", "BillTotal", "Bili Direct", "Bili Indirect", "ALKFospat", "Kolinesterase", "HbsAg", "Anti HBs", "HBeAg", "Anti HCV", "TPHA", "VDRL", "BTA Sputum", "Drug Test", "Alcohol Test", "KesimpulanDerajatKesehatan", "KesimpulanKelaikanKerja", "Risiko Cardiovascular (SKJ)", "Risiko Cardiovascular (SF)", "SaranDokter", "Rekomendasi", "Dokter", "AnamnesaMata", "Penglihatan", "TestIshihara", "KesimpulanMata", "SaranMata", "AnamnesaTHT", "Telinga", "Hidung", "Tenggorokan", "KesimpulanTHT", "SaranTHT", "TanggalSelesai", "Kesimpulan1", "Kesimpulan2", "Kesimpulan3", "Nasehat1", "Nasehat2", "Diet1", "Diet2", "Diet3", "NasehatLain", "Saran1", "Saran2", "Saran3"];
+        $final = [];
+        foreach ($record as $r) {
+            array_push($final, ['label' => $r, 'field' => toSnakeCase($r)]);
+        }
+        return $final;
+        // return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', str_replace(' ', '_', $string)));
+    }
+}
+
+
 if (!function_exists('tanggalSort')) {
     function tanggalSort($date)
     {

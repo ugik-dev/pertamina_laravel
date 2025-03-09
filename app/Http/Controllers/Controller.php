@@ -11,9 +11,9 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
-    public function responseError($message = '', $status = 200)
+    public function responseError($message = '', $status = 400, $data = null)
     {
-        return $this->responseSuccess(null, $message, true, $status);
+        return $this->responseSuccess($data, $message, true, $status);
     }
 
     public function responseSuccess($data, $message = '', $error = false, $status = 200)

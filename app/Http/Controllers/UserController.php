@@ -173,7 +173,11 @@ class UserController extends Controller
                     }
                 }
             $data = User::withRole()->with(['unit', 'field_work'])->find($data->id);
-
+            if (!empty($request->role_id)) {
+                $role =  Role::find($request->role_id);
+                $data->syncRoles($role);
+                \Artisan::call('permission:cache-reset');
+            }
             return  $this->responseSuccess($data);
         } catch (Exception $ex) {
             return  $this->ResponseError($ex->getMessage());
@@ -207,6 +211,7 @@ class UserController extends Controller
                 $data->update([
                     'password' => Hash::make($request->password),
                 ]);
+
 
             $arrGuarantor = [];
             if ($request->guarantor_id)
@@ -261,7 +266,11 @@ class UserController extends Controller
 
 
             $data = User::withRole()->with(['unit', 'field_work', 'company', 'pentami', 'tanggungan'])->findOrFail($request->id);
-
+            if (!empty($request->role_id)) {
+                $role =  Role::find($request->role_id);
+                $data->syncRoles($role);
+                \Artisan::call('permission:cache-reset');
+            }
             return  $this->responseSuccess($data);
         } catch (Exception $ex) {
             return  $this->ResponseError($ex->getMessage());

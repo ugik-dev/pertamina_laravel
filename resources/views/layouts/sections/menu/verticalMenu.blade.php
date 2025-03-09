@@ -38,12 +38,22 @@
         <li class="menu-header fw-medium mt-4">
             <span class="menu-header-text">Applikasi</span>
         </li>
-        <li class="menu-item">
-            <a href="{{ route('screening.index') }}" class="menu-link ">
-                <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
-                <div class="">Screening DCU</div>
-            </a>
-        </li>
+        @can('is_doctor')
+            <li class="menu-item">
+                <a href="{{ route('screening.index') }}" class="menu-link ">
+                    <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
+                    <div class="">Screening DCU</div>
+                </a>
+            </li>
+        @endcan
+        @can('is_security')
+            <li class="menu-item">
+                <a href="{{ route('security-app.index') }}" class="menu-link ">
+                    <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
+                    <div>Security</div>
+                </a>
+            </li>
+        @endcan
         <li class="menu-item">
             <a href="{{ route('scanner') }}" class="menu-link ">
                 <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
@@ -104,46 +114,61 @@
                 <div>SEBUSE</div>
             </a>
         </li>
+        @can('is_doctor')
+            <li class="menu-item">
+                <a href="{{ route('mcu.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons mdi mdi-account-details-outline"></i>
+                    <div>Batch MCU</div>
+                </a>
+            </li>
+        @endcan
+
         <li class="menu-item" style="">
             <a href="javascript:void(0);" class="menu-link menu-toggle waves-effect">
                 <i class="menu-icon tf-icons mdi mdi-form-select"></i>
                 <div>Management</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="{{ route('agent.index') }}" class="menu-link ">
-                        {{-- <i class="menu-icon tf-icons mdi mdi-account-details-outline"></i> --}}
-                        <div>User / Pasien</div>
-                    </a>
-                </li>
-                <li class="menu-item ">
-                    <a href="{{ route('field.index') }}" class="menu-link">
-                        <div>Kategori Kerja</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('unit.index') }}" class="menu-link">
-                        <div>Lokasi Kerja</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('company.index') }}" class="menu-link">
-                        <div>PT/PJP</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('guarantor.index') }}" class="menu-link">
-                        <div>Jenis Penjamin</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('drug.index') }}" class="menu-link">
-                        <div>Obat</div>
-                    </a>
-                </li>
+                @can('crud_users')
+                    <li class="menu-item">
+                        <a href="{{ route('agent.index') }}" class="menu-link ">
+                            {{-- <i class="menu-icon tf-icons mdi mdi-account-details-outline"></i> --}}
+                            <div>User / Pasien</div>
+                        </a>
+                    </li>
+                @endcan
+                @can('crud_information')
+                    <li class="menu-item ">
+                        <a href="{{ route('field.index') }}" class="menu-link">
+                            <div>Kategori Kerja</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{ route('unit.index') }}" class="menu-link">
+                            <div>Lokasi Kerja</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{ route('company.index') }}" class="menu-link">
+                            <div>PT/PJP</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{ route('guarantor.index') }}" class="menu-link">
+                            <div>Jenis Penjamin</div>
+                        </a>
+                    </li>
+                @endcan
+                @can('is_doctor')
+                    <li class="menu-item">
+                        <a href="{{ route('drug.index') }}" class="menu-link">
+                            <div>Obat</div>
+                        </a>
+                    </li>
+                @endcan
+
             </ul>
         </li>
-
 
         {{-- <li class="menu-item">
             <a href="{{ route('live-location.index') }}" class="menu-link ">
