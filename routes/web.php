@@ -50,7 +50,7 @@ use GuzzleHttp\Psr7\Request;
 Route::get('/', [PortalController::class, 'index'])->name('portal');
 Route::get('/home', [PortalController::class, 'home'])->name('home');
 Route::get('/scan-fitality', [PortalController::class, 'scan_fit'])->name('portal.scan-fit');
-Route::get('/scan-sebuse', [PortalController::class, 'scan_sebuse'])->name('portal.scan-sebuse');
+Route::get('/scan-sebuse', [PortalController::class, 'scan_workout'])->name('portal.scan-sebuse');
 Route::get('/scan-workout', [PortalController::class, 'scan_workout'])->name('portal.scan-workout');
 Route::get('/info/content', [PortalController::class, 'content']);
 Route::get('bank-data', [PortalController::class, 'bank_data'])->name('bank_data');
@@ -61,8 +61,10 @@ Route::get('content/show/{slug}', [ContentController::class, 'show'])->name('con
 Route::get('/login', [LoginBasic::class, 'index'])->name('login');
 Route::get('/page-2', [Page2::class, 'index'])->name('pages-page-2');
 Route::get('scanner/checker/{code}', [ScreeningController::class, 'scanner_process'])->name('scanner.check');
-Route::get('scanner/checker-sebuse/{code}', [SebuseController::class, 'scanner_process'])->name('scanner.check-sebuse');
-Route::post('scanner/sebuse/post', [SebuseController::class, 'store'])->name('sebuse-post');
+// Route::get('scanner/checker-sebuse/{code}', [SebuseController::class, 'scanner_process'])->name('scanner.check-sebuse');
+// Route::post('scanner/sebuse/post', [SebuseController::class, 'store'])->name('sebuse-post');
+Route::get('scanner/checker-sebuse/{code}', [WorkoutController::class, 'scanner_process'])->name('scanner.check-sebuse');
+Route::post('scanner/sebuse/post', [WorkoutController::class, 'store'])->name('sebuse-post');
 Route::get('scanner/checker-workout/{code}', [WorkoutController::class, 'scanner_process'])->name('scanner.check-workout');
 Route::post('scanner/workout/post', [WorkoutController::class, 'store'])->name('workout-post');
 
@@ -114,14 +116,17 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::prefix('sebuse')->name('sebuse.')->group(function () {
-        // Route::get('', [SebuseController::class, 'index'])->name('index');
-        Route::get('export', [SebuseController::class, 'export'])->name('export');
-        Route::get('rekap', [SebuseController::class, 'rekap'])->name('rekap');
-        Route::get('rekap/export', [SebuseController::class, 'export'])->name('rekap.export');
-        // Route::get('get', [SebuseController::class, 'get'])->name('get');
-        // Route::get('scan/{code}', [SebuseController::class, 'scan_process'])->name('scan_get');
-        // Route::post('', [SebuseController::class, 'create'])->name('create');
-        Route::put('verif', [SebuseController::class, 'verif'])->name('verif');
+        // Sebuse Lama
+        // Route::get('export', [SebuseController::class, 'export'])->name('export');
+        // Route::get('rekap', [SebuseController::class, 'rekap'])->name('rekap');
+        // Route::get('rekap/export', [SebuseController::class, 'export'])->name('rekap.export');
+        // Route::put('verif', [SebuseController::class, 'verif'])->name('verif');
+
+        //   Workout 
+        Route::get('export', [WorkoutController::class, 'export'])->name('export');
+        Route::get('rekap', [WorkoutController::class, 'rekap'])->name('rekap');
+        Route::get('rekap/export', [WorkoutController::class, 'export'])->name('rekap.export');
+        Route::put('verif', [WorkoutController::class, 'verif'])->name('verif');
     });
 
 

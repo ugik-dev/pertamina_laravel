@@ -122,7 +122,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-lg-12 col-sm-12">
+                {{-- <div class="col-lg-12 col-sm-12">
                     <a href="{{ route('portal.scan-workout') }}">
                         <div class="card bg-success mb-2 ">
                             <div class="row">
@@ -148,7 +148,7 @@
                             </div>
                         </div>
                     </a>
-                </div>
+                </div> --}}
                 {{-- <div class="col-lg-12 col-sm-12">
                     <a href="{{ route('login') }}">
                         <div class="card bg-success mb-2 ">
