@@ -122,6 +122,33 @@
                         </div>
                     </a>
                 </div>
+                <div class="col-lg-12 col-sm-12">
+                    <a href="{{ route('portal.scan-workout') }}">
+                        <div class="card bg-success mb-2 ">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="card-body">
+                                        <div class="card-success mb-2">
+                                            <strong>
+                                                <h4 class="mb-3 text-nowrap text-bold text-white">WORKOUT</h4>
+                                            </strong>
+                                        </div>
+                                        <div class="d-flex align-items-end">
+                                            <h5 class="mb-0 me-0 text-white">Scan disini untuk cek workout
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 text-end d-flex align-items-end">
+                                    <div class="card-body pb-0 pt-3">
+                                        <img src="{{ asset('assets/img/illustrations/scanner2.png') }}" alt="Ratings"
+                                            class="img-fluid" width="95">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
                 {{-- <div class="col-lg-12 col-sm-12">
                     <a href="{{ route('login') }}">
                         <div class="card bg-success mb-2 ">

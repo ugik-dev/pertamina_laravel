@@ -214,7 +214,7 @@
         $bulanSekarang = Carbon::now()->month;
         $bulan = $bulanSekarang - $bulanLahir;
         $tahun = $umur;
-
+        $countAge = countAge($dataForm->pasien->dob);
         if ($bulan < 0) {
             $bulan += 12;
             $tahun--;
@@ -287,7 +287,7 @@
                         <tr>
                             <td>Umur</td>
                             <td>:</td>
-                            <td>{{ $tahun }} tahun {{ $bulan }} bulan</td>
+                            <td>{{ $countAge['tahun'] }} tahun {{ $countAge['bulan'] }} bulan</td>
                         </tr>
                         <tr>
                             <td>Jenis Kelamin</td>

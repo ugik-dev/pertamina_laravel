@@ -31,6 +31,7 @@ use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\TindakanController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WorkoutController;
 use GuzzleHttp\Psr7\Request;
 
 /*
@@ -50,6 +51,7 @@ Route::get('/', [PortalController::class, 'index'])->name('portal');
 Route::get('/home', [PortalController::class, 'home'])->name('home');
 Route::get('/scan-fitality', [PortalController::class, 'scan_fit'])->name('portal.scan-fit');
 Route::get('/scan-sebuse', [PortalController::class, 'scan_sebuse'])->name('portal.scan-sebuse');
+Route::get('/scan-workout', [PortalController::class, 'scan_workout'])->name('portal.scan-workout');
 Route::get('/info/content', [PortalController::class, 'content']);
 Route::get('bank-data', [PortalController::class, 'bank_data'])->name('bank_data');
 Route::get('get-mcu/{code}', [PortalController::class, 'get_mcu'])->name('get-mcu');
@@ -61,6 +63,8 @@ Route::get('/page-2', [Page2::class, 'index'])->name('pages-page-2');
 Route::get('scanner/checker/{code}', [ScreeningController::class, 'scanner_process'])->name('scanner.check');
 Route::get('scanner/checker-sebuse/{code}', [SebuseController::class, 'scanner_process'])->name('scanner.check-sebuse');
 Route::post('scanner/sebuse/post', [SebuseController::class, 'store'])->name('sebuse-post');
+Route::get('scanner/checker-workout/{code}', [WorkoutController::class, 'scanner_process'])->name('scanner.check-workout');
+Route::post('scanner/workout/post', [WorkoutController::class, 'store'])->name('workout-post');
 
 // pages
 Route::get('/pages/misc-error', [MiscError::class, 'index'])->name('pages-misc-error');
@@ -118,6 +122,14 @@ Route::middleware(['auth'])->group(function () {
         // Route::get('scan/{code}', [SebuseController::class, 'scan_process'])->name('scan_get');
         // Route::post('', [SebuseController::class, 'create'])->name('create');
         Route::put('verif', [SebuseController::class, 'verif'])->name('verif');
+    });
+
+
+    Route::prefix('workout')->name('workout.')->group(function () {
+        Route::get('export', [WorkoutController::class, 'export'])->name('export');
+        Route::get('rekap', [WorkoutController::class, 'rekap'])->name('rekap');
+        Route::get('rekap/export', [WorkoutController::class, 'export'])->name('rekap.export');
+        Route::put('verif', [WorkoutController::class, 'verif'])->name('verif');
     });
 
     Route::prefix('select2')->name('select2.')->group(function () {

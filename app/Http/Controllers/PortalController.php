@@ -193,4 +193,10 @@ class PortalController extends Controller
         $pageConfigs = ['myLayout' => 'blank'];
         return view('content.pages.page-sebuse', ['pageConfigs' => $pageConfigs]);
     }
+
+    public function scan_workout()
+    {
+        $pageConfigs = ['myLayout' => 'blank'];
+        return view('content.pages.page-workout', ['pageConfigs' => $pageConfigs]);
+    }
 }

@@ -20,13 +20,14 @@ class Helpers
 
   public static function spanAttchSebuse($val, $cek = false)
   {
-    // Rentang Sistole 90-140
     if (!empty($val)) {
-      return "<a target='_blank' href=" . url('storage/' . $val) . "> <span class='text-success'> Lihat </span> </a>";
+      return "<a target='_blank' href='" . url('storage/' . $val) . "'> <span class='text-success'> Lihat </span> </a>";
     } else {
       return "<span class='text-danger'> - </span>";
     }
   }
+
+
 
   public static function groupingSebuse($data)
   {

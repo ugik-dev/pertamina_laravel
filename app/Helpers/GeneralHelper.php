@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Carbon;
+
 if (!function_exists('spanFitality')) {
     function spanFitality($val, $cek = false)
     {
@@ -34,6 +36,18 @@ if (!function_exists('getParamMCU')) {
         }
         return $final;
         // return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', str_replace(' ', '_', $string)));
+    }
+}
+if (!function_exists('countAge')) {
+    function countAge($tanggalLahir)
+    {
+        $today = Carbon::now();
+        $diff = $today->diff($tanggalLahir);
+
+        return [
+            'tahun' => $diff->y,
+            'bulan' => $diff->m
+        ];
     }
 }
 

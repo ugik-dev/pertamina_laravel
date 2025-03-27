@@ -114,6 +114,12 @@
                 <div>SEBUSE</div>
             </a>
         </li>
+        <li class="menu-item">
+            <a href="{{ route('workout.rekap') }}" class="menu-link ">
+                <i class="menu-icon tf-icons mdi mdi-account-details-outline"></i>
+                <div>Workout</div>
+            </a>
+        </li>
         @can('is_doctor')
             <li class="menu-item">
                 <a href="{{ route('mcu.index') }}" class="menu-link">

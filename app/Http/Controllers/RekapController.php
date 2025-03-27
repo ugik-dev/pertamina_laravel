@@ -24,7 +24,7 @@ class RekapController extends Controller
             })->addColumn('nama_pasien', function ($data) {
                 return $data->nama_pasien;
             })->addColumn('umur', function ($data) {
-                return $data->umur;
+                return countAge($data->umur)['tahun'];
             })->addColumn('aksi', function ($data) {
                 return '
                 <a href="' . route('tindakan.print', ['id' => $data->id,  'format' => '2']) . '" target="_blank" class="btn btn-primary">Print</a>
