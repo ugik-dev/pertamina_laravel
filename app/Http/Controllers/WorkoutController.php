@@ -324,13 +324,14 @@ class WorkoutController extends Controller
         $validatedData = $request->validate([
             'qrcode' => 'required',
             'hours' => 'required|numeric',
-            'minutes' => 'required|numeric',
-            'seconds' => 'required|numeric',
+            'minutes' => 'nullable|numeric',
+            'seconds' => 'nullable|numeric',
             'km_tempuh' => 'required|numeric',
             'workout_jenis' => 'required|string',
             'attachment_evi' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
-
+        $validatedData['seconds'] = $validatedData['seconds'] ?? 0;
+        $validatedData['minutes'] = $validatedData['minutes'] ?? 0;
         $user = User::where('qrcode', $validatedData['qrcode'])->firstOrFail();
 
         // Ambil data Workout terbaru hari ini

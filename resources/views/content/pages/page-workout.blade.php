@@ -284,18 +284,19 @@
                         user = data["data"]
                         Result.name.html(user["name"])
                         Result.qr_user.val(user['qrcode'])
-                        Result.workout_jenis.val(user.workout['workout_jenis'])
+                        Result.workout_jenis.val(user['workout'] ? user['workout']['workout_jenis'] :
+                            '')
                         // Result.km_tempuh.val(user['km_tempuh'])
-                        Result.km_tempuh.val(user.workout['km_tempuh'])
-                        console.log(user.workout)
-                        Result.hours.val(user.workout['hours'])
-                        Result.minutes.val(user.workout['minutes'])
-                        Result.seconds.val(user.workout['seconds'])
-                        setFieldAndAttachment(user['workout']['evi_attch'], Result.evi_span, user[
-                            'workout'] ? user[
-                            'workout']['evi_attch'] : '', user['workout'] ? user['workout'][
-                            'evi_attch'
-                        ] : '');
+                        Result.km_tempuh.val(user['workout'] ? user.workout['km_tempuh'] : '')
+                        Result.hours.val(user['workout'] ? user.workout['hours'] : '')
+                        Result.minutes.val(user['workout'] ? user.workout['minutes'] : '')
+                        Result.seconds.val(user['workout'] ? user.workout['seconds'] : '')
+                        if (user['workout'])
+                            setFieldAndAttachment(user['workout']['evi_attch'], Result.evi_span, user[
+                                'workout'] ? user[
+                                'workout']['evi_attch'] : '', user['workout'] ? user['workout'][
+                                'evi_attch'
+                            ] : '');
                         Result.layout.show();
                         // console.log(user)
                     },
