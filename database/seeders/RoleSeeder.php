@@ -11,7 +11,7 @@ class RoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     * php artisan db:seed --class=RoleSeeder
+     * php82 artisan db:seed --class=RoleSeeder
      */
     public function run(): void
     {
@@ -35,7 +35,7 @@ class RoleSeeder extends Seeder
         $is_doctor = Permission::updateOrCreate(['name' => 'is_doctor']);
         $is_security = Permission::updateOrCreate(['name' => 'is_security']);
         // Assign Permissions to Roles
-        $super_admin->givePermissionTo([$respon_call, $crud_users, $crud_information, $crud_screening]);
+        $super_admin->givePermissionTo([$respon_call, $crud_users, $crud_information, $crud_screening, $is_doctor]);
         $admin->givePermissionTo([$crud_information, $crud_screening]);
         $doctor->givePermissionTo([$crud_users, $crud_information, $crud_screening, $is_doctor]);
         $security->givePermissionTo($is_security);
