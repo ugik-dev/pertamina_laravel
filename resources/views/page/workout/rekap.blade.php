@@ -120,14 +120,14 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-6">
+                        {{-- <div class="col-lg-6">
                             <div class="col-sm-6">
                                 <div class="input-group">
                                     <button id="exportExcel" class="btn btn-success"><i
                                             class="mdi mdi-file-excel-outline me-1"></i>Excel</button>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </form>
