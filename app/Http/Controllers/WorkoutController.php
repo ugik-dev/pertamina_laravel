@@ -189,9 +189,12 @@ class WorkoutController extends Controller
                 })->addColumn('status_span', function ($data) {
                     return Helpers::spanStatusSebuse2($data->verif_status);
                 })->addColumn('duration', function ($data) {
-                    return $data->hours . ' Jam ' .
-                        ((!empty($data->seconds) || !empty($data->minutes)) ? ($data->minutes ?? 0) . ' Menit' : '') .
-                        (!empty($data->seconds) ? ' ' . $data->seconds . ' Detik' : '');
+                    // return $data->hours . ':' . $data->minutes . ':' . $data->seconds;
+                    return sprintf('%02d:%02d:%02d', $data->hours, $data->minutes, $data->seconds);
+
+                    // return $data->hours . ' Jam ' .
+                    //     ((!empty($data->seconds) || !empty($data->minutes)) ? ($data->minutes ?? 0) . ' Menit' : '') .
+                    //     (!empty($data->seconds) ? ' ' . $data->seconds . ' Detik' : '');
                 })->addColumn('aksi', function ($data) {
                     // return '<a href="' . route('detail-workout', $data->id) . '" class="btn btn-primary">Open</a>';
                     return '<button data-id="' . $data->id . '" class="editBtn btn btn-primary"><i class="mdi mdi-pencil"></i></button>';

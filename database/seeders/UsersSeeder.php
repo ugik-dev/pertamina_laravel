@@ -6,6 +6,7 @@ use App\Models\Field;
 use App\Models\Screening;
 use App\Models\Sebuse;
 use App\Models\User;
+use App\Models\Workout;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -63,6 +64,8 @@ class UsersSeeder extends Seeder
             $user->assignRole($role);
 
             // }
+            $startDate = Carbon::now();
+            $endDate = Carbon::now()->addMonth();
 
             for ($j = 0; $j < 30; $j++) {
                 Screening::create([
@@ -91,6 +94,24 @@ class UsersSeeder extends Seeder
                     'gym_attch' => $faker->randomElement(['upload/sebuse/kalori/1728421246_Putra_01-10-2024_20.42_signed.pdf', 'upload/sebuse/streching/1728421246_Putra_01-10-2024_20.42_signed.pdf', null, null, null]),
                     'created_at' => Carbon::create(2024, 10, 1 + $j), // Start from October 1, 2023
                     'updated_at' => Carbon::create(2024, 10, 1 + $j),
+                ]);
+
+                $date = Carbon::parse($startDate)->addDays(rand(0, 30));
+
+                Workout::create([
+                    'user_id' => $user->id, // sesuaikan dengan user yang ada
+                    'verif_id' => $admin->id, // sesuaikan juga
+                    'description' => 'Workout ke-' . ($i + 1),
+                    'hours' => rand(0, 2),
+                    'minutes' => rand(0, 59),
+                    'seconds' => rand(0, 59),
+                    'km_tempuh' => rand(1, 10),
+                    'workout_jenis' =>  $faker->randomElement(['Lari', 'Sepeda', 'Jalan']),
+                    'verif_status' => rand(0, 1) ? 'Y' : 'N',
+                    'evi_attch' => null,
+                    'evi_status' => rand(0, 1) ? 'Y' : 'N',
+                    'created_at' => $date,
+                    'updated_at' => $date,
                 ]);
             }
             Screening::create([

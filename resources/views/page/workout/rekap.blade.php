@@ -4,7 +4,7 @@
 
 @extends('layouts/layoutMaster')
 
-@section('title', 'Workout ')
+@section('title', 'Sebuse ')
 @section('vendor-style')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}">
@@ -141,10 +141,11 @@
                     <!-- Definisi Kolom -->
                     <tr>
                         <th>No</th>
-                        <th>Date</th>
+                        <th>Tanggal</th>
                         <th>Nama</th>
                         <th>Jenis</th>
                         <th>Durasi</th>
+                        <th>Jarak (KM)</th>
                         <th>Evidance</th>
                         <th>Verifikasi</th>
                         <th>Ket</th>
@@ -291,129 +292,127 @@
                 serverSide: true,
                 searching: true,
                 ordering: true,
-                // dom: '<"card-header flex-column flex-md-row"<"head-label text-center"><"dt-action-buttons text-end pt-3 pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-                // buttons: [{
-                //     extend: 'collection',
-                //     className: 'btn btn-label-primary dropdown-toggle me-2',
-                //     text: '<i class="mdi mdi-export-variant me-sm-1"></i> <span class="d-none d-sm-inline-block">Export</span>',
-                //     buttons: [{
-                //             extend: 'excelHtml5',
-                //             text: '<i class="mdi mdi-file-excel-outline me-1"></i>Excel',
-                //             className: 'dropdown-item',
-                //             exportOptions: {
-                //                 columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-                //                     13, 14, 15
-                //                 ],
-                //             },
-                //             action: function(e, dt, button, config) {
-                //                 var self = this;
-                //                 $.ajax({
-                //                     url: "{{ route('workout.rekap') }}",
-                //                     data: {
-                //                         length: -1,
-                //                         ...formFilter.form
-                //                         .serializeArray()
-                //                     },
-                //                     success: function(json) {
-                //                         var oldData = dt.rows()
-                //                             .data();
-                //                         dt.clear().rows.add(json
-                //                             .data).draw();
-                //                         $.fn.dataTable.ext.buttons
-                //                             .excelHtml5
-                //                             .action.call(self, e,
-                //                                 dt, button,
-                //                                 config);
-                //                         dt.clear().rows.add(oldData)
-                //                             .draw();
-                //                     }
-                //                 });
-                //             }
-                //         },
-                //         {
-                //             extend: 'pdf',
-                //             text: '<i class="mdi mdi-file-pdf-box me-1"></i>Pdf',
-                //             className: 'dropdown-item',
-                //             exportOptions: {
-                //                 columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-                //                     13, 14, 15
-                //                 ],
-                //             },
-                //             customize: function(doc) {
-                //                 // Set orientation to landscape
-                //                 doc.pageOrientation = 'landscape';
+                dom: '<"card-header flex-column flex-md-row"<"head-label text-center"><"dt-action-buttons text-end pt-3 pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+                buttons: [{
+                    extend: 'collection',
+                    className: 'btn btn-label-primary dropdown-toggle me-2',
+                    text: '<i class="mdi mdi-export-variant me-sm-1"></i> <span class="d-none d-sm-inline-block">Export</span>',
+                    buttons: [{
+                            extend: 'excelHtml5',
+                            text: '<i class="mdi mdi-file-excel-outline me-1"></i>Excel',
+                            className: 'dropdown-item',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3, 4, 5, 7, 8],
+                            },
+                            action: function(e, dt, button, config) {
+                                var self = this;
+                                $.ajax({
+                                    url: "{{ route('workout.rekap') }}",
+                                    data: {
+                                        length: -1,
+                                        ...formFilter.form
+                                        .serializeArray()
+                                    },
+                                    success: function(json) {
+                                        var oldData = dt.rows()
+                                            .data();
+                                        dt.clear().rows.add(json
+                                            .data).draw();
+                                        $.fn.dataTable.ext.buttons
+                                            .excelHtml5
+                                            .action.call(self, e,
+                                                dt, button,
+                                                config);
+                                        dt.clear().rows.add(oldData)
+                                            .draw();
+                                    }
+                                });
+                            }
+                        },
+                        {
+                            extend: 'pdf',
+                            text: '<i class="mdi mdi-file-pdf-box me-1"></i>Pdf',
+                            className: 'dropdown-item',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+                                    13, 14, 15
+                                ],
+                            },
+                            customize: function(doc) {
+                                // Set orientation to landscape
+                                doc.pageOrientation = 'landscape';
 
-                //                 // Remove default title
-                //                 doc.content = doc.content.filter(function(
-                //                     item) {
-                //                     return !(item.text && item.text
-                //                         .includes(
-                //                             'Workout | Pertamina Workout'
-                //                         ));
-                //                 });
+                                // Remove default title
+                                doc.content = doc.content.filter(function(
+                                    item) {
+                                    return !(item.text && item.text
+                                        .includes(
+                                            'Workout | Pertamina Workout'
+                                        ));
+                                });
 
-                //                 doc.content.unshift({
-                //                     text: 'Tanggal: ' + new Date()
-                //                         .toLocaleDateString(), // Custom date text
-                //                     fontSize: 14,
-                //                     bold: false,
-                //                     margin: [0, 0, 0,
-                //                         10
-                //                     ], // Margin: left, top, right, bottom
-                //                     alignment: 'center'
-                //                 });
+                                doc.content.unshift({
+                                    text: 'Tanggal: ' + new Date()
+                                        .toLocaleDateString(), // Custom date text
+                                    fontSize: 14,
+                                    bold: false,
+                                    margin: [0, 0, 0,
+                                        10
+                                    ], // Margin: left, top, right, bottom
+                                    alignment: 'center'
+                                });
 
-                //                 // Add border to table
-                //                 if (doc.content[1] && doc.content[1].table) {
-                //                     doc.content[1].layout = {
-                //                         hLineWidth: function(i, node) {
-                //                             return 1;
-                //                         },
-                //                         vLineWidth: function(i, node) {
-                //                             return 1;
-                //                         },
-                //                         hLineColor: function(i, node) {
-                //                             return '#aaa';
-                //                         },
-                //                         vLineColor: function(i, node) {
-                //                             return '#aaa';
-                //                         },
-                //                         paddingLeft: function(i, node) {
-                //                             return 4;
-                //                         },
-                //                         paddingRight: function(i, node) {
-                //                             return 4;
-                //                         }
-                //                     };
-                //                 }
-                //             },
-                //             action: function(e, dt, button, config) {
-                //                 var self = this;
-                //                 $.ajax({
-                //                     url: "{{ route('workout.rekap') }}",
-                //                     data: {
-                //                         length: -1,
-                //                         ...formFilter.form
-                //                         .serializeArray()
-                //                     },
-                //                     success: function(json) {
-                //                         var oldData = dt.rows()
-                //                             .data();
-                //                         dt.clear().rows.add(json
-                //                             .data).draw();
-                //                         $.fn.dataTable.ext.buttons
-                //                             .pdfHtml5
-                //                             .action.call(self, e,
-                //                                 dt, button,
-                //                                 config);
-                //                         dt.clear().rows.add(oldData)
-                //                             .draw();
-                //                     }
-                //                 });
-                //             }
-                //         },
-                //     ]
-                // }, ],
+                                // Add border to table
+                                if (doc.content[1] && doc.content[1].table) {
+                                    doc.content[1].layout = {
+                                        hLineWidth: function(i, node) {
+                                            return 1;
+                                        },
+                                        vLineWidth: function(i, node) {
+                                            return 1;
+                                        },
+                                        hLineColor: function(i, node) {
+                                            return '#aaa';
+                                        },
+                                        vLineColor: function(i, node) {
+                                            return '#aaa';
+                                        },
+                                        paddingLeft: function(i, node) {
+                                            return 4;
+                                        },
+                                        paddingRight: function(i, node) {
+                                            return 4;
+                                        }
+                                    };
+                                }
+                            },
+                            action: function(e, dt, button, config) {
+                                var self = this;
+                                $.ajax({
+                                    url: "{{ route('workout.rekap') }}",
+                                    data: {
+                                        length: -1,
+                                        ...formFilter.form
+                                        .serializeArray()
+                                    },
+                                    success: function(json) {
+                                        var oldData = dt.rows()
+                                            .data();
+                                        dt.clear().rows.add(json
+                                            .data).draw();
+                                        $.fn.dataTable.ext.buttons
+                                            .pdfHtml5
+                                            .action.call(self, e,
+                                                dt, button,
+                                                config);
+                                        dt.clear().rows.add(oldData)
+                                            .draw();
+                                    }
+                                });
+                            }
+                        },
+                    ]
+                }, ],
                 order: [0, 'desc'],
                 ajax: {
                     url: "{{ route('workout.rekap') }}",
@@ -439,9 +438,14 @@
                     {
                         data: "workout_jenis",
                         name: "workout_jenis"
-                    }, {
+                    },
+                    {
                         data: "duration",
                         name: "duration"
+                    },
+                    {
+                        data: "km_tempuh",
+                        name: "km_tempuh"
                     },
                     {
                         data: "evi_attch_span",

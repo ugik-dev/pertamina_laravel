@@ -37,9 +37,6 @@ class ScreeningDumySeeder extends Seeder
                 'alcohol' => $faker->randomElement(['Y', 'N']),
                 'fitality' => $faker->randomElement(['Y', 'N']),
                 'alcohol_level' => $faker->optional()->numberBetween(0, 100),
-                // 'anamnesis' => $faker->optional()->text,
-                // 'description' => $faker->optional()->text,
-                // 'created_at' => now()->subDays($faker->numberBetween(0, 5)), // Random dalam 5 hari terakhir
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
