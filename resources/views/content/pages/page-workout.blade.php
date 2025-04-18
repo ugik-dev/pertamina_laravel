@@ -130,30 +130,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-
                                             <tr>
-                                                <td class="h6 ps-0" colspan="1">Durasi <small>(jam/menit/detik)</small>
-                                                </td>
-                                                {{-- </tr>
-                                            <tr> --}}
-                                                <td class="pe-0 " colspan="1">
-                                                    <div class="input-group">
-                                                        <input type="number" name="hours" id="hours"
-                                                            class="form-control" min="0" max="23"
-                                                            value="" placeholder="Jam" />
-                                                        {{-- <span class="input-group-text">Jam</span> --}}
-
-                                                        <input type="number" name="minutes" id="minutes"
-                                                            class="form-control" min="0" max="59"
-                                                            value="" placeholder="Menit" />
-                                                        {{-- <span class="input-group-text">Mnt</span> --}}
-
-                                                        <input type="number" name="seconds" id="seconds"
-                                                            class="form-control" min="0" max="59"
-                                                            value="" placeholder="Detik" />
-                                                        {{-- <span class="input-group-text">Dtk</span> --}}
-                                                    </div>
-
+                                                <td class="h6 ps-0">Tanggal Workout</td>
+                                                <td class="pe-0 ">
+                                                    <input type="date" name="tanggal" id="tanggal" class="form-control"
+                                                        value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" disabled />
                                                 </td>
                                             </tr>
                                             <tr>
@@ -166,6 +147,27 @@
                                                     </select>
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                <td class="h6 ps-0" colspan="1">Durasi <small>(jam/menit/detik)</small>
+                                                </td>
+                                                <td class="pe-0 " colspan="1">
+                                                    <div class="input-group">
+                                                        <input type="number" name="hours" id="hours"
+                                                            class="form-control" min="0" max="23"
+                                                            value="" placeholder="Jam" />
+
+                                                        <input type="number" name="minutes" id="minutes"
+                                                            class="form-control" min="0" max="59"
+                                                            value="" placeholder="Menit" />
+
+                                                        <input type="number" name="seconds" id="seconds"
+                                                            class="form-control" min="0" max="59"
+                                                            value="" placeholder="Detik" />
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+
                                             <tr>
                                                 <td class="h6 ps-0">KM Tempuh</td>
                                                 <td class="pe-0 "><input type="number" name="km_tempuh" id="km_tempuh"
@@ -244,7 +246,7 @@
                 //     html5QrcodeScanner.render(onScanSuccess, onScanFailure);
                 // }, 5000); // 5000 milidetik = 5 detik
             }
-            // scanProcess("d3286f12-a0ab-45a7-aba9-11b7e15f4723");
+            scanProcess("d3286f12-a0ab-45a7-aba9-11b7e15f4723");
 
             function setFieldAndAttachment(resultField, resultSpan, workoutFieldValue, workoutFieldAttachment) {
                 // Ensure the field element exists before setting its value
