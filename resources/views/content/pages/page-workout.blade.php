@@ -248,7 +248,7 @@
                 //     html5QrcodeScanner.render(onScanSuccess, onScanFailure);
                 // }, 5000); // 5000 milidetik = 5 detik
             }
-            scanProcess("d3286f12-a0ab-45a7-aba9-11b7e15f4723");
+            // scanProcess("d3286f12-a0ab-45a7-aba9-11b7e15f4723");
 
             function setFieldAndAttachment(resultField, resultSpan, workoutFieldValue, workoutFieldAttachment) {
                 // Ensure the field element exists before setting its value
