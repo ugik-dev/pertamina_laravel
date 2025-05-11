@@ -424,8 +424,8 @@
                         data: "DT_RowIndex",
                         name: "DT_RowIndex"
                     }, {
-                        data: "datescan",
-                        name: "datescan"
+                        data: "activity_date",
+                        name: "activity_date"
                     },
                     // {
                     //     data: "timescan",

@@ -19,6 +19,7 @@ class Workout extends Model
         'evi_status',
         'evi_attch',
         'created_at',
+        'activity_date',
     ];
 
     public function user()

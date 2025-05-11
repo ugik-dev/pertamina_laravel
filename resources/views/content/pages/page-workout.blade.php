@@ -133,8 +133,9 @@
                                             <tr>
                                                 <td class="h6 ps-0">Tanggal Workout</td>
                                                 <td class="pe-0 ">
-                                                    <input type="date" name="tanggal" id="tanggal" class="form-control"
-                                                        value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" disabled />
+                                                    <input type="date" name="activity_date" id="activity_date"
+                                                        class="form-control"
+                                                        value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" />
                                                 </td>
                                             </tr>
                                             <tr>
@@ -226,6 +227,7 @@
                 'qr_user': $('#result').find('#qr_user'),
                 'hours': $('#result').find('#hours'),
                 'minutes': $('#result').find('#minutes'),
+                'activity_date': $('#result').find('#activity_date'),
                 'seconds': $('#result').find('#seconds'),
                 'evi_span': $('#result').find('#evi_span'),
                 'workout_jenis': $('#result').find('#workout_jenis'),
@@ -246,7 +248,7 @@
                 //     html5QrcodeScanner.render(onScanSuccess, onScanFailure);
                 // }, 5000); // 5000 milidetik = 5 detik
             }
-            // scanProcess("d3286f12-a0ab-45a7-aba9-11b7e15f4723");
+            scanProcess("d3286f12-a0ab-45a7-aba9-11b7e15f4723");
 
             function setFieldAndAttachment(resultField, resultSpan, workoutFieldValue, workoutFieldAttachment) {
                 // Ensure the field element exists before setting its value
@@ -293,6 +295,7 @@
                         Result.hours.val(user['workout'] ? user.workout['hours'] : '')
                         Result.minutes.val(user['workout'] ? user.workout['minutes'] : '')
                         Result.seconds.val(user['workout'] ? user.workout['seconds'] : '')
+                        Result.activity_date.val(user['workout'] ? user.workout['activity_date'] : '')
                         if (user['workout'])
                             setFieldAndAttachment(user['workout']['evi_attch'], Result.evi_span, user[
                                 'workout'] ? user[

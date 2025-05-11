@@ -170,7 +170,7 @@ class WorkoutController extends Controller
             if ($date_start && $date_end) {
                 // dd($date_start, $date_end);
                 // $data = $query->latest()->get();
-                $data = $query->whereBetween('workouts.created_at', [$date_start, $date_end])->latest()->get();
+                $data = $query->whereBetween('workouts.activity_date', [$date_start, $date_end])->latest()->get();
             } else {
                 // Jika tidak ada filter, ambil semua data (sesuaikan logika ini jika perlu)
                 $data = $query->latest()->get();
@@ -331,6 +331,7 @@ class WorkoutController extends Controller
             'seconds' => 'nullable|numeric',
             'km_tempuh' => 'required|numeric',
             'workout_jenis' => 'required|string',
+            'activity_date' => 'nullable|date',
             'attachment_evi' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
         $validatedData['seconds'] = $validatedData['seconds'] ?? 0;
@@ -356,6 +357,7 @@ class WorkoutController extends Controller
                 'hours' => $validatedData['hours'],
                 'minutes' => $validatedData['minutes'],
                 'seconds' => $validatedData['seconds'],
+                'activity_date' => $validatedData['activity_date'],
                 'evi_attch' => $path_evi,
             ]
         );
