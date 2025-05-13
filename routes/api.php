@@ -18,7 +18,7 @@ Route::post('/login', [LoginController::class, 'login']);
 
 // use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Route;
-Route::post('/scanner/gate/{code}', [ScreeningController::class, 'scanner_process'])->name('scanner.check');
+Route::post('/scanner/gate/{code}', [ScreeningController::class, 'scanner_process'])->name('gate.checkin');
 
 Route::post('/scanner/test-token', function (Request $request) {
     $token = $request->header('Authorization');
