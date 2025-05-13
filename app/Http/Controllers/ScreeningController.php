@@ -222,7 +222,11 @@ class ScreeningController extends Controller
     {
         try {
             // Cari user dengan qrcode yang valid
-            $user = User::where('qrcode', $code)->firstOrFail();
+            $user = User::where('qrcode', $code)->first();
+
+            if (!$user) {
+                return $this->ResponseError("QR Tidak valid!", 400);
+            }
             // dd(Carbon::today());
             // Ambil screening terbaru hari ini
             $latestScreening = Screening::where('user_id', $user->id)
@@ -231,11 +235,9 @@ class ScreeningController extends Controller
                 ->first();
 
 
-
-
             // Jika tidak ada screening hari ini, kembalikan respon error
             if (!$latestScreening) {
-                return $this->ResponseError("Belum ada screening hari ini");
+                return $this->ResponseError("Belum ada screening hari ini", 400, ['name' => $user->name]);
             }
             $user['screening'] = $latestScreening;
             // Kembalikan respon sukses dengan data screening terbaru

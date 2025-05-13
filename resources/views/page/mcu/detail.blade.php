@@ -30,6 +30,7 @@
     <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
 
     <script src="{{ asset('assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/chartjs/chartjs.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/swiper/swiper.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/datatables-fixedheader-bs5/fixedheader.bootstrap5.css",') }}"></script>
@@ -41,6 +42,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/cards-analytics.css') }}">
 @endsection
 @section('page-script')
+    <script src="{{ asset('assets/js/charts-chartjs.js') }}"></script>
     <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
     {{-- <script src="{{ asset('js/custom-chart.js') }}"></script> --}}
 @endsection
@@ -67,7 +69,7 @@
                     <div class="col-md-5 col-12 border-start">
                         <div class="card-header">
                             <div class="d-flex justify-content-between">
-                                <h5 class="mb-1">Gender</h5>
+                                <h5 class="mb-1">Populasi</h5>
                             </div>
                         </div>
                         <div class="card-body pt-3">
@@ -131,7 +133,7 @@
                 </div>
                 <!--/ Total Revenue chart -->
 
-                <div class="col-md-6 col-sm-6">
+                {{-- <div class="col-md-6 col-sm-6">
                     <div class="card h-100">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
@@ -152,9 +154,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
-                <div class="col-md-6 col-sm-6">
+                {{-- <div class="col-md-6 col-sm-6">
                     <div class="card h-100">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
@@ -175,19 +177,41 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- overview Radial chart -->
+                </div> --}}
+                <!-- Smokee Free -->
                 <div class="col-md-6 col-sm-6">
                     <div class="card h-100">
                         <div class="card-header pb-0">
-                            <div class="d-flex align-items-end mb-1 flex-wrap gap-2">
-                                <h4 class="mb-0 me-2">$67.1k</h4>
-                                <p class="mb-0 text-success">+49%</p>
-                            </div>
-                            <span class="d-block mb-2 text-body">DM Terkontrol</span>
+                            <h5 class="mb-0">Free Smoke</h5>
+
+                            {{-- <span class="d-block mb-2 text-body">Tidak Merkok</span> --}}
                         </div>
                         <div class="card-body pt-0">
-                            <div id="overviewChart" class="d-flex align-items-center"></div>
+                            <div id="percentageMerokok" class="d-flex align-items-center"></div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex flex-row align-items-center gap-2 mb-1">
+                                <div class="avatar">
+                                    <div class="avatar-initial bg-label-success rounded">
+                                        <div class="mdi mdi-smoking-off mdi-24px"></div>
+                                    </div>
+                                </div>
+                                {{-- <p class="my-2"></p> --}}
+                                <h6 class="mb-0">
+                                    <span id="smoker_anti">-</span>
+                                    Org
+                                </h6>
+                            </div>
+                            <div class="d-flex flex-row align-items-center gap-2">
+                                <div class="avatar">
+                                    <div class="avatar-initial bg-label-danger rounded">
+                                        <div class="mdi mdi-smoking mdi-24px"></div>
+                                    </div>
+                                </div>
+                                {{-- <p class="my-2">Laki-laki</p> --}}
+                                <h6 class="mb-0"><span id="smoker">-</span>
+                                    Org</h6>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -234,7 +258,7 @@
             <div class="card h-100">
                 <div class="card-header pb-1">
                     <div class="d-flex justify-content-between">
-                        <h5 class="mb-1">Sebaran Lokasi</h5>
+                        <h5 class="mb-1">Kesimpulan</h5>
                         <div class="dropdown">
                             <button class="btn p-0" type="button" id="performanceDropdown" data-bs-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
@@ -251,10 +275,45 @@
                 <div class="card-body pb-0 pt-1">
                     <div id="customPerformanceChartxx"></div>
                 </div>
+
+
             </div>
         </div>
 
+        <div class="col-lg-4 col-12 mb-4">
+            <div class="card">
+                <h5 class="card-header">Risiko Cardiovascular (SKJ)</h5>
+                <div class="card-body">
+                    <canvas id="cardiovascularChart" class="chartjs mb-4" data-height="350"></canvas>
+                    <ul id='cardiovascularLegend' class="doughnut-legend d-flex justify-content-around ps-0 mb-2 pt-1">
+                    </ul>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-lg-4 col-12 mb-4">
+            <div class="card">
+                <h5 class="card-header">Gambaran EKG</h5>
+                <div class="card-body">
+                    <canvas id="ekgChart" class="chartjs mb-4" data-height="350"></canvas>
+                    <ul id='ekgLegend' class="doughnut-legend d-flex justify-content-around ps-0 mb-2 pt-1">
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-12 mb-4">
+            <div class="card">
+                <h5 class="card-header">Status Gizi</h5>
+                <div class="card-body">
+                    <canvas id="bmiChart" class="chartjs mb-4" data-height="350"></canvas>
+                    <ul id='bmiLegend' class="doughnut-legend d-flex justify-content-around ps-0 mb-2 pt-1">
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        {{-- Usia --}}
         <div class="col-12 col-xl-4 col-md-6">
             <div class="card h-100">
                 <div class="card-header">
@@ -613,7 +672,7 @@
             </div>
         </div>
 
-        {{-- <div class="col-12 col-xl-8">
+        <div class="col-12 col-xl-8">
             <div class="card h-100">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
@@ -683,11 +742,11 @@
                     </ul>
                 </div>
             </div>
-        </div> --}}
+        </div>
     </div>
 
     {{-- Chart END --}}
-
+    {{-- Table Start --}}
     <div class="card mt-5">
         <div class="card-datatable table-responsive pt-0">
             <table id="FDataTable" class="table" style="width:100%">
@@ -757,17 +816,17 @@
     </div>
     <style>
         /* .table.table-bordered.dataTable.no-footer thead th {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            background-color: #f8f9fa;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            position: sticky;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            top: 0;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            z-index: 1;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            border-bottom: 1px solid #dee2e6;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        background-color: #f8f9fa;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        position: sticky;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        top: 0;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        z-index: 1;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        border-bottom: 1px solid #dee2e6;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .dataTables_scrollHead .table.table-bordered.dataTable.no-footer thead th {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            background-color: #f8f9fa;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            z-index: 2;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    .dataTables_scrollHead .table.table-bordered.dataTable.no-footer thead th {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        background-color: #f8f9fa;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        z-index: 2;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    } */
     </style>
     <script>
         $(document).ready(function() {
@@ -1012,6 +1071,20 @@
                         renderLokasi(dataContent['statis']['kesimpulan']);
                         renderTopLokasi(dataContent['statis']['lokasi']['data']);
                         renderUsia(dataContent['statis']['usia']);
+                        renderChartjsDonuts(dataContent['statis']['kardio'], 'cardiovascularChart',
+                            'cardiovascularLegend', 'Org')
+                        renderChartjsDonuts(dataContent['statis']['ekg'], 'ekgChart',
+                            'ekgLegend', 'Org')
+                        renderChartjsDonuts(dataContent['statis']['bmi'], 'bmiChart',
+                            'bmiLegend', 'Org')
+                        renderApexJsPercentage('percentageMerokok',
+                            dataContent['statis']['merokok']['Tidak'],
+                            dataContent['statis']['merokok']['Ya'],
+                            'Tidak Merokok', "Org"
+                        )
+
+                        $('#smoker').html(dataContent['statis']['merokok']['Ya'])
+                        $('#smoker_anti').html(dataContent['statis']['merokok']['Tidak'])
                     },
                     error: function(e) {}
                 });
@@ -1181,6 +1254,167 @@
                     const donutChart = new ApexCharts(donutChartEl, donutChartConfig);
                     donutChart.render();
                 }
+            }
+
+            function renderChartjsDonuts(series, selector, legend_selector = false, satuan = '') {
+                const colorPalette = [
+                    '#836AF9', // purpleColor
+                    '#ffe800', // yellowColor
+                    '#28dac6', // cyanColor
+                    '#FF8132', // orangeColor
+                    '#ffcf5c', // orangeLightColor
+                    '#299AFF', // oceanBlueColor
+                    '#4F5D70', // greyColor
+                    '#EDF1F4', // greyLightColor
+                    '#2B9AFF', // blueColor
+                    '#84D0FF' // blueLightColor
+                ];
+                const labels = Object.keys(series);
+                const values = Object.values(series);
+                const colors = labels.map((_, index) => colorPalette[index % colorPalette.length])
+
+                let cardColor, headingColor, labelColor, borderColor, legendColor;
+
+                if (isDarkStyle) {
+                    cardColor = config.colors_dark.cardColor;
+                    headingColor = config.colors_dark.headingColor;
+                    labelColor = config.colors_dark.textMuted;
+                    legendColor = config.colors_dark.bodyColor;
+                    borderColor = config.colors_dark.borderColor;
+                } else {
+                    cardColor = config.colors.cardColor;
+                    headingColor = config.colors.headingColor;
+                    labelColor = config.colors.textMuted;
+                    legendColor = config.colors.bodyColor;
+                    borderColor = config.colors.borderColor;
+                }
+                const doughnutChart = document.getElementById(selector);
+                const doughnutLegend = document.getElementById(legend_selector);
+                if (doughnutChart) {
+                    const doughnutChartVar = new Chart(doughnutChart, {
+                        type: 'doughnut',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                data: values,
+                                backgroundColor: colors,
+                                borderWidth: 0,
+                                pointStyle: 'rectRounded'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            animation: {
+                                duration: 500
+                            },
+                            cutout: '68%',
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            const label = context.labels || '',
+                                                value = context.parsed;
+                                            const output = ' ' + label + ' : ' + value + ' ' + satuan;
+                                            return output;
+                                        }
+                                    },
+                                    // Updated default tooltip UI
+                                    rtl: isRtl,
+                                    backgroundColor: cardColor,
+                                    titleColor: headingColor,
+                                    bodyColor: legendColor,
+                                    borderWidth: 1,
+                                    borderColor: borderColor
+                                }
+                            }
+                        }
+                    });
+                    if (doughnutLegend) {
+                        doughnutLegend.innerHTML = labels.map((label, index) => {
+                            return `
+                                    <li class="ct-series-${index} d-flex flex-column">
+                                        <h5 class="mb-0">${label}</h5>
+                                        <span class="badge badge-dot my-2 cursor-pointer rounded-pill"
+                                            style="background-color: ${colors[index]}; width:35px; height:6px;"></span>
+                                        <div class="text-muted">${values[index]} ${satuan}</div>
+                                    </li>
+                                `;
+                        }).join('');
+                    }
+                }
+            }
+
+            function renderApexJsPercentage(selector, positif, negatif, label, satuan) {
+                console.log(selector, positif, negatif, label, satuan)
+                const persentase = Math.round(positif / (positif + negatif) * 100)
+                console.log(persentase)
+
+
+                const overviewChartEl = document.querySelector('#' + selector),
+                    overviewChartConfig = {
+                        chart: {
+                            height: 114,
+                            type: 'radialBar',
+                            sparkline: {
+                                enabled: true
+                            }
+                        },
+                        plotOptions: {
+                            radialBar: {
+                                hollow: {
+                                    size: '55%'
+                                },
+                                dataLabels: {
+                                    name: {
+                                        show: false
+                                    },
+                                    value: {
+                                        show: true,
+                                        offsetY: 5,
+                                        fontWeight: 500,
+                                        fontSize: '1rem',
+                                        fontFamily: 'Inter',
+                                        color: headingColor
+                                    }
+                                },
+                                track: {
+                                    background: config.colors_label.secondary
+                                }
+                            }
+                        },
+                        states: {
+                            hover: {
+                                filter: {
+                                    type: 'none'
+                                }
+                            },
+                            active: {
+                                filter: {
+                                    type: 'none'
+                                }
+                            }
+                        },
+                        stroke: {
+                            lineCap: 'round'
+                        },
+                        colors: [config.colors.primary],
+                        grid: {
+                            padding: {
+                                bottom: -15
+                            }
+                        },
+                        series: [persentase],
+                        labels: [label + ' : ' + positif + ' ' + satuan]
+                    };
+                if (typeof overviewChartEl !== undefined && overviewChartEl !== null) {
+                    console.log("create Apex Chart")
+                    const overviewChart = new ApexCharts(overviewChartEl, overviewChartConfig);
+                    overviewChart.render();
+                }
+
             }
 
             function renderGender(data) {

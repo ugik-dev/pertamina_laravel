@@ -73,6 +73,10 @@
                     <!-- /Logo -->
 
                     <div class="card-body mt-2">
+                        <div class="form-input">
+                            <input type="text" id="scanner_rfid" class="form-controll" />
+                        </div>
+
                         <div id="reader" class="mr-3 ml-3 w-100" style="margin:0 auto;"></div>
                     </div>
 
@@ -239,8 +243,15 @@
                 }, 5000); // 5000 milidetik = 5 detik
             }
             // scanProcess("d3286f12-a0ab-45a7-aba9-11b7e15f4723");
+            document.getElementById("scanner_rfid").addEventListener("keydown", function(event) {
+                if (event.key === "Enter") {
+                    const scannerId = this.value; // ambil nilai dari input
+                    scanProcess(scannerId); // panggil fungsi dengan nilai itu
+                }
+            });
 
             function scanProcess(decodedResult) {
+                console.log("fn scan")
                 swalLoading();
                 // decodedResult = "d3286f12-a0ab-45a7-aba9-11b7e15f4723"
                 url = '{{ url('scanner/checker') }}/' + decodedResult;

@@ -13,6 +13,8 @@ class Controller extends BaseController
     use AuthorizesRequests, ValidatesRequests;
     public function responseError($message = '', $status = 400, $data = null)
     {
+        // echo json_encode($data);
+        // die();
         return $this->responseSuccess($data, $message, true, $status);
     }
 

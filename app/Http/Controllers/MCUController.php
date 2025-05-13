@@ -115,6 +115,28 @@ class MCUController extends Controller
             $jenisKesimpulan = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7'];
             $kesimpulan1 = $batch->groupBy('kesimpulan1')->map->count();
             $kesimpulan2 = $batch->groupBy('kesimpulan2')->map->count();
+            // $kardio['Rendah'] = $batch->where('risiko_cardiovascular_skj', 'Rendah')->count();
+            // $kardio['Sedang'] = $batch->where('risiko_cardiovascular_skj', 'Sedang')->count();
+            // $kardio['Tinggi'] = $batch->where('risiko_cardiovascular_skj', 'Tinggi')->count();
+            // $kardio['Lainnya'] = $batch->whereNotIn('risiko_cardiovascular_skj', ['Rendah', 'Sedang', 'Tinggi'])->count();
+            // $ekg['Abnormal'] = $batch->where('ekg', 'Abnormal')->count();
+            // $ekg['Normal'] = $batch->where('ekg', 'Normal')->count();
+            // $ekg['Blok Jantung'] = $batch->where('ekg', 'Blok Jantung')->count();
+            // $ekg['Lainnya'] = $batch->whereNotIn('ekg', ['Abnormal', 'Normal', 'Blok Jantung'])->count();
+
+            $merokok = [
+                'Ya' => $batch->filter(function ($item) {
+                    return stripos($item->merokok, 'ya') !== false;
+                })->count(),
+
+                'Tidak' => $batch->filter(function ($item) {
+                    return stripos($item->merokok, 'ya') === false;
+                })->count(),
+            ];
+            $kardio = $this->pluckField($batch, 'risiko_cardiovascular_skj');
+            $ekg = $this->pluckField($batch, 'ekg');
+            $bmi = $this->pluckField($batch, 'status_gizi');
+            // dd($bmi);
             $dataKesimpulan1 = [];
             $dataKesimpulan2 = [];
 
@@ -134,6 +156,10 @@ class MCUController extends Controller
             $statis['kesimpulan'] = $chartKesimpulan;
             $statis['usia'] = $chartByUsia;
             $statis['lokasi'] = $byLokasi;
+            $statis['kardio'] = $kardio;
+            $statis['ekg'] = $ekg;
+            $statis['bmi'] = $bmi;
+            $statis['merokok'] = $merokok;
             $res['statis'] = $statis;
             return $this->responseSuccess($res);
         } catch (Exception $ex) {
@@ -141,9 +167,70 @@ class MCUController extends Controller
         }
     }
 
+    function pluckField($db, $fieldname)
+    {
+        $fields = [];
+
+        // Ambil semua nilai field, lalu normalisasi (tanpa duplikat)
+        $uniqueField = $db->pluck($fieldname)->map(function ($item) {
+            return is_null($item) || trim($item) === ''
+                ? 'Lainnya'
+                : ucwords(strtolower(trim($item)));
+        })->unique();
+
+        // Hitung berdasarkan versi normalisasi
+        foreach ($uniqueField as $label) {
+            if ($label === 'Lainnya') {
+                $count = $db->filter(function ($item) use ($fieldname) {
+                    $val = $item->$fieldname;
+                    return is_null($val) || trim($val) === '';
+                })->count();
+            } else {
+                $count = $db->filter(function ($item) use ($fieldname, $label) {
+                    $val = $item->$fieldname;
+                    return ucwords(strtolower(trim($val))) === $label;
+                })->count();
+            }
+
+            $fields[$label] = $count;
+        }
+
+        return $fields;
+    }
+
     function toSnakeCase($string)
     {
-        return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', str_replace(' ', '_', $string)));
+        $string = str_replace(['/', '(', ')'], '_', $string);
+        $string = preg_replace('/[^a-zA-Z0-9 _]/', '', $string);
+        $string = trim($string, " _");
+        $string = preg_replace('/\s+/', '_', $string);
+        $string = preg_replace('/_+/', '_', $string);
+        return strtolower($string);
+    }
+
+
+
+    function convertDate($dateString)
+    {
+        // Cek apakah kosong
+        if (empty($dateString)) {
+            return null;
+        }
+
+        // Ubah dari format d/m/Y ke Y-m-d
+        $date = \DateTime::createFromFormat('d/m/Y', $dateString);
+        if ($date) {
+            return $date->format('Y-m-d');
+        }
+
+        // Tambahan: jika formatnya m/d/Y (untuk file yang pakai format US)
+        $date = \DateTime::createFromFormat('m/d/Y', $dateString);
+        if ($date) {
+            return $date->format('Y-m-d');
+        }
+
+        // Kalau tetap gagal parsing, bisa return null atau original string (tapi ini berbahaya)
+        return null;
     }
 
     public function create(Request $request)
@@ -154,6 +241,7 @@ class MCUController extends Controller
             // Validasi file Excel
             $request->validate([
                 'file_attachment' => 'required|file|mimes:xlsx,xls',
+                'sheet_name' => 'string',
             ]);
 
             // Baca file Excel
@@ -161,9 +249,10 @@ class MCUController extends Controller
             $spreadsheet = IOFactory::load($file->getPathname());
 
             // Ambil sheet "MCU Sheet 2"
-            $sheet = $spreadsheet->getSheetByName("MOR 2");
+            $sheet = $spreadsheet->getSheetByName($request->sheet_name ?? "Sheet1");
+            // dd($sheet);
             if (!$sheet) {
-                throw new Exception("Sheet 'MOR 2' tidak ditemukan dalam file Excel.");
+                throw new Exception("Sheet tidak ditemukan dalam file Excel.");
             }
 
             // Konversi sheet ke array
@@ -173,30 +262,53 @@ class MCUController extends Controller
             $header = array_shift($data);
 
             // Ubah header ke snake_case
+            $headerMcu = getHeaderMCU();
+            foreach ($headerMcu as $key => $hm) {
+                if (trim($hm) != trim($header[$key])) {
+                    throw new Exception('Header terjadi kesalahan, harap kanti ' . $header[$key] . ' menjadi ' . $hm);
+                }
+            }
+            // dd($header);
             $snakeCaseHeader = array_map('toSnakeCase', $header);
             $mcu = Mcu::create([
                 'date' => now(), // Tanggal upload
                 'uploaded_by' => Auth::id(), // ID pengguna yang mengunggah
             ]);
 
-            // Proses setiap baris data
             foreach ($data as $record) {
-                // Pastikan data tidak kosong
                 if (empty(array_filter($record))) {
                     continue;
                 }
 
-                // Gabungkan header dengan data
-                $recordData = array_combine($snakeCaseHeader, $record);
-                // Simpan data ke tabel mcu_batch
+                // $recordData = array_combine($snakeCaseHeader, $record);
+                $cleanedRecord = array_map(function ($value, $key) use ($snakeCaseHeader) {
+                    // Ganti '-' atau ' -' atau '-' dengan null
+                    if (trim($value) === '-' || trim($value) === '') {
+                        return null;
+                    }
+
+                    if ($snakeCaseHeader[$key] == 'jenis_kelamin' && in_array($value, ['M', 'F'])) {
+                        return $value == "F" ? "Perempuan" : ($value == "M" ? "Laki-laki" : null);
+                    }
+                    // Format kolom tanggal
+                    $tanggalFields = ['tanggal_lahir', 'tanggal_selesai', 'tanggal_mcu', 'tanggal_selesai'];
+                    if (in_array($snakeCaseHeader[$key], $tanggalFields)) {
+                        $date = \DateTime::createFromFormat('d/m/Y', trim($value));
+                        if ($date) {
+                            return $date->format('Y-m-d');
+                        }
+                        return null;
+                    }
+
+                    return trim($value);
+                }, $record, array_keys($record));
+                $recordData = array_combine($snakeCaseHeader, $cleanedRecord);
+                // dd($recordData);
+
                 McuBatch::create(array_merge(
                     ['mcu_id' => $mcu->id],
                     $recordData
                 ));
-                // dd(array_merge(
-                //     ['mcu_id' => $mcu->id],
-                //     $recordData
-                // ));
             }
 
             // Commit transaction

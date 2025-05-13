@@ -227,7 +227,7 @@
                     <div class="input-group input-group-merge">
                         <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
                         <input type="text" id="qrcode" class="form-control dt-full-name" name="qrcode"
-                            placeholder="" aria-label="" aria-describedby="basicFullname2" required readonly />
+                            placeholder="" aria-label="" aria-describedby="basicFullname2" required />
                     </div>
                 </div>
                 <div class="col-sm-12 row mt-2 mb-2">

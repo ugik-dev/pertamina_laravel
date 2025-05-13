@@ -71,6 +71,9 @@
 
             <div class="container mt-5">
                 <h1 class="text-center">Scan QR Code</h1>
+                <div class="form-input">
+                    <input type="text" id="scanner_rfid" class="form-controll" />
+                </div>
                 <div id="reader" style="width:500px; margin:0 auto;"></div>
                 <script src="{{ mix('js/app.js') }}"></script>
             </div>
@@ -408,6 +411,12 @@
             }
             // scanProcess('d3286f12-a0ab-45a7-aba9-11b7e15f4723')
             // scanProcess('HELLO WORLD')
+            document.getElementById("scanner_rfid").addEventListener("keydown", function(event) {
+                if (event.key === "Enter") {
+                    const scannerId = this.value; // ambil nilai dari input
+                    scanProcess(scannerId); // panggil fungsi dengan nilai itu
+                }
+            });
 
             function scanProcess(decodedResult) {
                 swalLoading();
@@ -418,6 +427,7 @@
                     success: function(data) {
                         ScreeningForm.form.trigger("reset")
                         if (data['error']) {
+                            console.log("err")
                             swalError(data['message'], "Simpan Gagal !!");
                             return;
                         }
@@ -434,7 +444,10 @@
                         ScreeningForm.name.val(user['name'])
                         ScreeningForm.qrcode.val(decodedResult)
                     },
-                    error: function(e) {}
+                    error: function(e) {
+                        const errMessage = e.responseJSON.message ?? "Ups something wrong!!"
+                        swalError(errMessage, "Simpan Gagal !!");
+                    }
                 });
             }
 
@@ -831,6 +844,7 @@
                         data: ScreeningForm.form.serialize(),
                         success: function(data) {
                             if (data['error']) {
+                                console.log("err")
                                 swalError(data['message'], "Simpan Gagal !!");
                                 return;
                             }

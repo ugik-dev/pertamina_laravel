@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\LoginController;
 use App\Http\Controllers\api\RequestController;
 use App\Http\Controllers\LiveLocationController;
+use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\SecurityController;
 use App\Models\LiveLocation;
 
@@ -14,6 +15,28 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/login', [LoginController::class, 'login']);
+
+// use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Route;
+Route::post('/scanner/gate/{code}', [ScreeningController::class, 'scanner_process'])->name('scanner.check');
+
+Route::post('/scanner/test-token', function (Request $request) {
+    $token = $request->header('Authorization');
+
+    if ($token === 'Bearer rahasia123') {
+        return response()->json([
+            'status' => 'sukses',
+            'pesan' => 'Token valid!',
+            'data_dari_qr' => $request->input('code')
+        ]);
+    } else {
+        return response()->json([
+            'status' => 'gagal',
+            'pesan' => 'Token tidak valid.'
+        ], 401);
+    }
+});
+
 Route::post('/login-live-location', [LoginController::class, 'loginLiveLocation']);
 Route::post('/faskes', [InformationController::class, 'faskes']);
 Route::get('/content/{slug}', [InformationController::class, 'index']);
