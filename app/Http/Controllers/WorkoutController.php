@@ -195,6 +195,18 @@ class WorkoutController extends Controller
                     // return $data->hours . ' Jam ' .
                     //     ((!empty($data->seconds) || !empty($data->minutes)) ? ($data->minutes ?? 0) . ' Menit' : '') .
                     //     (!empty($data->seconds) ? ' ' . $data->seconds . ' Detik' : '');
+                })->addColumn('pace', function ($data) {
+                    $totalSeconds = ($data->hours * 3600) + ($data->minutes * 60) + $data->seconds;
+
+                    if ($data->km_tempuh > 0) {
+                        $paceInSeconds = $totalSeconds / $data->km_tempuh;
+                        $paceMinutes = floor($paceInSeconds / 60);
+                        $paceSeconds = round($paceInSeconds % 60);
+
+                        return sprintf('%02d:%02d /km', $paceMinutes, $paceSeconds);
+                    } else {
+                        return '-';
+                    }
                 })->addColumn('aksi', function ($data) {
                     // return '<a href="' . route('detail-workout', $data->id) . '" class="btn btn-primary">Open</a>';
                     return '<button data-id="' . $data->id . '" class="editBtn btn btn-primary"><i class="mdi mdi-pencil"></i></button>';

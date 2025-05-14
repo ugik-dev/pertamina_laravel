@@ -146,6 +146,7 @@
                         <th>Jenis</th>
                         <th>Durasi</th>
                         <th>Jarak (KM)</th>
+                        <th>Pace (Menit/KM)</th>
                         <th>Evidance</th>
                         <th>Verifikasi</th>
                         <th>Ket</th>
@@ -446,6 +447,10 @@
                     {
                         data: "km_tempuh",
                         name: "km_tempuh"
+                    },
+                    {
+                        data: "pace",
+                        name: "pace"
                     },
                     {
                         data: "evi_attch_span",
