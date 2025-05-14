@@ -42,8 +42,8 @@
                         <th>No</th>
                         <th>Aksi</th>
                         <th>Upload By</th>
+                        <th>Jumlah Data</th>
                         <th>Tanggal Upload</th>
-                        <th>Jumlah</th>
                     </tr>
                 </thead>
 
@@ -60,13 +60,13 @@
             <form class="add-new-record pt-0 row g-3" id="form-content" onsubmit="return false">
                 @csrf
                 <input type="text" id="id" class="" hidden name="id" />
-                <div class="col-sm-12">
+                {{-- <div class="col-sm-12">
                     <label for="basicFullname">Description:</label>
                     <textarea type="text" id="description" class="form-control dt-full-name" name="description" placeholder=""
                         aria-label="" aria-describedby="basicFullname2"> </textarea>
-                </div>
+                </div> --}}
                 <div class="row">
-                    <div class="col-sm-12">
+                    {{-- <div class="col-sm-12">
                         <label for="basicSalary">Jenis :</label>
                         <div class="form-floating form-floating-outline">
                             <select id="ref_mcu_id" name="ref_mcu_id" class="form-control">
@@ -78,7 +78,7 @@
                         <label for="basicFullname">Tanggal Dokumen :</label>
                         <input type="date" id="doc_date" class="form-control dt-full-name" name="doc_date"
                             placeholder="" aria-label="" aria-describedby="basicFullname2" />
-                    </div>
+                    </div> --}}
                     <div class="col-sm-12">
                         <label for="basicFullname">Sheet Name :</label>
                         <input type="text" id="sheet_name" class="form-control dt-full-name" name="sheet_name"
@@ -413,7 +413,7 @@
                     if (!result.isConfirmed) {
                         return;
                     }
-                    // swalLoading();
+                    swalLoading();
                     $.ajax({
                         url: url,
                         'type': metode,
