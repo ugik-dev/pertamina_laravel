@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB; // Import DB facade untuk transaction
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\DataStructure;
 use App\Models\McuBatch;
+use App\Models\McuReview;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
@@ -61,11 +62,12 @@ class MCUController extends Controller
     public function fetch_detail(Request $request, int $id)
     {
         try {
-            $query =  Mcu::with(['uploadedBy', 'batches'])->withCount('batches');
+            $query =  Mcu::with(['uploadedBy', 'batches.latestReview'])->withCount('batches');
             $query->where('id', '=', $id);
             $res = $query->first();
 
-            $batch = McuBatch::where('mcu_id', '=', $id)->get();
+            $batch = McuBatch::where('mcu_id', '=', $id)->with('latestReview')->get();
+            // dd($batch);
             $statis['gender'] = [
                 'Laki-laki' => $batch->where('jenis_kelamin', 'Laki-laki')->count(),
                 'Perempuan' => $batch->where('jenis_kelamin', 'Perempuan')->count(),
@@ -111,19 +113,30 @@ class MCUController extends Controller
             });;
             $byLokasi['categories'] = $lokasiData->keys()->toArray(); // Nama-nama lokasi
             $byLokasi['values'] = $lokasiData->values()->toArray();
-
             $jenisKesimpulan = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7'];
-            $kesimpulan1 = $batch->groupBy('kesimpulan1')->map->count();
-            $kesimpulan2 = $batch->groupBy('kesimpulan2')->map->count();
-            // $kardio['Rendah'] = $batch->where('risiko_cardiovascular_skj', 'Rendah')->count();
-            // $kardio['Sedang'] = $batch->where('risiko_cardiovascular_skj', 'Sedang')->count();
-            // $kardio['Tinggi'] = $batch->where('risiko_cardiovascular_skj', 'Tinggi')->count();
-            // $kardio['Lainnya'] = $batch->whereNotIn('risiko_cardiovascular_skj', ['Rendah', 'Sedang', 'Tinggi'])->count();
-            // $ekg['Abnormal'] = $batch->where('ekg', 'Abnormal')->count();
-            // $ekg['Normal'] = $batch->where('ekg', 'Normal')->count();
-            // $ekg['Blok Jantung'] = $batch->where('ekg', 'Blok Jantung')->count();
-            // $ekg['Lainnya'] = $batch->whereNotIn('ekg', ['Abnormal', 'Normal', 'Blok Jantung'])->count();
 
+            $hasil = $batch->reduce(function ($carry, $item) {
+                // dd($carry, $item->latestReview->status_derajat_kesehatan);
+                if (empty($item->latestReview->status_derajat_kesehatan)) {
+                    return $carry;
+                }
+                $key = $item->latestReview->status_derajat_kesehatan;
+                if ($key) {
+                    $carry[$key] = ($carry[$key] ?? 0) + 1;
+                }
+                return $carry;
+            }, []);
+
+            // Susun data agar urut sesuai jenisKesimpulan
+            $dataKesimpulan = [];
+            foreach ($jenisKesimpulan as $jenis) {
+                $dataKesimpulan[] = $hasil[$jenis] ?? 0;
+            }
+
+            $chartKesimpulan = [
+                'jenis_kesimpulan' => $jenisKesimpulan,
+                'values' => $dataKesimpulan,
+            ];
             $merokok = [
                 'Ya' => $batch->filter(function ($item) {
                     return stripos($item->merokok, 'ya') !== false;
@@ -137,21 +150,7 @@ class MCUController extends Controller
             $ekg = $this->pluckField($batch, 'ekg');
             $bmi = $this->pluckField($batch, 'status_gizi');
             // dd($bmi);
-            $dataKesimpulan1 = [];
-            $dataKesimpulan2 = [];
 
-            foreach ($jenisKesimpulan as $jenis) {
-                $dataKesimpulan1[] = $kesimpulan1[$jenis] ?? 0; // Jika tidak ada data, isi dengan 0
-                $dataKesimpulan2[] = $kesimpulan2[$jenis] ?? 0; // Jika tidak ada data, isi dengan 0
-            }
-
-            $chartKesimpulan = [
-                'jenis_kesimpulan' => $jenisKesimpulan, // Kategori (P1, P2, dst.)
-                'values' => [
-                    'kesimpulan1' => $dataKesimpulan1, // Data untuk kesimpulan1
-                    'kesimpulan2' => $dataKesimpulan2, // Data untuk kesimpulan2
-                ],
-            ];
 
             $statis['kesimpulan'] = $chartKesimpulan;
             $statis['usia'] = $chartByUsia;
@@ -210,29 +209,6 @@ class MCUController extends Controller
 
 
 
-    function convertDate($dateString)
-    {
-        // Cek apakah kosong
-        if (empty($dateString)) {
-            return null;
-        }
-
-        // Ubah dari format d/m/Y ke Y-m-d
-        $date = \DateTime::createFromFormat('d/m/Y', $dateString);
-        if ($date) {
-            return $date->format('Y-m-d');
-        }
-
-        // Tambahan: jika formatnya m/d/Y (untuk file yang pakai format US)
-        $date = \DateTime::createFromFormat('m/d/Y', $dateString);
-        if ($date) {
-            return $date->format('Y-m-d');
-        }
-
-        // Kalau tetap gagal parsing, bisa return null atau original string (tapi ini berbahaya)
-        return null;
-    }
-
     public function create(Request $request)
     {
         DB::beginTransaction();
@@ -254,64 +230,144 @@ class MCUController extends Controller
             if (!$sheet) {
                 throw new Exception("Sheet tidak ditemukan dalam file Excel.");
             }
+            // cek tipe excel date
+            $formatCode = $sheet->getStyle('F3')->getNumberFormat()->getFormatCode();
+
 
             // Konversi sheet ke array
             $data = $sheet->toArray();
 
             // Ambil header dari baris pertama
-            $header = array_shift($data);
+            $header = $data[1];
+            $data = array_slice($data, 2);
+            $headerMcu = array_map('toSnakeCase', getHeaderMCU());
+            $headerReviewMcu = array_map('toSnakeCase', getHeaderReviewMCU());
 
-            // Ubah header ke snake_case
-            $headerMcu = getHeaderMCU();
-            foreach ($headerMcu as $key => $hm) {
-                if (trim($hm) != trim($header[$key])) {
-                    throw new Exception('Header terjadi kesalahan, harap kanti ' . $header[$key] . ' menjadi ' . $hm);
+
+
+            // dd($header, $data);
+            // foreach ($headerMcu as $key => $hm) {
+            //     if (trim($hm) != trim($header[$key])) {
+            //         throw new Exception('Header terjadi kesalahan, harap kanti ' . $header[$key] . ' menjadi ' . $hm);
+            //     }
+            // }
+            $snakeCaseHeader = array_map('toSnakeCase', $header);
+            // $snakeCaseHeader = array_map(function ($item) {
+            //     return \Illuminate\Support\Str::snake(trim($item));
+            // }, $header);
+
+            // Validasi semua kolom yang dibutuhkan ada di file
+            foreach ($headerMcu as $hm) {
+                if (!in_array($hm, $snakeCaseHeader)) {
+                    // dd($snakeCaseHeader);
+                    throw new Exception("Header '$hm' tidak ditemukan di file Excel.");
                 }
             }
-            // dd($header);
-            $snakeCaseHeader = array_map('toSnakeCase', $header);
+
+            $headerIndexMap = array_flip($snakeCaseHeader);
+            // dd($headerIndexMap);
+            // Ambil index kolom yang diperlukan
+            $requiredIndexes = [];
+            $requiredIndexesReviews = [];
+            foreach ($headerMcu as $hm) {
+                $requiredIndexes[$hm] = $headerIndexMap[$hm];
+            }
+            foreach ($headerReviewMcu as $hm) {
+                $requiredIndexesReviews[0][$hm] = $headerIndexMap[$hm . '_kei'];
+                $requiredIndexesReviews[1][$hm] = $headerIndexMap[$hm . '_keii'];
+            }
+
+            // dd($requiredIndexesReviews);
+
+            // Format data hanya dengan kolom yang sesuai headerMcu
+            $formattedData = [];
+            foreach ($data as $row) {
+                // dd($row);
+                $newRow = [];
+                $reviews = [];
+                foreach ($requiredIndexes as $field => $index) {
+                    $newRow[$field] = $row[$index] ?? null;
+                }
+                for ($i = 0; $i <= 1; $i++) {
+                    foreach ($requiredIndexesReviews[$i] as $field => $index) {
+                        $tanggalFields = ['tgl_review'];
+                        if (in_array($field, $tanggalFields)) {
+                            $reviews[$i][$field] = convDateExcel($row[$index], $formatCode);
+                        } else {
+                            $reviews[$i][$field] = $row[$index] ?? null;
+                        }
+                    }
+                }
+                // foreach ($requiredIndexesReviews[1] as $field => $index) {
+                //     $reviews[1][$field] = $row[$index] ?? null;
+                // }
+                $newRow['reviews'] = $reviews;
+                $formattedData[] = $newRow;
+            }
+
             $mcu = Mcu::create([
                 'date' => now(), // Tanggal upload
                 'uploaded_by' => Auth::id(), // ID pengguna yang mengunggah
             ]);
 
-            foreach ($data as $record) {
-                if (empty(array_filter($record))) {
+            foreach ($formattedData as $record) {
+                if (empty(array_filter($record)) || (empty(trim($record['nama'])) && empty(trim($record['no_rm'])))) {
                     continue;
                 }
+                // dd($record);
+                $review = $record['reviews'];
+                unset($record['reviews']);
+                $cleanedRecord = array_map(function ($value, $key) use ($snakeCaseHeader, $formatCode) {
+                    $value = trim($value);
 
-                // $recordData = array_combine($snakeCaseHeader, $record);
-                $cleanedRecord = array_map(function ($value, $key) use ($snakeCaseHeader) {
-                    // Ganti '-' atau ' -' atau '-' dengan null
-                    if (trim($value) === '-' || trim($value) === '') {
+                    if ($value === '-' || $value === '') {
                         return null;
                     }
 
-                    if ($snakeCaseHeader[$key] == 'jenis_kelamin' && in_array($value, ['M', 'F'])) {
-                        return $value == "F" ? "Perempuan" : ($value == "M" ? "Laki-laki" : null);
-                    }
-                    // Format kolom tanggal
-                    $tanggalFields = ['tanggal_lahir', 'tanggal_selesai', 'tanggal_mcu', 'tanggal_selesai'];
-                    if (in_array($snakeCaseHeader[$key], $tanggalFields)) {
-                        $date = \DateTime::createFromFormat('d/m/Y', trim($value));
-                        if ($date) {
-                            return $date->format('Y-m-d');
-                        }
-                        return null;
+                    $column = $key;
+
+                    // Format jenis kelamin
+                    if ($column == 'jenis_kelamin' && in_array($value, ['M', 'F'])) {
+                        return $value === "F" ? "Perempuan" : "Laki-laki";
                     }
 
-                    return trim($value);
+                    // Format tanggal
+                    $tanggalFields = ['tanggal_lahir', 'tanggal_selesai', 'tanggal_mcu'];
+                    if (in_array($column, $tanggalFields)) {
+                        return convDateExcel($value, $formatCode);
+                    }
+
+                    $numberOnlyFields = ['pernafasan', 'nadi', 'td_diastole', 'td_sistole'];
+                    if (in_array($column, $numberOnlyFields)) {
+                        $cleaned = preg_replace('/\D/', '', $value);
+                        return $cleaned !== '' ? (int)$cleaned : null;
+                    }
+
+                    return $value;
                 }, $record, array_keys($record));
-                $recordData = array_combine($snakeCaseHeader, $cleanedRecord);
-                // dd($recordData);
 
-                McuBatch::create(array_merge(
+                // Data siap disimpan
+                $recordData = array_combine(array_keys($record), $cleanedRecord);
+                // dd($review, $recordData);
+                $batch_mcu = McuBatch::create(array_merge(
                     ['mcu_id' => $mcu->id],
                     $recordData
                 ));
+                if (!empty($review[0]['status_derajat_kesehatan']))
+                    McuReview::create(array_merge(
+                        ['id_batch' => $batch_mcu->id],
+                        ['source_data' => "Excel"],
+                        ['review_ke' => "1"],
+                        $review[0]
+                    ));
+                if (!empty($review[1]['status_derajat_kesehatan']))
+                    McuReview::create(array_merge(
+                        ['id_batch' => $batch_mcu->id],
+                        ['source_data' => "Excel"],
+                        ['review_ke' => "2"],
+                        $review[1]
+                    ));
             }
-
-            // Commit transaction
             DB::commit();
 
             return $this->responseSuccess("Data berhasil diunggah.");

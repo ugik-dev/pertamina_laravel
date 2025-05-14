@@ -40,11 +40,56 @@
     <!-- Page -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/cards-statistics.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/cards-analytics.css') }}">
+    <style>
+        .doughnut-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 1rem 0;
+            list-style: none;
+            margin: 0;
+            max-height: 250px;
+            /* batas tinggi */
+            overflow-y: auto;
+            /* scroll jika tinggi lebih */
+        }
+
+        /* Legend Item */
+        .legend-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            width: 100%;
+            max-width: 250px;
+            flex: 1 1 auto;
+        }
+
+        /* Warna bulatan */
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            margin-top: 5px;
+            flex-shrink: 0;
+        }
+
+        /* Teks Legend */
+        .legend-text {
+            flex: 1;
+            overflow-wrap: break-word;
+        }
+
+        .legend-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+    </style>
 @endsection
 @section('page-script')
     <script src="{{ asset('assets/js/charts-chartjs.js') }}"></script>
     <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
-    {{-- <script src="{{ asset('js/custom-chart.js') }}"></script> --}}
+    {{-- <script src="{{ asset('assets/js/cards-analytics.js') }}"></script> --}}
 @endsection
 
 @section('content')
@@ -258,8 +303,8 @@
             <div class="card h-100">
                 <div class="card-header pb-1">
                     <div class="d-flex justify-content-between">
-                        <h5 class="mb-1">Kesimpulan</h5>
-                        <div class="dropdown">
+                        <h5 class="mb-1">Derajat Kesehatan</h5>
+                        {{-- <div class="dropdown">
                             <button class="btn p-0" type="button" id="performanceDropdown" data-bs-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 <i class="mdi mdi-dots-vertical mdi-24px"></i>
@@ -269,10 +314,13 @@
                                 <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
                                 <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
-                <div class="card-body pb-0 pt-1">
+                <div class="card-body pb-0 pt-1 mb-3">
+                    <h7 class="mb-1">Berdasarkan review terahir</h7>
+
+                    <div id="deliveryExceptionsChart"></div>
                     <div id="customPerformanceChartxx"></div>
                 </div>
 
@@ -752,8 +800,10 @@
             <table id="FDataTable" class="table" style="width:100%">
                 <thead>
                     <tr>
+                        <th>Aksi</th>
+
                         @foreach ($dataContent['paramMCU'] as $label)
-                            <th>{{ $label['label'] }}
+                            <th>{{ $label['label'] }}</th>
                         @endforEach
                     </tr>
                 </thead>
@@ -815,18 +865,26 @@
         </div>
     </div>
     <style>
-        /* .table.table-bordered.dataTable.no-footer thead th {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        background-color: #f8f9fa;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        position: sticky;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        top: 0;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        z-index: 1;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        border-bottom: 1px solid #dee2e6;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
+        .text-truncate-ellipsis {
+            max-width: 150px;
+            /* atau berapa pun yang cocok */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    .dataTables_scrollHead .table.table-bordered.dataTable.no-footer thead th {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        background-color: #f8f9fa;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        z-index: 2;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    } */
+        /* .table.table-bordered.dataTable.no-footer thead th {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                background-color: #f8f9fa;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                position: sticky;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                top: 0;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                z-index: 1;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                border-bottom: 1px solid #dee2e6;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            .dataTables_scrollHead .table.table-bordered.dataTable.no-footer thead th {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                background-color: #f8f9fa;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                z-index: 2;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            } */
     </style>
     <script>
         $(document).ready(function() {
@@ -839,9 +897,41 @@
             }
 
             const offCanvasEl = new bootstrap.Offcanvas($('#add-new-record'));
-
+            // targetTrims = [
+            //     10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+            //     20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+            //     30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
+            //     40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
+            //     50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
+            //     60, 61, 62, 63, 64, 65, 66, 67, 68, 69,
+            //     70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
+            //     80, 81, 82, 83, 84, 85, 86, 87, 88, 89,
+            //     90, 91, 92, 93, 94, 95, 96, 97, 98, 99,
+            //     100, 101, 102, 103, 104, 105, 106, 107, 108, 109,
+            //     110, 111, 112, 113, 114, 115, 116, 117, 118, 119,
+            //     120, 121, 122, 123, 124, 125, 126, 127, 128, 129,
+            //     130, 131, 132, 133, 134, 135, 136, 137, 138, 139,
+            //     140, 141, 142, 143, 144, 145, 146, 147, 148, 149,
+            //     150, 151, 152, 153, 154, 155, 156, 157, 158, 159,
+            //     160, 161, 162, 163, 164, 165, 166, 167, 168, 169,
+            //     170, 171, 172, 173, 174, 175, 176, 177, 178, 179,
+            //     180, 181, 182, 183, 184, 185, 186, 187
+            // ];
+            var targetTrims = Array.from({
+                length: 177
+            }, (_, i) => i + 10);
             var FDataTable = $('#FDataTable').DataTable({
-                columnDefs: [],
+                columnDefs: [{
+                    targets: targetTrims, // Menargetkan kolom yang sesuai
+                    render: function(data, type, row, meta) {
+                        // Menangani jika data kosong atau undefined
+                        if (type === 'display' && data) {
+                            // Menghindari masalah jika data tidak ada
+                            return `<div class="text-truncate-ellipsis" title="${data || ''}">${data || ''}</div>`;
+                        }
+                        return data;
+                    }
+                }],
                 fixedColumns: {
                     left: 3
                 },
@@ -1015,7 +1105,10 @@
                         className: 'create-new btn btn-primary'
                     }
                 ],
+
             });
+
+            console.log("panjang table >", FDataTable.columns().count())
             $('div.head-label').html('<h5 class="card-title mb-0">Data Content</h5>')
 
             var ContentForm = {
@@ -1068,7 +1161,7 @@
 
                         renderContent(dataContent['batches']);
                         renderGender(dataContent['statis']['gender']);
-                        renderLokasi(dataContent['statis']['kesimpulan']);
+                        // renderLokasi(dataContent['statis']['kesimpulan']);
                         renderTopLokasi(dataContent['statis']['lokasi']['data']);
                         renderUsia(dataContent['statis']['usia']);
                         renderChartjsDonuts(dataContent['statis']['kardio'], 'cardiovascularChart',
@@ -1082,6 +1175,7 @@
                             dataContent['statis']['merokok']['Ya'],
                             'Tidak Merokok', "Org"
                         )
+                        renderKesimpulan(dataContent['statis']['kesimpulan'])
 
                         $('#smoker').html(dataContent['statis']['merokok']['Ya'])
                         $('#smoker_anti').html(dataContent['statis']['merokok']['Tidak'])
@@ -1089,6 +1183,160 @@
                     error: function(e) {}
                 });
             }
+
+            function renderKesimpulan(data) {
+                renderChartE1(data['jenis_kesimpulan'], data['values'], 'derajat_kesehatan')
+            }
+
+            function renderChartE1(labels, values, type) {
+                if (isDarkStyle) {
+                    cardColor = config.colors_dark.cardColor;
+                    labelColor = config.colors_dark.textMuted;
+                    headingColor = config.colors_dark.headingColor;
+                    borderColor = config.colors_dark.borderColor;
+                    grayColor = '#3b3e59';
+                    currentTheme = 'dark';
+                    bodyColorLabel = config.colors_dark.bodyColor;
+                } else {
+                    cardColor = config.colors.cardColor;
+                    labelColor = config.colors.textMuted;
+                    headingColor = config.colors.headingColor;
+                    borderColor = config.colors.borderColor;
+                    grayColor = '#f4f4f6';
+                    currentTheme = 'light';
+                    bodyColorLabel = config.colors.bodyColor;
+                }
+
+                const chartColors = {
+                    donut: {
+                        series1: config.colors.warning,
+                        series2: '#fdb528cc',
+                        series3: '#fdb52899',
+                        series4: '#fdb52866',
+                        series5: config.colors_label.warning
+                    },
+                    donut2: {
+                        series1: config.colors.success,
+                        series2: '#43ff64e6',
+                        series3: '#43ff6473',
+                        series4: '#43ff6433'
+                    },
+                    line: {
+                        series1: config.colors.warning,
+                        series2: config.colors.primary,
+                        series3: '#7367f029'
+                    }
+                };
+                if (type == 'derajat_kesehatan') {
+
+                    colorsIndicator = [
+                        '#2ecc71e6', // P1
+                        '#27ae60e6', // P2
+                        '#f1c40fe6', // P3
+                        '#f39c12e6', // P4
+                        '#e67e22e6', // P5
+                        '#e74c3ce6', // P6
+                        '#c0392be6', // P7
+                    ]
+                }
+                const deliveryExceptionsChartE1 = document.querySelector('#deliveryExceptionsChart'),
+                    deliveryExceptionsChartConfig = {
+                        chart: {
+                            height: 420,
+                            parentHeightOffset: 0,
+                            type: 'donut'
+                        },
+                        labels: labels,
+                        series: values,
+                        colors: colorsIndicator,
+                        stroke: {
+                            width: 0
+                        },
+                        dataLabels: {
+                            enabled: false,
+                            formatter: function(val, opt) {
+                                return parseInt(val) + '%';
+                            }
+                        },
+                        legend: {
+                            show: true,
+                            position: 'bottom',
+                            offsetY: 10,
+                            markers: {
+                                width: 8,
+                                height: 8,
+                                offsetX: -3
+                            },
+                            itemMargin: {
+                                horizontal: 15,
+                                vertical: 5
+                            },
+                            fontSize: '13px',
+                            fontFamily: 'Inter',
+                            fontWeight: 400,
+                            labels: {
+                                colors: headingColor,
+                                useSeriesColors: false
+                            }
+                        },
+                        tooltip: {
+                            theme: currentTheme
+                        },
+                        grid: {
+                            padding: {
+                                top: 15
+                            }
+                        },
+                        plotOptions: {
+                            pie: {
+                                donut: {
+                                    size: '75%',
+                                    labels: {
+                                        show: true,
+                                        value: {
+                                            fontSize: '26px',
+                                            fontFamily: 'Inter',
+                                            color: headingColor,
+                                            fontWeight: 500,
+                                            offsetY: -30,
+                                            formatter: function(val) {
+                                                return parseInt(val) + '%';
+                                            }
+                                        },
+                                        name: {
+                                            offsetY: 20,
+                                            fontFamily: 'Inter'
+                                        },
+                                        total: {
+                                            show: true,
+                                            fontSize: '0.9rem',
+                                            label: 'AVG. Exceptions',
+                                            color: bodyColorLabel,
+                                            formatter: function(w) {
+                                                return '30%';
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        responsive: [{
+                            breakpoint: 420,
+                            options: {
+                                chart: {
+                                    height: 360
+                                }
+                            }
+                        }]
+                    };
+                if (typeof deliveryExceptionsChartE1 !== undefined && deliveryExceptionsChartE1 !== null) {
+                    const deliveryExceptionsChart = new ApexCharts(deliveryExceptionsChartE1,
+                        deliveryExceptionsChartConfig);
+                    deliveryExceptionsChart.render();
+                }
+            }
+            // })();
+            // }
 
             function renderContent(data) {
                 console.log(data)
@@ -1100,7 +1348,18 @@
 
                 var renderData = [];
                 Object.values(data).forEach((user) => {
-                    renderData.push([
+                    var button =
+                        `<div class="d-inline-block">
+                            <button class="btn btn-sm btn-text-secondary rounded-pill">
+                                <i class="mdi mdi-pen-plus me-1"></i> Pengantar
+                            </button>
+                            <button class="btn btn-sm btn-text-secondary rounded-pill">
+                                <i class="mdi mdi-eye-outline me-1"></i> Review
+                            </button>
+                            </div>`;
+                    // <a href="<?= url('info-desa/sub-wilayah') ?>/${user['id']}" title="Lihat Detail" class="btn btn-sm btn-text-secondary rounded-pill btn-icon item-edit"><i class="mdi mdi-eye-outline" ></i> Lihat Review</a>
+
+                    renderData.push([button,
                         @foreach ($dataContent['paramMCU'] as $label)
                             user['{{ $label['field'] }}'],
                         @endforEach
@@ -1317,7 +1576,8 @@
                                         label: function(context) {
                                             const label = context.labels || '',
                                                 value = context.parsed;
-                                            const output = ' ' + label + ' : ' + value + ' ' + satuan;
+                                            const output = ' ' + label + ' : ' + value + ' ' +
+                                                satuan;
                                             return output;
                                         }
                                     },
@@ -1335,13 +1595,14 @@
                     if (doughnutLegend) {
                         doughnutLegend.innerHTML = labels.map((label, index) => {
                             return `
-                                    <li class="ct-series-${index} d-flex flex-column">
-                                        <h5 class="mb-0">${label}</h5>
-                                        <span class="badge badge-dot my-2 cursor-pointer rounded-pill"
-                                            style="background-color: ${colors[index]}; width:35px; height:6px;"></span>
-                                        <div class="text-muted">${values[index]} ${satuan}</div>
-                                    </li>
-                                `;
+                                <li class="legend-item">
+                                    <span class="legend-color" style="background-color: ${colors[index]};"></span>
+                                    <div class="legend-text">
+                                        <h6 class="legend-label mb-1">${label}</h6>
+                                        <div class="text-muted small">${values[index]} ${satuan}</div>
+                                    </div>
+                                </li>
+                            `;
                         }).join('');
                     }
                 }
@@ -1438,7 +1699,7 @@
             }
 
             function renderLokasi(data) {
-                console.log(data)
+                console.log("data derajat", data)
                 const performanceChartEl = document.querySelector('#customPerformanceChartxx'),
                     performanceChartConfig = {
                         chart: {
@@ -1475,12 +1736,14 @@
                             show: false
                         },
                         series: [{
-                            name: 'Kesimpulan1',
-                            data: data['values']['kesimpulan1']
-                        }, {
-                            name: 'Kesimpulan2',
-                            data: data['values']['kesimpulan2']
-                        }, ],
+                                name: 'Review Ke 1',
+                                data: data['values']
+                            },
+                            //  {
+                            //     name: 'Kesimpulan2',
+                            //     data: data['values']['kesimpulan2']
+                            // },
+                        ],
                         colors: [config.colors.warning, config.colors.primary],
                         xaxis: {
                             categories: data['jenis_kesimpulan'],
@@ -1570,8 +1833,10 @@
                         },
                         series: [{
                             name: 'Sales',
-                            data: [data['< 20'], data['20-25'], data['25-30'], data['30-35'], data['35-40'],
-                                data['40-45'], data['45-50'], data['50-55'], data['55-60'], data['> 60']
+                            data: [data['< 20'], data['20-25'], data['25-30'], data['30-35'], data[
+                                    '35-40'],
+                                data['40-45'], data['45-50'], data['50-55'], data['55-60'], data[
+                                    '> 60']
                             ]
                         }],
                         plotOptions: {

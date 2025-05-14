@@ -171,8 +171,10 @@
 
                                             <tr>
                                                 <td class="h6 ps-0">KM Tempuh</td>
-                                                <td class="pe-0 "><input type="number" name="km_tempuh" id="km_tempuh"
-                                                        class="form-control" />
+                                                <td class="pe-0 ">
+                                                    <input type="number" name="km_tempuh" id="km_tempuh"
+                                                        class="form-control" step="0.01" min="0"
+                                                        placeholder="0.00">
                                                 </td>
                                             </tr>
                                             <tr>
