@@ -181,6 +181,8 @@
                     $(location).attr('href', "{{ route('dashboard') }}");
                 },
                 error: () => {
+                    const errMessage = e.responseJSON?.message ?? "Terjadi kesalahan";
+                    swalError(errMessage, "Gagal !!");
                     // buttonIdle(submitBtn);
                 }
             });
