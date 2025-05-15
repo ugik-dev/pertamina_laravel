@@ -180,9 +180,16 @@
                     }
                     $(location).attr('href', "{{ route('dashboard') }}");
                 },
-                error: () => {
+                error: (e) => {
                     const errMessage = e.responseJSON?.message ?? "Terjadi kesalahan";
-                    swalError(errMessage, "Gagal !!");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Login Gagal',
+                        text: errMessage,
+                        customClass: {
+                            confirmButton: 'btn btn-primary waves-effect'
+                        }
+                    });
                     // buttonIdle(submitBtn);
                 }
             });
