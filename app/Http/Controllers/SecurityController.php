@@ -90,7 +90,7 @@ class SecurityController extends Controller
             // ->get();
             // $query = Attendance::whereDate('checkin_time', $date);
             $query = DB::table('users as a') // Mulai dari tabel users
-                ->selectRaw('attendances.*,c.name as company_name,c.category as company_category,a.pola, a.name as user_name, a.qrcode as user_qrcode, f.high_risk')
+                ->selectRaw('attendances.*,f.name field_work_name ,c.name as company_name,c.category as company_category,a.pola, a.name as user_name, a.qrcode as user_qrcode, f.high_risk')
                 ->leftJoin('attendances', function ($join) use ($date) {
                     $join->on('attendances.user_id', '=', 'a.id')
                         ->whereDate('attendances.created_at', $date);

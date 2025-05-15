@@ -46,14 +46,14 @@
                 </a>
             </li>
         @endcan
-        @can('is_security')
-            <li class="menu-item">
-                <a href="{{ route('security-app.index') }}" class="menu-link ">
-                    <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
-                    <div>Security</div>
-                </a>
-            </li>
-        @endcan
+        {{-- @can('is_security') --}}
+        <li class="menu-item">
+            <a href="{{ route('security-app.index') }}" class="menu-link ">
+                <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
+                <div>Security</div>
+            </a>
+        </li>
+        {{-- @endcan --}}
         <li class="menu-item">
             <a href="{{ route('scanner') }}" class="menu-link ">
                 <i class="menu-icon tf-icons mdi mdi-home-outline"></i>

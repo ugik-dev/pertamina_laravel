@@ -178,7 +178,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"
         integrity="sha512-r6rDA7W6ZeQhvl8S7yRVQUKVHdexq+GAlNkNNqVC7YyIV+NwqCTJe2hDWCiffTyRNOeGEzRRJ9ifvRm/HCzGYg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    {{-- <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script> --}}
     <script>
         $(document).ready(function() {
             var Result = {
@@ -215,13 +215,17 @@
 
             function scanProcess(decodedResult) {
                 swalLoading();
+                console.log("process scan")
                 // decodedResult = "d3286f12-a0ab-45a7-aba9-11b7e15f4723"
                 url = '{{ url('scanner/checker') }}/' + decodedResult;
                 $.ajax({
                     url: url,
                     'type': 'GET',
                     success: function(data) {
+                        console.log("process done")
+
                         if (data['error']) {
+                            console.log(data['message'])
                             swalError(data['message'], "Simpan Gagal !!");
                             return;
                         }
@@ -249,7 +253,10 @@
                         Result.form.show();
                         console.log(user)
                     },
-                    error: function(e) {}
+                    error: function(e) {
+                        const errMessage = e.responseJSON.message ?? "Terjadi kesalahan";
+                        swalError(errMessage, "Gagal !!");
+                    }
                 });
             }
 

@@ -163,8 +163,9 @@ class WorkoutController extends Controller
             // Debug untuk melihat tanggal yang dihitung
             // dd($date_start, $date_end);
 
-            $query = Workout::selectRaw('workouts.*, a.name as user_name, a.qrcode as user_qrcode')
-                ->join('users as a', 'a.id', '=', 'workouts.user_id');
+            $query = Workout::selectRaw('workouts.*, a.name as user_name,fw.name as bagian, a.qrcode as user_qrcode')
+                ->join('users as a', 'a.id', '=', 'workouts.user_id')
+                ->join('field_works as fw', 'fw.id', '=', 'a.field_work_id');
 
             // Jika date_start dan date_end valid, filter berdasarkan range waktu
             if ($date_start && $date_end) {

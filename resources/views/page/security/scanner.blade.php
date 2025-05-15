@@ -249,7 +249,10 @@
                         Result.form.show();
                         console.log(user)
                     },
-                    error: function(e) {}
+                    error: function(e) {
+                        const errMessage = e.responseJSON.message ?? "Terjadi kesalahan";
+                        swalError(errMessage, "Gagal !!");
+                    }
                 });
             }
 

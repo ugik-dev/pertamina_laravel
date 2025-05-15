@@ -72,7 +72,7 @@
             <div class="container mt-5">
                 <h1 class="text-center">Scan QR Code</h1>
                 <div class="form-input">
-                    <input type="text" id="scanner_rfid" class="form-controll" />
+                    <input type="text" id="scanner_rfid" class="form-control" hidden />
                 </div>
                 <div id="reader" style="width:500px; margin:0 auto;"></div>
                 <script src="{{ mix('js/app.js') }}"></script>
@@ -445,8 +445,8 @@
                         ScreeningForm.qrcode.val(decodedResult)
                     },
                     error: function(e) {
-                        const errMessage = e.responseJSON.message ?? "Ups something wrong!!"
-                        swalError(errMessage, "Simpan Gagal !!");
+                        const errMessage = e.responseJSON.message ?? "Terjadi kesalahan";
+                        swalError(errMessage, "Gagal !!");
                     }
                 });
             }

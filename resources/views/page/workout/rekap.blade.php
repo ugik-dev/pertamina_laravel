@@ -143,6 +143,7 @@
                         <th>No</th>
                         <th>Tanggal</th>
                         <th>Nama</th>
+                        <th>Bagian</th>
                         <th>Jenis</th>
                         <th>Durasi</th>
                         <th>Jarak (KM)</th>
@@ -435,6 +436,10 @@
                     {
                         data: "user_name",
                         name: "user_name"
+                    },
+                    {
+                        data: "bagian",
+                        name: "bagian"
                     },
                     {
                         data: "workout_jenis",

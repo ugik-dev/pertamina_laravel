@@ -227,10 +227,11 @@ class ScreeningController extends Controller
             if (!$user) {
                 return $this->ResponseError("QR Tidak valid!", 400);
             }
+            $date = request()->filled('date') ? request()->query('date') : Carbon::today()->toDateString();
             // dd(Carbon::today());
             // Ambil screening terbaru hari ini
             $latestScreening = Screening::where('user_id', $user->id)
-                ->whereDate('created_at', Carbon::today())
+                ->whereDate('created_at', $date)
                 ->latest()
                 ->first();
 
