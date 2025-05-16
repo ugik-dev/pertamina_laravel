@@ -74,7 +74,7 @@
 
                     <div class="card-body mt-2">
                         <div class="form-input">
-                            <input type="text" id="scanner_rfid" class="form-controll" />
+                            <input type="text" id="scanner_rfid" class="form-control" hidden />
                         </div>
 
                         <div id="reader" class="mr-3 ml-3 w-100" style="margin:0 auto;"></div>
