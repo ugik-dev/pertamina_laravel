@@ -149,11 +149,11 @@
                                         </tr>
                                         <tr>
                                             <td class="h6 ps-0">RR</td>
-                                            <td class="pe-0 "><span id="rr"></span></td>
+                                            <td class="pe-0 "><span id="rr"></span> x/menit</td>
                                         </tr>
                                         <tr>
                                             <td class="h6 ps-0">SPO2</td>
-                                            <td class="pe-0 "><span id="spo2"></span></td>
+                                            <td class="pe-0 "><span id="spo2"></span> %</td>
                                         </tr>
                                         <tr>
                                             <td class="h6 ps-0">Fisik</td>

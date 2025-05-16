@@ -304,7 +304,7 @@
                             text: '<i class="mdi mdi-file-excel-outline me-1"></i>Excel',
                             className: 'dropdown-item',
                             exportOptions: {
-                                columns: [0, 1, 2, 3, 4, 5, 7, 8],
+                                columns: [0, 1, 2, 3, 4, 5, 7, 8, 9],
                             },
                             action: function(e, dt, button, config) {
                                 var self = this;
@@ -337,7 +337,7 @@
                             className: 'dropdown-item',
                             exportOptions: {
                                 columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-                                    13, 14, 15
+                                    13, 14, 15, 16
                                 ],
                             },
                             customize: function(doc) {
