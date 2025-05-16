@@ -17,6 +17,7 @@ use App\Http\Controllers\DrugController;
 use App\Http\Controllers\FaskesController;
 use App\Http\Controllers\FieldController;
 use App\Http\Controllers\GuarantorController;
+use App\Http\Controllers\LaborController;
 use App\Http\Controllers\LiveLocationController;
 use App\Http\Controllers\MCUController;
 use App\Http\Controllers\PdfController;
@@ -226,6 +227,14 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/', [UnitController::class, 'delete'])->name('delete');
     });
 
+    Route::prefix('manage-labor')->name('labor.')->group(function () {
+        Route::get('', [LaborController::class, 'index'])->name('index');
+        Route::get('get', [LaborController::class, 'get'])->name('get');
+        Route::post('', [LaborController::class, 'create'])->name('create');
+        Route::put('', [LaborController::class, 'update'])->name('update');
+        Route::delete('/', [LaborController::class, 'delete'])->name('delete');
+    });
+
     Route::prefix('manage-company')->name('company.')->group(function () {
         Route::get('', [CompanyController::class, 'index'])->name('index');
         Route::get('get', [CompanyController::class, 'get'])->name('get');
@@ -292,7 +301,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/update', [MCUController::class, 'update'])->name('update');
         Route::delete('/', [MCUController::class, 'delete'])->name('delete');
         Route::get('/{id}', [MCUController::class, 'detail'])->name('detail');
-        Route::get('fetch_detail/{id}', [MCUController::class, 'fetch_detail'])->name('fetch_detail');
+        Route::get('/batch-review/{id}', [MCUController::class, 'get_review'])->name('get_review_users');
+        Route::post('fetch_detail/{id}', [MCUController::class, 'fetch_detail'])->name('fetch_detail');
 
         // Route::get('/getData/{id_wil}', [MCUController::class, 'getData'])->name('get-data');
     });

@@ -21,6 +21,7 @@
         href="{{ asset('/assets/vendor/libs/datatables-fixedheader-bs5/fixedheader.bootstrap5.css') }}" />
     <link rel="stylesheet"
         href="{{ asset('/assets/vendor/libs/datatables-fixedcolumns-bs5/fixedcolumns.bootstrap5.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/spinkit/spinkit.css') }}" />
 
 @endsection
 
@@ -28,7 +29,7 @@
     <script src="{{ asset('assets/vendor/libs/quill/katex.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/quill/quill.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
-
+    <script src="{{ asset('assets/vendor/libs/block-ui/block-ui.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/chartjs/chartjs.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/swiper/swiper.js') }}"></script>
@@ -90,6 +91,7 @@
     <script src="{{ asset('assets/js/charts-chartjs.js') }}"></script>
     <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
     {{-- <script src="{{ asset('assets/js/cards-analytics.js') }}"></script> --}}
+    <script src="{{ asset('assets/js/extended-ui-blockui-custom.js') }}"></script>
 @endsection
 
 @section('content')
@@ -100,6 +102,91 @@
 
     {{-- Chart Start --}}
     <div class="row gy-4">
+        <div class="col-12">
+            {{-- <div class="card">
+                <div class="card-body"> --}}
+            <div id="accordionPopoutIcon" class="accordion mt-3 accordion-popout">
+                <div class="accordion-item">
+                    <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionPopoutIconOne">
+                        <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse"
+                            data-bs-target="#accordionPopoutIcon-1" aria-controls="accordionPopoutIcon-1"
+                            aria-expanded="false">
+                            <i class="mdi mdi-filter me-2"></i>
+                            Filter
+                        </button>
+                    </h2>
+
+                    <div id="accordionPopoutIcon-1" class="accordion-collapse collapse"
+                        data-bs-parent="#accordionPopoutIcon" style="">
+                        <div class="accordion-body">
+                            <form class="add-new-record pt-0 row g-3 mb-3" id="toolbar_form" onsubmit="return false">
+                                @csrf
+                                <input type="text" id="id" class="" hidden name="id" />
+                                <div class="col-sm-12 col-md-4 col-lg-3">
+                                    <label for="basicSalary">Jenis :</label>
+                                    <div class="form-floating form-floating-outline">
+                                        <select id="cat_review" name="cat_review"
+                                            class="form-control select2 select2-singgle">
+                                            <option value="first">First Review</option>
+                                            <option value="last">Last Review</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-lg-3">
+                                    <label for="basicSalary">Provider :</label>
+                                    <div class="form-floating form-floating-outline">
+                                        <select id="provider" name="provider[]" class="form-control select2" multiple>
+                                            <option value=""> -- Semua --</option>
+                                            @foreach ($dataContent['filter']['lokasi'] as $provider)
+                                                <option value="{{ $provider['value'] }}">{{ $provider['label'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-lg-3">
+                                    <label for="basicSalary">BMI :</label>
+                                    <div class="form-floating form-floating-outline">
+                                        <select id="filter_bmi" name="bmi[]" class="form-control select2" multiple>
+                                            @foreach ($dataContent['filter']['bmi'] as $bmi)
+                                                <option value="{{ $bmi }}">{{ $bmi }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-lg-3">
+                                    <label for="basicSalary">Ekg :</label>
+                                    <div class="form-floating form-floating-outline">
+                                        <select id="filter_ekg" name="ekg[]" class="form-control select2" multiple>
+                                            @foreach ($dataContent['filter']['ekg'] as $ekg)
+                                                <option value="{{ $ekg }}">{{ $ekg }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-4 col-lg-3">
+                                    <label for="basicSalary">Kardio :</label>
+                                    <div class="form-floating form-floating-outline">
+                                        <select id="filter_kardio" name="kardio[]" class="form-control select2" multiple>
+                                            @foreach ($dataContent['filter']['kardio'] as $kardio)
+                                                <option value="{{ $kardio }}">{{ $kardio }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                            <button id="toolbar_submit" class="btn btn-primary w-100"> <i class="mdi mdi-filter"></i>
+                                Filter </button>
+                        </div>
+                        <div class="accordion-footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- </div>
+            </div> --}}
+        </div>
+        {{-- </div> --}}
         <div class="col-12 col-xl-8">
             <div class="card h-100">
                 <div class="row">
@@ -271,7 +358,7 @@
                     <h5 class="card-title m-0 me-2">TOP Ranking MCU</h5>
                 </div>
                 <div class="d-flex justify-content-between py-2 px-4 border-bottom">
-                    <h6 class="mb-0 small">NAME</h6>
+                    <h6 class="mb-0 small">Nama Provider</h6>
                     <h6 class="mb-0 small">Jumlah</h6>
                 </div>
                 <div class="card-body">
@@ -304,23 +391,22 @@
                 <div class="card-header pb-1">
                     <div class="d-flex justify-content-between">
                         <h5 class="mb-1">Derajat Kesehatan</h5>
-                        {{-- <div class="dropdown">
+                        <div class="dropdown">
                             <button class="btn p-0" type="button" id="performanceDropdown" data-bs-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 <i class="mdi mdi-dots-vertical mdi-24px"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="performanceDropdown">
-                                <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
+                                <a class="dropdown-item" href="javascript:void(0);" data-value="last">Last Review</a>
+                                <a class="dropdown-item" href="javascript:void(0);" data-value="first">First Review</a>
                             </div>
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
                 <div class="card-body pb-0 pt-1 mb-3">
                     <h7 class="mb-1">Berdasarkan review terahir</h7>
 
-                    <div id="deliveryExceptionsChart"></div>
+                    <div id="derajatKesehatanChart"></div>
                     <div id="customPerformanceChartxx"></div>
                 </div>
 
@@ -811,57 +897,114 @@
             </table>
         </div>
     </div>
-    <!-- Modal to add new record -->
     <div class="offcanvas offcanvas-end" id="add-new-record" style="width : 700px !important">
         <div class="offcanvas-header border-bottom">
             <h5 class="offcanvas-title" id="exampleModalLabel">Form</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body flex-grow-1">
-            <form class="add-new-record pt-0 row g-3" id="form-content" onsubmit="return false">
+            <form class="add-new-record pt-0 row g-3" id="form-pengantar" onsubmit="return false">
                 @csrf
                 <input type="text" id="id" class="" hidden name="id" />
-                <div class="col-sm-12">
+                {{-- <div class="col-sm-12">
                     <label for="basicFullname">Description:</label>
                     <textarea type="text" id="description" class="form-control dt-full-name" name="description" placeholder=""
                         aria-label="" aria-describedby="basicFullname2"> </textarea>
-                </div>
+                </div> --}}
                 <div class="row">
                     <div class="col-sm-12">
-                        <label for="basicSalary">Jenis :</label>
+                        <label for="basicFullname">Name :</label>
+                        <input type="text" id="user_name" class="form-control dt-full-name" name="nama"
+                            placeholder="" aria-label="" aria-describedby="basicFullname2" />
+                    </div>
+                    <div class="col-sm-12">
+                        <label for="basicSalary">Klinik / Laboratorium :</label>
                         <div class="form-floating form-floating-outline">
-                            <select id="ref_mcu_id" name="ref_mcu_id" class="form-control">
+                            <select id="labor_id" name="labor_id" class="form-control select2-close">
                                 <option value="">--</option>
+                                @foreach ($dataContent['filter']['labor'] as $lab)
+                                    <option value="{{ $lab['id'] }}">{{ $lab['name'] }} | {{ $lab['address'] }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="col-sm-12">
-                        <label for="basicFullname">Tanggal Dokumen :</label>
-                        <input type="date" id="doc_date" class="form-control dt-full-name" name="doc_date"
+                        <label for="basicFullname">Tanggal Mulai :</label>
+                        <input type="date" id="date_start" class="form-control dt-full-name" name="date_start"
+                            placeholder="" aria-label="" aria-describedby="basicFullname2" />
+                    </div>
+                    <div class="col-sm-12">
+                        <label for="basicFullname">Tanggal Selesai :</label>
+                        <input type="date" id="date_end" class="form-control dt-full-name" name="date_end"
                             placeholder="" aria-label="" aria-describedby="basicFullname2" />
                     </div>
                 </div>
-                <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label for="labor_services">Pilih Layanan Laboratorium:</label>
+                        <div class="row">
+                            @foreach ($dataContent['laborServices'] as $service)
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="labor_services[]"
+                                            id="service-{{ $service['id'] }}" value="{{ $service['id'] }}">
+                                        <label class="form-check-label" for="service-{{ $service['id'] }}">
+                                            {{ $service['name'] }}
+                                        </label>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                </div>
+                {{-- <div class="row">
                     <div class="col-sm-12">
                         <label for="basicFullname">File :</label>
                         <div class="input-group input-group-merge">
                             <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
                             <input type="file" id="file_attachment" class="form-control dt-full-name"
                                 name="file_attachment" aria-label="" aria-describedby="basicFullname2"
-                                accept=".csv" />
+                                accept=".xls, .xlsx" />
                         </div>
                     </div>
                     <div class="col-sm-6"></div>
-                </div>
+                </div> --}}
                 <div class="col-sm-12">
                     <a type="" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="insertBtn"
                         data-metod="ins">Tambah</a>
-                    <a type="" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="updateBtn"
-                        data-act="upd">Simpan Perubahan</a>
                     <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
                 </div>
             </form>
 
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end" id="show-review" style="width : 80% !important">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title" id="">Review Histories</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body flex-grow-1">
+            <div class="card-datatable table-responsive pt-0">
+                <table id="FDataTableReviews" class="table" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Aksi</th>
+                            <th>Tanggal Review</th>
+                            <th>Dokter Pemeriksa</th>
+                            <th>Hasil Derajat</th>
+                            <th>Kelainkan Kerja</th>
+                            <th>Temuan</th>
+                            <th>Saran</th>
+                            <th>Keterangan</th>
+                            <th>Sumber Data</th>
+                        </tr>
+                    </thead>
+
+                </table>
+            </div>
         </div>
     </div>
     <style>
@@ -874,29 +1017,50 @@
         }
 
         /* .table.table-bordered.dataTable.no-footer thead th {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    background-color: #f8f9fa;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    position: sticky;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    top: 0;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    z-index: 1;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    border-bottom: 1px solid #dee2e6;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                background-color: #f8f9fa;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                position: sticky;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                top: 0;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                z-index: 1;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                border-bottom: 1px solid #dee2e6;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                .dataTables_scrollHead .table.table-bordered.dataTable.no-footer thead th {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    background-color: #f8f9fa;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    z-index: 2;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            .dataTables_scrollHead .table.table-bordered.dataTable.no-footer thead th {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                background-color: #f8f9fa;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                z-index: 2;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            } */
     </style>
     <script>
         $(document).ready(function() {
-
+            var chartInstances = {};
             var toolbar = {
                 'form': $('#toolbar_form'),
-                'id_role': $('#toolbar_form').find('#id_role'),
-                'id_opd': $('#toolbar_form').find('#id_opd'),
-                'newBtn': $('#new_btn'),
-            }
+                'cat_review': $('#toolbar_form').find('#cat_review'),
+                'provider': $('#toolbar_form').find('#provider'), // <-- perbaiki di sini
+                'bmi': $('#toolbar_form').find('#filter_bmi'),
+                'ekg': $('#toolbar_form').find('#filter_ekg'),
+                'kardio': $('#toolbar_form').find('#filter_kardio'), // tambahin juga ini
+            };
+
+            $('.select2-close').select2({
+                placeholder: 'Pilih',
+                allowClear: true,
+                closeOnSelect: true
+            });
+            $('#toolbar_form').find('.select2').select2({
+                placeholder: 'Pilih',
+                allowClear: true,
+                closeOnSelect: false
+            });
+
+            toolbar.cat_review.select2({
+                placeholder: 'Pilih jenis review',
+                allowClear: false,
+                closeOnSelect: true
+            });
 
             const offCanvasEl = new bootstrap.Offcanvas($('#add-new-record'));
+            const offCanvasElReviews = new bootstrap.Offcanvas($('#show-review'));
+
             // targetTrims = [
             //     10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
             //     20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
@@ -920,6 +1084,7 @@
             var targetTrims = Array.from({
                 length: 177
             }, (_, i) => i + 10);
+            var FDataTableReviews = $('#FDataTableReviews').DataTable()
             var FDataTable = $('#FDataTable').DataTable({
                 columnDefs: [{
                     targets: targetTrims, // Menargetkan kolom yang sesuai
@@ -1124,20 +1289,22 @@
                 'file_attachment': $('#form-content').find('#file_attachment'),
             }
 
-            var select2 = $('.select2');
-            if (select2.length) {
-                select2.each(function() {
-                    var $this = $(this);
-                    select2Focus($this);
-                    $this.wrap('<div class="position-relative"></div>').select2({
-                        placeholder: 'Select value',
-                        dropdownParent: $this.parent()
-                    });
-                });
-            }
+            // var select2 = $('.select2');
+            // if (select2.length) {
+            //     select2.each(function() {
+            //         var $this = $(this);
+            //         select2Focus($this);
+            //         $this.wrap('<div class="position-relative"></div>').select2({
+            //             placeholder: 'Select value',
+            //             dropdownParent: $this.parent()
+            //         });
+            //     });
+            // }
+
+
             var dataContent = {}
 
-            swalLoading();
+            // swalLoading();
             $.when(
                 getAllContent()).then((e) => {
                 Swal.close();
@@ -1145,19 +1312,28 @@
                 console.log(e)
             });
 
+            $('#toolbar_submit').on("click", function() {
+                getAllContent()
+                // blockUIclose()
+            })
 
             function getAllContent() {
+                blockUIshowLoading()
                 return $.ajax({
                     url: `{{ route('mcu.fetch_detail', $dataContent['id']) }}`,
-                    'type': 'get',
+                    'type': 'post',
                     data: toolbar.form.serialize(),
                     success: function(data) {
                         console.log(data['data'])
-                        Swal.close();
+                        // Swal.close();
+
                         if (data['error']) {
+                            blockUIclose()
+
                             return;
                         }
                         dataContent = data['data'];
+
 
                         renderContent(dataContent['batches']);
                         renderGender(dataContent['statis']['gender']);
@@ -1179,16 +1355,75 @@
 
                         $('#smoker').html(dataContent['statis']['merokok']['Ya'])
                         $('#smoker_anti').html(dataContent['statis']['merokok']['Tidak'])
+                        dataContent = dataContent['batches'];
+                        blockUIclose()
+
                     },
                     error: function(e) {}
                 });
             }
 
+            FDataTable.on('click', '.show-review', function() {
+                var currentId = $(this).data('id');
+                blockUIshowLoading()
+                return $.ajax({
+                    url: `{{ url('mcu/batch-review') }}/` + currentId,
+                    'type': 'get',
+                    data: {},
+                    success: function(data) {
+                        console.log(data['data'])
+                        offCanvasElReviews.show();
+
+                        if (data['error']) {
+                            blockUIclose()
+                        }
+                        renderContentReviews(data['data'])
+                        blockUIclose()
+                    },
+                    error: function(e) {
+                        const errMessage = e.responseJSON.message ?? "Terjadi kesalahan";
+                        blockUIclose()
+                        swalError(errMessage, "Gagal !!");
+                    }
+                });
+            })
+
+            FDataTable.on('click', '.add-pengantar', function() {
+                console.log("add-pengantar")
+                // ContentForm.form.trigger('reset')
+                // var $newOption4 = $("<option selected='selected'></option>").val('').text("--");
+                // ContentForm.insertBtn.attr('style', 'display: none !important');
+                // ContentForm.updateBtn.attr('style', 'display: ""');
+                offCanvasEl.show();
+
+                var currentId = $(this).data('id');
+                var currentData = dataContent.find(item => item.id == currentId);
+                console.log("currentId: ", currentId)
+                console.log("currentData: ", currentData)
+                // ContentForm.id.val(currentData['id']);
+                // ContentForm.user_id.val(currentData['user_id']).trigger("change");
+                // ContentForm.description.val(currentData['description']);
+                // ContentForm.doc_date.val(currentData['doc_date']);
+                // ContentForm.ref_mcu_id.val(currentData['ref_mcu_id']);
+            });
+
             function renderKesimpulan(data) {
-                renderChartE1(data['jenis_kesimpulan'], data['values'], 'derajat_kesehatan')
+                renderChartE1('#derajatKesehatanChart', data['jenis_kesimpulan'], data['values'],
+                    'derajat_kesehatan', 'Orang', true)
             }
 
-            function renderChartE1(labels, values, type) {
+            function renderChartE1(selector, labels, values, type, satuan, asPersen = false) {
+                const originalValues = values;
+                const originalLabel = labels;
+                if (asPersen) {
+                    const ctotal = values.reduce((acc, val) => acc + val, 0);
+                    if (ctotal > 0) {
+                        cvalues = values.map(v => +(v / ctotal * 100).toFixed(2)); // persen 2 desimal
+                    }
+                }
+                if (chartInstances[selector]) {
+                    chartInstances[selector].destroy();
+                }
                 if (isDarkStyle) {
                     cardColor = config.colors_dark.cardColor;
                     labelColor = config.colors_dark.textMuted;
@@ -1239,9 +1474,10 @@
                         '#c0392be6', // P7
                     ]
                 }
+                console.log("render E1")
 
                 const total = values.reduce((sum, current) => sum + current, 0);
-                const deliveryExceptionsChartE1 = document.querySelector('#deliveryExceptionsChart'),
+                deliveryExceptionsChartE1 = document.querySelector(selector),
                     deliveryExceptionsChartConfig = {
                         chart: {
                             height: 420,
@@ -1249,7 +1485,7 @@
                             type: 'donut'
                         },
                         labels: labels,
-                        series: values,
+                        series: asPersen ? cvalues : values,
                         colors: colorsIndicator,
                         stroke: {
                             width: 0
@@ -1257,7 +1493,7 @@
                         dataLabels: {
                             enabled: false,
                             formatter: function(val, opt) {
-                                return parseInt(val) + ' Orang';
+                                return parseInt(val) + (asPersen ? ' %' : ' Orang');
                             }
                         },
                         legend: {
@@ -1301,18 +1537,24 @@
                                             color: headingColor,
                                             fontWeight: 500,
                                             offsetY: -30,
-                                            formatter: function(val) {
-                                                return parseInt(val) + 'Orang';
+                                            formatter: function(val, opts) {
+                                                const index = opts.globals.series.indexOf(parseFloat(val));
+                                                return asPersen ? (
+                                                    parseInt(val) + ' % / ' +
+                                                    originalValues[index] + ' ' + satuan) : (
+                                                    parseInt(
+                                                        val) + ' ' + satuan);
                                             }
                                         },
                                         name: {
                                             offsetY: 20,
-                                            fontFamily: 'Inter'
+                                            fontFamily: 'Inter',
+
                                         },
                                         total: {
                                             show: true,
                                             fontSize: '0.9rem',
-                                            label: 'Last Review',
+                                            // label: '',
                                             color: bodyColorLabel,
                                             formatter: function(w) {
                                                 return (total ?? '-') + ' Orang';
@@ -1335,10 +1577,46 @@
                     const deliveryExceptionsChart = new ApexCharts(deliveryExceptionsChartE1,
                         deliveryExceptionsChartConfig);
                     deliveryExceptionsChart.render();
+                    chartInstances[selector] = deliveryExceptionsChart;
                 }
             }
             // })();
             // }
+
+            function renderContentReviews(data) {
+                console.log(data)
+                if (data == null || typeof data != "object") {
+                    console.log("User::UNKNOWN DATA");
+                    return;
+                }
+                var i = 0;
+
+                var renderData = [];
+                Object.values(data).forEach((user) => {
+                    var button =
+                        `<div class="d-inline-block">
+                            <button class="btn btn-sm btn-text-warning rounded-pill edit-review" data-id="${user['id']}">
+                                <i class="mdi mdi-pen-plus me-1"></i>
+                            </button>
+                            <button class="btn btn-sm btn-text-danger rounded-pill delete-review" data-id="${user['id']}">
+                                <i class="mdi mdi-trash-can-outline me-1"></i>
+                            </button>
+                            </div>`;
+                    // <a href="<?= url('info-desa/sub-wilayah') ?>/${user['id']}" title="Lihat Detail" class="btn btn-sm btn-text-secondary rounded-pill btn-icon item-edit"><i class="mdi mdi-eye-outline" ></i> Lihat Review</a>
+                    console.log(user)
+                    renderData.push([button, user['tgl_review'],
+                        user['nama_dokter_reviewer'],
+                        user['status_derajat_kesehatan'],
+                        user['kelaikan_kerja'],
+                        user['temuan'],
+                        user['saran'],
+                        user['keterangan'] ?? '-',
+                        user['source_data'],
+
+                    ]);
+                });
+                FDataTableReviews.clear().rows.add(renderData).draw('full-hold');
+            }
 
             function renderContent(data) {
                 console.log(data)
@@ -1352,10 +1630,10 @@
                 Object.values(data).forEach((user) => {
                     var button =
                         `<div class="d-inline-block">
-                            <button class="btn btn-sm btn-text-secondary rounded-pill">
+                            <button class="btn btn-sm btn-text-secondary rounded-pill add-pengantar" data-id="${user['id']}">
                                 <i class="mdi mdi-pen-plus me-1"></i> Pengantar
                             </button>
-                            <button class="btn btn-sm btn-text-secondary rounded-pill">
+                            <button class="btn btn-sm btn-text-secondary rounded-pill show-review" data-id="${user['id']}">
                                 <i class="mdi mdi-eye-outline me-1"></i> Review
                             </button>
                             </div>`;
@@ -1371,7 +1649,7 @@
             }
 
             function renderChart(series, selector) {
-
+                document.querySelector(selector).destroy();
                 const donutChartEl = document.querySelector(selector),
                     donutChartConfig = {
                         chart: {
@@ -1549,9 +1827,17 @@
                     legendColor = config.colors.bodyColor;
                     borderColor = config.colors.borderColor;
                 }
+                renderChartjsDonuts
+
                 const doughnutChart = document.getElementById(selector);
                 const doughnutLegend = document.getElementById(legend_selector);
                 if (doughnutChart) {
+                    if (chartInstances[selector]) {
+                        chartInstances[selector].destroy();
+                    }
+
+                    const ctx = doughnutChart.getContext('2d');
+
                     const doughnutChartVar = new Chart(doughnutChart, {
                         type: 'doughnut',
                         data: {
@@ -1594,6 +1880,7 @@
                             }
                         }
                     });
+                    chartInstances[selector] = doughnutChartVar;
                     if (doughnutLegend) {
                         doughnutLegend.innerHTML = labels.map((label, index) => {
                             return `
@@ -1615,7 +1902,9 @@
                 const persentase = Math.round(positif / (positif + negatif) * 100)
                 console.log(persentase)
 
-
+                if (chartInstances[selector]) {
+                    chartInstances[selector].destroy();
+                }
                 const overviewChartEl = document.querySelector('#' + selector),
                     overviewChartConfig = {
                         chart: {
@@ -1676,6 +1965,7 @@
                     console.log("create Apex Chart")
                     const overviewChart = new ApexCharts(overviewChartEl, overviewChartConfig);
                     overviewChart.render();
+                    chartInstances[selector] = overviewChart
                 }
 
             }

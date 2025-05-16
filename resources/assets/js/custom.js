@@ -415,7 +415,7 @@ function capitalizeFirstLetter(string) {
 }
 function swalBerhasil(label = 'Berhasil !!', btn = true) {
   btnclass = btn ? '' : 'd-none';
-  Swal.fire({
+  return Swal.fire({
     title: label,
     icon: 'success',
     showClass: {
@@ -431,7 +431,7 @@ function swalBerhasil(label = 'Berhasil !!', btn = true) {
 
 function swalBerhasil2(message = '', label = 'Berhasil !!', btn = true) {
   btnclass = btn ? '' : 'd-none';
-  Swal.fire({
+  return Swal.fire({
     title: label,
     text: message,
     icon: 'success',

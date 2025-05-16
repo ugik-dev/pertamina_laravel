@@ -160,6 +160,11 @@
                         </a>
                     </li>
                     <li class="menu-item">
+                        <a href="{{ route('labor.index') }}" class="menu-link">
+                            <div>Labor</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
                         <a href="{{ route('guarantor.index') }}" class="menu-link">
                             <div>Jenis Penjamin</div>
                         </a>

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; // Import DB facade untuk transaction
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\DataStructure;
+use App\Models\Labor;
+use App\Models\LaborService;
 use App\Models\McuBatch;
 use App\Models\McuReview;
 use App\Models\User;
@@ -48,25 +50,72 @@ class MCUController extends Controller
             return  $this->ResponseError($ex->getMessage());
         }
     }
+    public function get_review(Request $request, $id)
+    {
+        try {
+            $res = McuReview::where('id_batch', '=', $id)->orderBy('tgl_review')->get()->toArray();
+            $data =   DataStructure::keyValueObj($res, 'id', NULL, TRUE);
+            return $this->responseSuccess($data);
+        } catch (Exception $ex) {
+            return  $this->ResponseError($ex->getMessage());
+        }
+    }
 
 
     public function detail(Request $request, int $id)
     {
         $dataContent =  [
             'id' => $id,
-            'paramMCU' => getParamMCU()
+            'paramMCU' => getParamMCU(),
+            'filter' => $this->getFilter($id),
+            'laborServices' => LaborService::get()->toArray()
         ];
         return view('page.mcu.detail', compact('request', 'dataContent'));
+    }
+
+    function getFilter(int $id)
+    {
+        $batch = McuBatch::where('mcu_id', '=', $id)->with('firstReview')->get();
+        $filter['lokasi'] = $batch->map(function ($item) {
+            return [
+                'value' => $item->lokasi,
+                'label' => str_replace(['Laboratorium', ','], ['Lab', ''], $item->lokasi) // disingkat
+            ];
+        })->unique('value')->values()->toArray();
+
+        $filter['derajat'] = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7'];
+        $kardio = $this->pluckFieldOption($batch, 'risiko_cardiovascular_skj');
+        $ekg = $this->pluckFieldOption($batch, 'ekg');
+        $bmi = $this->pluckFieldOption($batch, 'status_gizi');
+        $filter['kardio'] = $kardio;
+        $filter['ekg'] = $ekg;
+        $filter['bmi'] = $bmi;
+        $filter['labor'] = Labor::get()->toArray();
+        return $filter;
     }
 
     public function fetch_detail(Request $request, int $id)
     {
         try {
-            $query =  Mcu::with(['uploadedBy', 'batches.latestReview'])->withCount('batches');
+            $filter = $request->input();
+            // dd($filter);
+            $query =  Mcu::with(['uploadedBy']);
             $query->where('id', '=', $id);
+            // if (!empty($filter['provider']))
+            //     $query->whereIn('lokasi', $filter['provider']);
+
             $res = $query->first();
 
-            $batch = McuBatch::where('mcu_id', '=', $id)->with('latestReview')->get();
+            $queryBatch = McuBatch::where('mcu_id', '=', $id)->with($filter['cat_review'] == 'last' ? 'latestReview' : 'firstReview');
+            if (!empty($filter['provider']))
+                $queryBatch->whereIn('lokasi', $filter['provider']);
+            if (!empty($filter['ekg']))
+                $queryBatch->whereIn('ekg', $filter['ekg']);
+            if (!empty($filter['kardio']))
+                $queryBatch->whereIn('risiko_cardiovascular_skj', $filter['kardio']);
+            if (!empty($filter['bmi']))
+                $queryBatch->whereIn('status_gizi', $filter['bmi']);
+            $batch = $queryBatch->get();
             // dd($batch);
             $statis['gender'] = [
                 'Laki-laki' => $batch->where('jenis_kelamin', 'Laki-laki')->count(),
@@ -116,11 +165,10 @@ class MCUController extends Controller
             $jenisKesimpulan = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7'];
 
             $hasil = $batch->reduce(function ($carry, $item) {
-                // dd($carry, $item->latestReview->status_derajat_kesehatan);
-                if (empty($item->latestReview->status_derajat_kesehatan)) {
+                if (empty($item->review->status_derajat_kesehatan)) {
                     return $carry;
                 }
-                $key = $item->latestReview->status_derajat_kesehatan;
+                $key = $item->review->status_derajat_kesehatan;
                 if ($key) {
                     $carry[$key] = ($carry[$key] ?? 0) + 1;
                 }
@@ -160,12 +208,21 @@ class MCUController extends Controller
             $statis['bmi'] = $bmi;
             $statis['merokok'] = $merokok;
             $res['statis'] = $statis;
+            $res['batches'] = $batch;
             return $this->responseSuccess($res);
         } catch (Exception $ex) {
             return  $this->ResponseError($ex->getMessage());
         }
     }
-
+    private function pluckFieldOption($collection, $field)
+    {
+        return $collection
+            ->pluck($field)       // Ambil semua nilai kolom
+            ->filter()            // Buang null/false/empty
+            ->unique()            // Hapus duplikat
+            ->values()            // Reset indeks biar rapi
+            ->toArray();          // Ubah ke array biasa
+    }
     function pluckField($db, $fieldname)
     {
         $fields = [];

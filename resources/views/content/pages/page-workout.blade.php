@@ -342,8 +342,10 @@
                                 swalError(data['message'], "Simpan Gagal !!");
                                 return;
                             }
-                            swalBerhasil();
-                            scanProcess(Result.qr_user.val());
+                            swalBerhasil("Data berhasil disimpan").then((res) => {
+                                console.log("then swal")
+                                scanProcess(Result.qr_user.val());
+                            });
                         },
                         error: function(e) {
                             swalError(e['message'], "Simpan Gagal !!");

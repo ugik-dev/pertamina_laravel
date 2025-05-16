@@ -210,13 +210,18 @@ class McuBatch extends Model
     public function latestReview()
     {
         return $this->hasOne(McuReview::class, 'id_batch')
-            ->oldestOfMany('tgl_review');
-        // ->latestOfMany('tgl_review');
+            // ->oldestOfMany('tgl_review');
+            ->latestOfMany('tgl_review');
     }
 
     public function firstReview()
     {
         return $this->hasOne(McuReview::class, 'id_batch')
             ->oldestOfMany('tgl_review');
+    }
+
+    public function getReviewAttribute()
+    {
+        return $this->latestReview ?? $this->firstReview;
     }
 }

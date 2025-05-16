@@ -353,7 +353,7 @@ class WorkoutController extends Controller
 
         // Ambil data Workout terbaru hari ini
         $latestWorkout = Workout::where('user_id', $user->id)
-            ->whereDate('created_at', Carbon::today())
+            ->whereDate('activity_date', Carbon::today())
             ->first();
 
         // Cek apakah file baru diunggah, jika tidak gunakan path yang sudah ada
@@ -362,7 +362,7 @@ class WorkoutController extends Controller
         $latestWorkout = Workout::updateOrCreate(
             [
                 'user_id' => $user->id, // Kondisi pencarian: user_id dan created_at hari ini
-                'created_at' => Carbon::today(),
+                'activity_date' => $validatedData['activity_date'],
             ],
             [
                 'km_tempuh' => $validatedData['km_tempuh'],
@@ -370,7 +370,7 @@ class WorkoutController extends Controller
                 'hours' => $validatedData['hours'],
                 'minutes' => $validatedData['minutes'],
                 'seconds' => $validatedData['seconds'],
-                'activity_date' => $validatedData['activity_date'],
+                // 'activity_date' => $validatedData['activity_date'],
                 'evi_attch' => $path_evi,
             ]
         );
