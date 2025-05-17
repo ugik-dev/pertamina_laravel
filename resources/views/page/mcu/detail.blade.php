@@ -897,6 +897,37 @@
             </table>
         </div>
     </div>
+
+
+    <div class="offcanvas offcanvas-end" id="show-review" style="width : 80% !important">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title" id="">Review Histories</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body flex-grow-1">
+            <div class="card-datatable table-responsive pt-0">
+                <table id="FDataTableReviews" class="table" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Aksi</th>
+                            <th>Sumber Data</th>
+                            <th>Status</th>
+                            <th>Tanggal Dibuat</th>
+                            <th>Tanggal Review</th>
+                            <th>Hasil Derajat</th>
+                            <th>Dokter Pemeriksa</th>
+                            <th>Kelainkan Kerja</th>
+                            <th>Temuan</th>
+                            <th>Saran</th>
+                            <th>Keterangan</th>
+                        </tr>
+                    </thead>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
     <div class="offcanvas offcanvas-end" id="add-new-record" style="width : 700px !important">
         <div class="offcanvas-header border-bottom">
             <h5 class="offcanvas-title" id="exampleModalLabel">Form</h5>
@@ -906,6 +937,7 @@
             <form class="add-new-record pt-0 row g-3" id="form-pengantar" onsubmit="return false">
                 @csrf
                 <input type="text" id="id" class="" hidden name="id" />
+                <input type="text" id="id_batch" class="" name="id_batch" />
                 {{-- <div class="col-sm-12">
                     <label for="basicFullname">Description:</label>
                     <textarea type="text" id="description" class="form-control dt-full-name" name="description" placeholder=""
@@ -913,8 +945,8 @@
                 </div> --}}
                 <div class="row">
                     <div class="col-sm-12">
-                        <label for="basicFullname">Name :</label>
-                        <input type="text" id="user_name" class="form-control dt-full-name" name="nama"
+                        <label for="basicFullname">Pegawai :</label>
+                        <input type="text" id="user_name" class="form-control dt-full-name" name="nama" disabled
                             placeholder="" aria-label="" aria-describedby="basicFullname2" />
                     </div>
                     <div class="col-sm-12">
@@ -956,55 +988,21 @@
                                 </div>
                             @endforeach
                         </div>
+                        <div class="col-sm-12">
+                            <label for="basicFullname">Lainnya :</label>
+                            <input type="text" id="svc_lainnya" class="form-control dt-full-name" name="svc_lainnya"
+                                placeholder="" aria-label="" aria-describedby="basicFullname2" />
+                        </div>
                     </div>
 
                 </div>
-                {{-- <div class="row">
-                    <div class="col-sm-12">
-                        <label for="basicFullname">File :</label>
-                        <div class="input-group input-group-merge">
-                            <span id="basicFullname2" class="input-group-text"><i class="mdi mdi-file"></i></span>
-                            <input type="file" id="file_attachment" class="form-control dt-full-name"
-                                name="file_attachment" aria-label="" aria-describedby="basicFullname2"
-                                accept=".xls, .xlsx" />
-                        </div>
-                    </div>
-                    <div class="col-sm-6"></div>
-                </div> --}}
                 <div class="col-sm-12">
-                    <a type="" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="insertBtn"
-                        data-metod="ins">Tambah</a>
+                    <a type="" class="btn btn-primary data-submit me-sm-3 me-1 text-white" id="saveBtn"
+                        data-metod="ins">Simpan</a>
                     <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
                 </div>
             </form>
 
-        </div>
-    </div>
-
-    <div class="offcanvas offcanvas-end" id="show-review" style="width : 80% !important">
-        <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title" id="">Review Histories</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body flex-grow-1">
-            <div class="card-datatable table-responsive pt-0">
-                <table id="FDataTableReviews" class="table" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Aksi</th>
-                            <th>Tanggal Review</th>
-                            <th>Dokter Pemeriksa</th>
-                            <th>Hasil Derajat</th>
-                            <th>Kelainkan Kerja</th>
-                            <th>Temuan</th>
-                            <th>Saran</th>
-                            <th>Keterangan</th>
-                            <th>Sumber Data</th>
-                        </tr>
-                    </thead>
-
-                </table>
-            </div>
         </div>
     </div>
     <style>
@@ -1017,17 +1015,17 @@
         }
 
         /* .table.table-bordered.dataTable.no-footer thead th {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                background-color: #f8f9fa;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                position: sticky;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                top: 0;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                z-index: 1;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                border-bottom: 1px solid #dee2e6;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                background-color: #f8f9fa;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                position: sticky;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                top: 0;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                z-index: 1;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                border-bottom: 1px solid #dee2e6;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            .dataTables_scrollHead .table.table-bordered.dataTable.no-footer thead th {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                background-color: #f8f9fa;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                z-index: 2;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            .dataTables_scrollHead .table.table-bordered.dataTable.no-footer thead th {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                background-color: #f8f9fa;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                z-index: 2;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            } */
     </style>
     <script>
         $(document).ready(function() {
@@ -1044,7 +1042,8 @@
             $('.select2-close').select2({
                 placeholder: 'Pilih',
                 allowClear: true,
-                closeOnSelect: true
+                closeOnSelect: true,
+                dropdownParent: $("#add-new-record")
             });
             $('#toolbar_form').find('.select2').select2({
                 placeholder: 'Pilih',
@@ -1082,7 +1081,7 @@
             //     180, 181, 182, 183, 184, 185, 186, 187
             // ];
             var targetTrims = Array.from({
-                length: 177
+                length: 178
             }, (_, i) => i + 10);
             var FDataTableReviews = $('#FDataTableReviews').DataTable()
             var FDataTable = $('#FDataTable').DataTable({
@@ -1289,6 +1288,18 @@
                 'file_attachment': $('#form-content').find('#file_attachment'),
             }
 
+            var PengantarForm = {
+                'form': $('#form-pengantar'),
+                'id': $('#form-pengantar').find('#id'),
+                'id_batch': $('#form-pengantar').find('#id_batch'),
+                'user_name': $('#form-pengantar').find('#user_name'),
+                'labor_id': $('#form-pengantar').find('#labor_id'),
+                'date_start': $('#form-pengantar').find('#date_start'),
+                'date_end': $('#form-pengantar').find('#date_end'),
+                'svc_lainnya': $('#form-pengantar').find('#svc_lainnya'),
+                'saveBtn': $('#form-pengantar').find('#saveBtn'),
+            }
+
             // var select2 = $('.select2');
             // if (select2.length) {
             //     select2.each(function() {
@@ -1303,6 +1314,7 @@
 
 
             var dataContent = {}
+            var selectedReview = {}
 
             // swalLoading();
             $.when(
@@ -1365,19 +1377,22 @@
 
             FDataTable.on('click', '.show-review', function() {
                 var currentId = $(this).data('id');
-                blockUIshowLoading()
+                fetchReview(currentId);
+            })
+
+            function fetchReview(id) {
                 return $.ajax({
-                    url: `{{ url('mcu/batch-review') }}/` + currentId,
+                    url: `{{ url('mcu/batch-review') }}/` + id,
                     'type': 'get',
                     data: {},
                     success: function(data) {
                         console.log(data['data'])
                         offCanvasElReviews.show();
-
+                        selectedReview = data['data']
                         if (data['error']) {
                             blockUIclose()
                         }
-                        renderContentReviews(data['data'])
+                        renderContentReviews(selectedReview)
                         blockUIclose()
                     },
                     error: function(e) {
@@ -1386,11 +1401,69 @@
                         swalError(errMessage, "Gagal !!");
                     }
                 });
-            })
+            }
 
+            FDataTableReviews.on('click', '.edit-pengantar', function() {
+                console.log("edit-pengantar")
+                PengantarForm.form.trigger('reset')
+                $('input[name="labor_services[]"]').prop('checked', false);
+                offCanvasEl.show();
+                var currentId = $(this).data('id');
+                console.log("selectedReview", selectedReview);
+                var currentData = selectedReview.find(item => item.id == currentId);
+                console.log("currentId: ", currentId)
+                console.log("currentData: ", currentData)
+                PengantarForm.labor_id.val(currentData['labor_id']).trigger('change');
+                PengantarForm.id.val(currentData['id']);
+                PengantarForm.id_batch.val(currentData['id_batch']);
+                PengantarForm.date_end.val(currentData['date_end']);
+                PengantarForm.date_start.val(currentData['date_start']);
+                PengantarForm.svc_lainnya.val(currentData['svc_lainnya']);
+                let serviceIds = currentData['labor_service_ids'];
+                console.log(serviceIds)
+                if (typeof serviceIds === 'string' && serviceIds.length > 0) {
+                    serviceIds.split(',').forEach(function(id) {
+                        $('#service-' + id).prop('checked', true);
+                    });
+                }
+            });
+            FDataTableReviews.on('click', '.delete-pengantar', function() {
+                var currentId = $(this).data('id');
+                event.preventDefault();
+                var id = $(this).data('id');
+                var token = $("[name='_token']").val();
+                Swal.fire(SwalOpt('Konfirmasi hapus ?', 'Data ini akan dihapus!', )).then((result) => {
+                    if (!result.isConfirmed) {
+                        return;
+                    }
+                    $.ajax({
+                        url: "<?= route('mcu.delete-review') ?>/",
+                        'type': 'DELETE',
+                        data: {
+                            '_token': token,
+                            'id': id
+                        },
+                        success: function(data) {
+                            if (data['error']) {
+                                swalError(data['message'], "Simpan Gagal !!");
+                                return;
+                            }
+                            swalBerhasil('Data berhasil di Hapus');
+                            fetchReview(data['data'])
+                        },
+                        error: function(e) {
+                            const errMessage = e.responseJSON.message ??
+                                "Terjadi kesalahan";
+                            swalError(errMessage, "Gagal !!");
+                        }
+                    });
+                });
+            });
             FDataTable.on('click', '.add-pengantar', function() {
                 console.log("add-pengantar")
-                // ContentForm.form.trigger('reset')
+                PengantarForm.form.trigger('reset')
+                $('input[name="labor_services[]"]').prop('checked', false);
+
                 // var $newOption4 = $("<option selected='selected'></option>").val('').text("--");
                 // ContentForm.insertBtn.attr('style', 'display: none !important');
                 // ContentForm.updateBtn.attr('style', 'display: ""');
@@ -1400,11 +1473,53 @@
                 var currentData = dataContent.find(item => item.id == currentId);
                 console.log("currentId: ", currentId)
                 console.log("currentData: ", currentData)
-                // ContentForm.id.val(currentData['id']);
-                // ContentForm.user_id.val(currentData['user_id']).trigger("change");
-                // ContentForm.description.val(currentData['description']);
-                // ContentForm.doc_date.val(currentData['doc_date']);
-                // ContentForm.ref_mcu_id.val(currentData['ref_mcu_id']);
+                // PengantarForm.id.val(currentData['id']);
+                // PengantarForm.user_id.val(currentData['user_id']).trigger("change");
+                PengantarForm.labor_id.val(null).trigger('change');
+                PengantarForm.id_batch.val(currentData['id']);
+                PengantarForm.user_name.val(currentData['nama'] + ' | ' + currentData['nopek'] + ' | ' +
+                    currentData['no_rm']);
+                // PengantarForm.ref_mcu_id.val(currentData['ref_mcu_id']);
+            });
+
+            PengantarForm.saveBtn.on('click', () => {
+                event.preventDefault();
+                Swal.fire(SwalOpt()).then((result) => {
+                    if (!result.isConfirmed) {
+                        return;
+                    }
+                    swalLoading();
+                    $.ajax({
+                        url: '{{ route('mcu.save_pengantar') }}',
+                        'type': "post",
+                        processData: false,
+                        contentType: false,
+                        data: new FormData(PengantarForm.form[0]),
+                        success: function(data) {
+                            if (data['error']) {
+                                swalError(data['message'], "Simpan Gagal !!");
+                                return;
+                            }
+                            // getAllContent()
+                            // // var user = data['data']
+                            // // dataContent[user['id']] = user;
+                            swalBerhasil();
+                            fetchReview(data['data'])
+                            offCanvasEl.hide();
+                            // renderContent(dataContent);
+                            // ContentForm.self.modal('hide');
+                        },
+                        error: function(e) {
+                            const errMessage = e.responseJSON.message ??
+                                "Terjadi kesalahan";
+                            swalError(errMessage, "Gagal !!");
+                        }
+                    });
+                });
+            });
+            ContentForm.updateBtn.on('click', () => {
+                event.preventDefault();
+                submit_form('{{ route('mcu.update') }}', 'POST');
             });
 
             function renderKesimpulan(data) {
@@ -1595,23 +1710,26 @@
                 Object.values(data).forEach((user) => {
                     var button =
                         `<div class="d-inline-block">
-                            <button class="btn btn-sm btn-text-warning rounded-pill edit-review" data-id="${user['id']}">
+                            <button class="btn btn-sm btn-text-warning rounded-pill edit-pengantar" data-id="${user['id']}">
                                 <i class="mdi mdi-pen-plus me-1"></i>
                             </button>
-                            <button class="btn btn-sm btn-text-danger rounded-pill delete-review" data-id="${user['id']}">
+                            <button class="btn btn-sm btn-text-danger rounded-pill delete-pengantar" data-id="${user['id']}">
                                 <i class="mdi mdi-trash-can-outline me-1"></i>
                             </button>
                             </div>`;
                     // <a href="<?= url('info-desa/sub-wilayah') ?>/${user['id']}" title="Lihat Detail" class="btn btn-sm btn-text-secondary rounded-pill btn-icon item-edit"><i class="mdi mdi-eye-outline" ></i> Lihat Review</a>
                     console.log(user)
-                    renderData.push([button, user['tgl_review'],
-                        user['nama_dokter_reviewer'],
+                    renderData.push([button,
+                        user['source_data'],
+                        user['status'],
+                        formatDateTime(user['created_at']),
+                        user['tgl_review'],
                         user['status_derajat_kesehatan'],
+                        user['nama_dokter_reviewer'],
                         user['kelaikan_kerja'],
                         user['temuan'],
                         user['saran'],
                         user['keterangan'] ?? '-',
-                        user['source_data'],
 
                     ]);
                 });

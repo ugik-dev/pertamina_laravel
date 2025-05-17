@@ -11,6 +11,7 @@ use App\Models\Labor;
 use App\Models\LaborService;
 use App\Models\McuBatch;
 use App\Models\McuReview;
+use App\Models\Populate;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
@@ -53,9 +54,10 @@ class MCUController extends Controller
     public function get_review(Request $request, $id)
     {
         try {
-            $res = McuReview::where('id_batch', '=', $id)->orderBy('tgl_review')->get()->toArray();
-            $data =   DataStructure::keyValueObj($res, 'id', NULL, TRUE);
-            return $this->responseSuccess($data);
+            $res = McuReview::where('id_batch', '=', $id)->orderBy('tgl_review')
+                ->orderBy('created_at', 'desc')->get()->toArray();
+            // $data =   DataStructure::keyValueObj($res, 'id', NULL, TRUE);
+            return $this->responseSuccess($res);
         } catch (Exception $ex) {
             return  $this->ResponseError($ex->getMessage());
         }
@@ -264,6 +266,33 @@ class MCUController extends Controller
         return strtolower($string);
     }
 
+    public function save_pengantar(Request $request)
+    {
+        try {
+            $formData = $request->except(['_token', 'gambar']);
+            $data = McuReview::find($formData['id']);
+
+            if (!empty($formData['labor_services'])) {
+                $formData['labor_service_ids'] = implode(',', $formData['labor_services']);
+            } else {
+                $formData['labor_service_ids'] = null;
+            }
+            if (!empty($data)) {
+                if ($data->source_data == "Excel") {
+                    throw new Exception("Maaf, data excel tidak bisa di edit!");
+                }
+                $data->update($formData);
+            } else {
+                $formData['status'] = 'draft_pengantar';
+                $formData['source_data'] = 'My Pertafit';
+                $data = McuReview::create($formData);
+            }
+            return $this->responseSuccess($data->id_batch);
+        } catch (Exception $ex) {
+            return  $this->ResponseError($ex->getMessage());
+        }
+    }
+
 
 
     public function create(Request $request)
@@ -362,14 +391,30 @@ class MCUController extends Controller
                 $formattedData[] = $newRow;
             }
 
+            $populate = Populate::with('batches')->latest()->first();
+            if (empty($populate)) {
+                throw new Exception("Data populasi tidak ditemukan!");
+            }
             $mcu = Mcu::create([
                 'date' => now(), // Tanggal upload
                 'uploaded_by' => Auth::id(), // ID pengguna yang mengunggah
             ]);
 
+
+            // Kumpulkan semua nopeg dari relasi batches menjadi array
+            $existingPersNo = $populate->batches->pluck('pers_no')->toArray();
+            $existingPersonId = $populate->batches->pluck('person_id')->toArray();
+
             foreach ($formattedData as $record) {
-                if (empty(array_filter($record)) || (empty(trim($record['nama'])) && empty(trim($record['no_rm'])))) {
+                if (empty(array_filter($record)) || empty(trim($record['nama'])) || empty(trim($record['no_rm'])) || empty(trim($record['nopek'])) || $record['nopek'] == '-') {
                     continue;
+                }
+
+                if (
+                    !in_array($record['nopek'], $existingPersNo) &&
+                    !in_array($record['nopek'], $existingPersonId)
+                ) {
+                    throw new Exception("Nopeg " . $record['nopek'] . ", atas Nama " . $record['nama'] . " tidak terdaftar di populasi!");
                 }
                 // dd($record);
                 $review = $record['reviews'];
@@ -855,6 +900,21 @@ class MCUController extends Controller
             $data = Mcu::findOrFail($request->id);
             $data->delete();
             return  $this->responseSuccess($data);
+        } catch (Exception $ex) {
+            return  $this->ResponseError($ex->getMessage());
+        }
+    }
+
+    public function delete_review(Request $request)
+    {
+        try {
+            $data = McuReview::findOrFail($request->id);
+            if ($data->source_data == "Excel") {
+                throw new Exception("Maaf, data excel tidak bisa di hapus");
+            }
+            $batchId = $data->id_batch;
+            $data->delete();
+            return  $this->responseSuccess($batchId);
         } catch (Exception $ex) {
             return  $this->ResponseError($ex->getMessage());
         }

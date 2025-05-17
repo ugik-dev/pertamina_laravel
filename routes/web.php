@@ -2,6 +2,7 @@
 
 use App\Events\RequestCallEvent;
 use App\Http\Controllers\api\RequestController;
+use App\Http\Controllers\ApprovalController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\pages\HomePage;
 use App\Http\Controllers\pages\Page2;
@@ -298,9 +299,12 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('mcu')->name('mcu.')->group(function () {
         Route::get('', [MCUController::class, 'index'])->name('index');
         Route::get('get', [MCUController::class, 'get'])->name('get');
+        Route::get('print-pengantar/{$id}', [MCUController::class, 'print_pengantar'])->name('print-pengantar');
         Route::post('', [MCUController::class, 'create'])->name('create');
         Route::post('/update', [MCUController::class, 'update'])->name('update');
+        Route::post('/save_pengantar', [MCUController::class, 'save_pengantar'])->name('save_pengantar');
         Route::delete('/', [MCUController::class, 'delete'])->name('delete');
+        Route::delete('/review', [MCUController::class, 'delete_review'])->name('delete-review');
         Route::get('/{id}', [MCUController::class, 'detail'])->name('detail');
         Route::get('/batch-review/{id}', [MCUController::class, 'get_review'])->name('get_review_users');
         Route::post('fetch_detail/{id}', [MCUController::class, 'fetch_detail'])->name('fetch_detail');
@@ -314,5 +318,10 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/', [PopulateController::class, 'delete'])->name('delete');
         Route::get('/{id}', [PopulateController::class, 'detail'])->name('detail');
         Route::post('fetch_detail/{id}', [PopulateController::class, 'fetch_detail'])->name('fetch_detail');
+    });
+
+    Route::prefix('approval')->name('approval.')->group(function () {
+        Route::get('pengantar', [ApprovalController::class, 'pengantar'])->name('pengantar');
+        Route::post('pengantar', [ApprovalController::class, 'aksi_pengantar'])->middleware('can:is_doctor')->name('approv-pengantar');
     });
 });

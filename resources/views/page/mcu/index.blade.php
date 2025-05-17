@@ -433,7 +433,10 @@
                             renderContent(dataContent);
                             // ContentForm.self.modal('hide');
                         },
-                        error: function(e) {}
+                        error: function(e) {
+                            const errMessage = e.responseJSON.message ?? "Terjadi kesalahan";
+                            swalError(errMessage, "Gagal !!");
+                        }
                     });
                 });
             };
@@ -463,7 +466,11 @@
                             getAllContent()
                             // renderContent(dataContent);
                         },
-                        error: function(e) {}
+                        error: function(e) {
+                            const errMessage = e.responseJSON.message ??
+                                "Terjadi kesalahan";
+                            swalError(errMessage, "Gagal !!");
+                        }
                     });
                 });
             });

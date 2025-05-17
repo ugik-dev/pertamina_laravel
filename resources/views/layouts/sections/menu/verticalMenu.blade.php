@@ -133,6 +133,12 @@
                     <div>Populasi</div>
                 </a>
             </li>
+            <li class="menu-item">
+                <a href="{{ route('approval.pengantar') }}" class="menu-link">
+                    <i class="menu-icon tf-icons mdi mdi-account-details-outline"></i>
+                    <div>Permohonan Pengantar</div>
+                </a>
+            </li>
         @endcan
 
         <li class="menu-item" style="">

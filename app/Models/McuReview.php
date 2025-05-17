@@ -20,5 +20,20 @@ class McuReview extends Model
         'tgl_review',
         'source_data',
         'review_ke',
+        'status',
+        'labor_id',
+        'date_start',
+        'date_end',
+        'labor_service_ids',
+        'svc_lainnya',
     ];
+
+    public function batch()
+    {
+        return $this->hasOne(McuBatch::class, 'id', 'id_batch');
+    }
+    public function labor()
+    {
+        return $this->hasOne(Labor::class, 'id', 'labor_id');
+    }
 }
