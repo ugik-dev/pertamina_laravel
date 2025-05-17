@@ -10,7 +10,7 @@
 <script src="{{ asset(mix('assets/vendor/libs/typeahead-js/typeahead.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/js/menu.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js')) }}"></script>
-<script src="{{ asset('assets/js/custom.js') }}"></script>
+<script src="{{ asset(mix('assets/js/custom.js')) }}"></script>
 
 @yield('vendor-script')
 <!-- END: Page Vendor JS-->
