@@ -124,7 +124,13 @@
             <li class="menu-item">
                 <a href="{{ route('mcu.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons mdi mdi-account-details-outline"></i>
-                    <div>Batch MCU</div>
+                    <div>MCU</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="{{ route('populate.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons mdi mdi-account-details-outline"></i>
+                    <div>Populasi</div>
                 </a>
             </li>
         @endcan

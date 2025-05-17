@@ -21,6 +21,7 @@ use App\Http\Controllers\LaborController;
 use App\Http\Controllers\LiveLocationController;
 use App\Http\Controllers\MCUController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\PopulateController;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipeController;
@@ -303,7 +304,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{id}', [MCUController::class, 'detail'])->name('detail');
         Route::get('/batch-review/{id}', [MCUController::class, 'get_review'])->name('get_review_users');
         Route::post('fetch_detail/{id}', [MCUController::class, 'fetch_detail'])->name('fetch_detail');
+    });
 
-        // Route::get('/getData/{id_wil}', [MCUController::class, 'getData'])->name('get-data');
+    Route::prefix('populate')->name('populate.')->group(function () {
+        Route::get('', [PopulateController::class, 'index'])->name('index');
+        Route::get('get', [PopulateController::class, 'get'])->name('get');
+        Route::post('', [PopulateController::class, 'create'])->name('create');
+        Route::post('/update', [PopulateController::class, 'update'])->name('update');
+        Route::delete('/', [PopulateController::class, 'delete'])->name('delete');
+        Route::get('/{id}', [PopulateController::class, 'detail'])->name('detail');
+        Route::post('fetch_detail/{id}', [PopulateController::class, 'fetch_detail'])->name('fetch_detail');
     });
 });

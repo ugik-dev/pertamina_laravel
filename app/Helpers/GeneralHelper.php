@@ -39,12 +39,34 @@ if (!function_exists('getHeaderMCU')) {
     }
 }
 
+if (!function_exists('getHeaderPopulate')) {
+    function getHeaderPopulate()
+    {
+        return ["ID Position", "PRL BS Home", "Person Id", "Pers No", "Name", "Tgl Lahir", "Agama", "Status", "Status Pekerja", "Departemen", "Position", "Personnel Subarea Name", "Sub Area Large", "Fungsi", "Divisi", "Sub Division", "Section", "No HP", "Email"];
+    }
+}
+
 if (!function_exists('getHeaderReviewMCU')) {
     function getHeaderReviewMCU()
     {
         return ["Tgl Review", "Status Derajat Kesehatan", "Kelaikan Kerja", "Temuan", "Saran", "Hasil Follow Up", "Nama Dokter Reviewer", "Keterangan"];
     }
 }
+
+if (!function_exists('getParamPopulate')) {
+    function getParamPopulate()
+    {
+        // $record =  ["Nama", "Nopek", "No RM", "Tempat Lahir", "Tanggal Lahir", "Lokasi", "Tahun MCU", "Tanggal MCU", "Jenis Kelamin", "Status Perkawinan", "Alamat", "Uraian Singkat Pekerjaan", "Hazard/Risiko Lingkungan Kerja", "Keluhan Umum", "Kesadaran", "Status Mentalis", "Status Psikologis (SRQ29)", "Keluhan berhubungan dengan Pekerjaan", "Riwayat Penyakit Dahulu", "Riwayat Penyakit Keluarga", "Riwayat Kecelakaan", "Riwayat Alergi", "Riwayat Vaksinasi", "Riwayat Obs/Gyn", "Riwayat Operasi", "Diet", "Konsumsi Buah/Sayur", "OlahRaga", "Merokok", "Kopi", "Alkohol", "Obat Rutin", "TD Sistole", "TD Diastole", "Nadi", "Irama Nadi", "Pernafasan", "Suhu Badan", "TB", "BB", "LP (Lingkar Pinggang)", "BMI", "Status Gizi", "AVOD", "AVOS", "ADD(Koreksi Visus)", "Tekanan Bola Mata", "Funduscopy", "Buta Warna", "Kepala", "Leher", "Mulut", "Tonsil", "Pharynx", "Jantung", "ParuParu", "Abdomen", "Hepar", "Lien", "Ginjal", "Extremitas", "Reflek Fisiologis", "Reflek Patologis", "Kulit", "Haemorhoid", "Tulang Belakang", "LainLain", "Kesimpulan", "EKG", "PapSmear", "Treadmill Test", "Status Kebugaran", "Target Nadi Olahraga", "Test Rockport", "Napfa", "Spirometri", "Audiometri", "Mammografi", "USG Abdomen", "Biological Monitoring", "Toraks Foto", "Mata", "THT", "D", "M", "F", "Advice Gimul", "HB", "Leukosit", "Eritrosit", "Hematokrit", "Trombosit", "LED", "Basofil", "Eosinofil", "Batang", "Segmen", "Limfosit", "Monosit", "Hapusan Darah", "Warna Urine", "Berat Jenis", "PH Urine", "Protein", "Nitrit", "Reduksi N", "Reduksi PP", "Aseton Urin", "Bilirubin", "Urobilinogen", "Leukosit Esterase", "Sel Epithel", "Leukosit Urine", "Eritrosit Urine", "Silinder", "Bakteri", "Jamur", "Kristal", "Konsistensi", "Warna Faeces", "Lendir", "Darah Nanah", "Eritrosit Faeces", "Leukosit Faeces", "Amuba Protozoa", "Kista", "Sisa Pencernaan", "Telor Cacing", "Kultur Faeces", "Gula Darah Puasa", "Gula Darah 2jam PP", "Hba1c", "Kolesterol Total", "Trigliserida", "HDL", "LDL", "Rasio TC/HDL", "Ureum", "Kreatinin", "Asam Urat", "SGOT", "SGPT", "Bill Total", "Bili Direct", "Bili Indirect", "ALK Fospat", "Kolinesterase", "HbsAg", "Anti HBs", "HBeAg", "Anti HCV", "TPHA", "VDRL", "BTA Sputum", "Drug Test", "Alcohol Test", "Kesimpulan Derajat Kesehatan", "Kesimpulan Kelaikan Kerja", "Risiko Cardiovascular (SKJ)", "Risiko Cardiovascular (SF)", "Saran Dokter", "Rekomendasi", "Dokter", "Anamnesa Mata", "Penglihatan", "Test Ishihara", "Kesimpulan Mata", "Saran Mata", "Anamnesa THT", "Telinga", "Hidung", "Tenggorokan", "Kesimpulan THT", "Saran THT", "Tanggal Selesai", "Kesimpulan 1", "Kesimpulan 2", "Kesimpulan 3", "Nasehat 1", "Nasehat 2", "Diet 1", "Diet 2", "Diet 3", "Nasehat Lain", "Saran 1", "Saran 2", "Saran 3"];
+        $record = getHeaderPopulate();
+        $final = [];
+        foreach ($record as $r) {
+            array_push($final, ['label' => $r, 'field' => toSnakeCase($r)]);
+        }
+        return $final;
+        // return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', str_replace(' ', '_', $string)));
+    }
+}
+
 if (!function_exists('getParamMCU')) {
     function getParamMCU()
     {
